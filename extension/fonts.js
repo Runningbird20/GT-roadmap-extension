@@ -51,7 +51,7 @@
     {
       id: "mononoki",
       name: "Mononoki Nerd Font",
-      sample: "Done 󰄬",
+      sample: "Card 󰄬",
       family: '"GT Mononoki Nerd Font", monospace'
     }
   ];

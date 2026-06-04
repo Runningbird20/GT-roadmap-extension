@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Course Card</title>
+    <link rel="stylesheet" href="themes.css">
+  </head>
+  <body>
+    <main class="theme-shell" aria-labelledby="course-card-title">
+      <header class="theme-header">
+        <button class="back-button" id="back-button" type="button" aria-label="Back to popup">Back</button>
+        <div>
+          <h1 id="course-card-title">Course Card</h1>
+          <p>Choose which details appear on roadmap cards.</p>
+        </div>
+      </header>
+
+      <section class="font-card" aria-labelledby="course-card-heading">
+        <div class="font-card-header">
+          <div>
+            <h2 id="course-card-heading">Visible Details</h2>
+            <p>Cards reshape automatically when details are hidden.</p>
+          </div>
+        </div>
+
+        <div class="course-card-settings">
+          <label class="course-card-toggle" for="show-course-name-toggle">
+            <span>
+              <span class="course-card-toggle-title">Course name</span>
+              <span class="course-card-toggle-helper">Show the full course title under the course code.</span>
+            </span>
+            <input id="show-course-name-toggle" type="checkbox" name="showCourseName" role="switch">
+            <span class="course-card-switch" aria-hidden="true"></span>
+          </label>
+
+          <label class="course-card-toggle" for="show-course-credits-toggle">
+            <span>
+              <span class="course-card-toggle-title">Credits</span>
+              <span class="course-card-toggle-helper">Show the credit count on each course card.</span>
+            </span>
+            <input id="show-course-credits-toggle" type="checkbox" name="showCourseCredits" role="switch">
+            <span class="course-card-switch" aria-hidden="true"></span>
+          </label>
+
+          <label class="course-card-toggle" for="show-course-gpa-toggle">
+            <span>
+              <span class="course-card-toggle-title">GPA</span>
+              <span class="course-card-toggle-helper">Show the GPA line on each course card.</span>
+            </span>
+            <input id="show-course-gpa-toggle" type="checkbox" name="showCourseGpa" role="switch">
+            <span class="course-card-switch" aria-hidden="true"></span>
+          </label>
+        </div>
+      </section>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </main>
+    <script src="course-card.js"></script>
+  </body>
+</html>

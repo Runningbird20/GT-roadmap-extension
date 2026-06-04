@@ -194,6 +194,30 @@ h1 {
   font-weight: 800;
 }
 
+.course-card-preview {
+  display: grid;
+  gap: 6px;
+  min-width: 54px;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid rgba(0, 48, 87, 0.12);
+  border-radius: 12px;
+  background: var(--panel-solid);
+}
+
+.course-card-preview span {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--gt-navy);
+  opacity: 0.86;
+}
+
+.course-card-preview span:last-child {
+  width: 68%;
+  background: var(--gt-gold);
+}
+
 .swatch {
   width: 18px;
   height: 18px;

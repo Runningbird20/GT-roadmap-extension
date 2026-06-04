@@ -29,7 +29,7 @@ The `prereq-roadmap copy/` folder is reference source only. Do not edit files in
 - Draft settings uses HeroUI generated slots. Keep modal/input/select rules scoped enough to avoid repainting the whole app.
 - Font customization is separate from color theming. It uses `fonts.html`, `fonts.js`, `selectedFont`, and `gt-roadmap-font-enabled`.
 - Bundled font files live in `extension/assets/fonts/` and are exposed through `web_accessible_resources`; do not add remote runtime font downloads.
-- Course card detail controls use `showCourseName`, `showCourseCredits`, and `showCourseGpa`; the content script annotates card sub-elements before CSS hides and reshapes them.
+- Course card detail controls live in `course-card.html` / `course-card.js` and use `showCourseName`, `showCourseCredits`, and `showCourseGpa`; the content script annotates card sub-elements before CSS hides and reshapes them.
 
 ## Custom Theme
 
@@ -79,6 +79,8 @@ For extension-only JavaScript changes, run:
 node --check extension/content.js
 node --check extension/popup.js
 node --check extension/themes.js
+node --check extension/fonts.js
+node --check extension/course-card.js
 node -e "JSON.parse(require('fs').readFileSync('extension/manifest.json','utf8')); console.log('manifest ok')"
 ```
 

@@ -2,28 +2,18 @@
   "use strict";
 
   const DEFAULT_SETTINGS = {
-    selectedTheme: "gt-classic",
-    selectedFont: "default",
-    themeEnabled: true,
     showCourseName: true,
     showCourseCredits: true,
-    showCourseGpa: true,
-    emphasizePrereqs: false
+    showCourseGpa: true
   };
 
-  const TOGGLE_KEYS = [
-    "emphasizePrereqs"
-  ];
+  const TOGGLE_KEYS = ["showCourseName", "showCourseCredits", "showCourseGpa"];
 
-  const form = document.getElementById("settings-form");
-  const chooseThemeButton = document.getElementById("choose-theme-button");
-  const chooseCourseCardButton = document.getElementById("choose-course-card-button");
-  const chooseFontButton = document.getElementById("choose-font-button");
-  const resetButton = document.getElementById("reset-button");
+  const backButton = document.getElementById("back-button");
   const status = document.getElementById("status");
 
   function setStatus(message) {
-    if (status) status.textContent = message;
+    status.textContent = message;
   }
 
   function getStorage(defaults) {
@@ -56,8 +46,9 @@
 
   function render(settings) {
     TOGGLE_KEYS.forEach((key) => {
-      if (form.elements[key]) {
-        form.elements[key].checked = Boolean(settings[key]);
+      const input = document.querySelector(`input[name="${key}"]`);
+      if (input instanceof HTMLInputElement) {
+        input.checked = Boolean(settings[key]);
       }
     });
   }
@@ -67,37 +58,21 @@
     await notifyActiveTab();
   }
 
-  async function resetSettings() {
-    await setStorage({ ...DEFAULT_SETTINGS });
-    render(DEFAULT_SETTINGS);
-    await notifyActiveTab();
-  }
-
   async function init() {
     const settings = await getStorage(DEFAULT_SETTINGS);
     render(settings);
 
-    chooseThemeButton.addEventListener("click", () => {
-      window.location.href = "themes.html";
+    backButton.addEventListener("click", () => {
+      window.location.href = "popup.html";
     });
 
-    chooseCourseCardButton.addEventListener("click", () => {
-      window.location.href = "course-card.html";
-    });
-
-    chooseFontButton.addEventListener("click", () => {
-      window.location.href = "fonts.html";
-    });
-
-    form.addEventListener("change", (event) => {
+    document.addEventListener("change", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLInputElement)) return;
       if (!TOGGLE_KEYS.includes(target.name)) return;
 
       saveToggle(target.name, target.checked);
     });
-
-    resetButton.addEventListener("click", resetSettings);
   }
 
   init();

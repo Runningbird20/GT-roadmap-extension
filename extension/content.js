@@ -11,7 +11,6 @@
     showCourseName: true,
     showCourseCredits: true,
     showCourseGpa: true,
-    dimCompleted: false,
     emphasizePrereqs: false,
     customThemeColors: {
       page: "#0f2118",
@@ -87,7 +86,6 @@
     hideCourseName: "gt-roadmap-hide-course-name",
     hideCourseCredits: "gt-roadmap-hide-course-credits",
     hideCourseGpa: "gt-roadmap-hide-course-gpa",
-    dimCompleted: "gt-roadmap-dim-completed",
     emphasizePrereqs: "gt-roadmap-emphasize-prereqs"
   };
 
@@ -97,14 +95,12 @@
     BODY_CLASSES.hideCourseName,
     BODY_CLASSES.hideCourseCredits,
     BODY_CLASSES.hideCourseGpa,
-    BODY_CLASSES.dimCompleted,
     BODY_CLASSES.emphasizePrereqs,
     "gt-roadmap-customizer-enabled",
     ...THEME_CLASSES
   ];
 
   const TOOLBAR_TOGGLES = [
-    { key: "dimCompleted", label: "Done", title: "Toggle completed course dimming" },
     { key: "emphasizePrereqs", label: "Prereqs", title: "Toggle prerequisite warning emphasis" }
   ];
 
@@ -303,7 +299,6 @@
       showCourseName: DEFAULT_SETTINGS.showCourseName,
       showCourseCredits: DEFAULT_SETTINGS.showCourseCredits,
       showCourseGpa: DEFAULT_SETTINGS.showCourseGpa,
-      dimCompleted: DEFAULT_SETTINGS.dimCompleted,
       emphasizePrereqs: DEFAULT_SETTINGS.emphasizePrereqs,
       customThemeColors: DEFAULT_SETTINGS.customThemeColors,
       [LEGACY_SETTINGS_KEY]: null
@@ -323,10 +318,6 @@
         typeof stored.showCourseCredits === "boolean" ? stored.showCourseCredits : DEFAULT_SETTINGS.showCourseCredits,
       showCourseGpa:
         typeof stored.showCourseGpa === "boolean" ? stored.showCourseGpa : DEFAULT_SETTINGS.showCourseGpa,
-      dimCompleted:
-        typeof stored.dimCompleted === "boolean"
-          ? stored.dimCompleted
-          : Boolean(legacy.dimCompleted ?? DEFAULT_SETTINGS.dimCompleted),
       emphasizePrereqs:
         typeof stored.emphasizePrereqs === "boolean"
           ? stored.emphasizePrereqs
@@ -373,7 +364,6 @@
       element.classList.toggle(BODY_CLASSES.hideCourseName, !settings.showCourseName);
       element.classList.toggle(BODY_CLASSES.hideCourseCredits, !settings.showCourseCredits);
       element.classList.toggle(BODY_CLASSES.hideCourseGpa, !settings.showCourseGpa);
-      element.classList.toggle(BODY_CLASSES.dimCompleted, Boolean(settings.dimCompleted));
       element.classList.toggle(BODY_CLASSES.emphasizePrereqs, Boolean(settings.emphasizePrereqs));
     });
 
@@ -794,7 +784,6 @@
         "showCourseName",
         "showCourseCredits",
         "showCourseGpa",
-        "dimCompleted",
         "emphasizePrereqs",
         "customThemeColors",
         LEGACY_SETTINGS_KEY

@@ -1168,16 +1168,6 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
   margin-left: auto !important;
 }
 
-/* Completed dimming ------------------------------------------------------ */
-body.gt-roadmap-dim-completed :is([data-completed="true"], [data-status="completed"], [aria-label*="completed" i], [data-gt-roadmap-completed="true"], [data-gt-roadmap-course-card="true"]:has(.text-satisfied), [class*="completed" i], [class*="complete" i]) {
-  opacity: 0.62 !important;
-  filter: grayscale(0.28) saturate(0.86);
-}
-
-body.gt-roadmap-dim-completed :is([data-completed="true"], [data-status="completed"], [aria-label*="completed" i], [data-gt-roadmap-completed="true"], [data-gt-roadmap-course-card="true"]:has(.text-satisfied), [class*="completed" i], [class*="complete" i]):is(:hover, :focus-within) {
-  opacity: 0.82 !important;
-}
-
 /* Prerequisite warning emphasis ----------------------------------------- */
 body.gt-roadmap-emphasize-prereqs :is([data-testid="prereq-warning"], [data-gt-roadmap-prereq-warning="true"]:not([data-gt-roadmap-course-card="true"]), [role="alert"][aria-label*="prereq" i], [role="alert"][aria-label*="coreq" i]) {
   position: relative;

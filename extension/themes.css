@@ -141,7 +141,6 @@ h1 {
 
 p,
 .enable-helper,
-.theme-description,
 .status {
   color: var(--muted);
   font-size: 12px;
@@ -216,22 +215,20 @@ p,
 
 .theme-grid {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
 .theme-card {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 12px;
-  align-items: center;
-  min-height: 64px;
-  padding: 11px 12px;
+  display: block;
+  min-height: 0;
+  padding: 7px;
   border: 1px solid transparent;
-  border-radius: 17px;
+  border-radius: 15px;
   background: var(--panel);
   color: var(--text);
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   box-shadow: 0 8px 22px rgba(0, 31, 63, 0.08);
   transition:
     transform 160ms ease,
@@ -316,6 +313,106 @@ p,
 .font-grid {
   display: grid;
   gap: 8px;
+}
+
+.course-card-settings {
+  display: grid;
+  gap: 8px;
+}
+
+.course-card-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 62px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel-solid) 74%, transparent);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.course-card-toggle:hover {
+  border-color: rgba(179, 163, 105, 0.42);
+  background: var(--panel-solid);
+}
+
+.course-card-toggle:active {
+  transform: scale(0.99);
+}
+
+.course-card-toggle:focus-within {
+  border-color: var(--gt-gold);
+  box-shadow: 0 0 0 4px var(--focus);
+}
+
+.course-card-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.course-card-toggle-title,
+.course-card-toggle-helper {
+  display: block;
+}
+
+.course-card-toggle-title {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.course-card-toggle-helper {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.course-card-switch {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  background: #c7ced7;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.16);
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.course-card-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 31, 63, 0.22);
+  transition: transform 180ms ease;
+}
+
+.course-card-toggle input:checked + .course-card-switch {
+  background: linear-gradient(135deg, var(--gt-navy), #064f86);
+  box-shadow: inset 0 0 0 1px rgba(179, 163, 105, 0.24), 0 0 0 3px rgba(179, 163, 105, 0.16);
+}
+
+.course-card-toggle input:checked + .course-card-switch::after {
+  transform: translateX(18px);
 }
 
 .font-option {
@@ -459,8 +556,8 @@ p,
 
 .theme-preview {
   display: block;
-  width: 58px;
-  height: 42px;
+  width: 100%;
+  height: 74px;
   padding: 5px;
   border: 1px solid color-mix(in srgb, var(--preview-text) 18%, transparent);
   border-radius: 13px;
@@ -531,16 +628,6 @@ p,
   height: 5px;
   border-radius: 999px;
   background: var(--preview-accent);
-}
-
-.theme-copy {
-  display: grid;
-  gap: 2px;
-}
-
-.theme-name {
-  color: var(--text);
-  font-weight: 800;
 }
 
 .status {

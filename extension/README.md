@@ -35,7 +35,6 @@ To debug:
 
 - **Custom theme**: Enables the GT navy/gold color treatment, softer shadows, rounded course cards, semester styling, and drag/drop feedback.
 - **Course card details**: Shows or hides course names, credits, and GPA while reshaping cards to remove empty detail rows.
-- **Dim completed courses**: Lowers visual emphasis for elements marked completed through stable attributes such as `data-completed`, `data-status`, or accessible labels.
 - **Emphasize prerequisite warnings**: Highlights prerequisite or corequisite warnings using stable selectors and conservative text-based fallback annotations.
 
 ## Stable selector notes

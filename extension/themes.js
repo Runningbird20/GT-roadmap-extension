@@ -373,19 +373,9 @@
       previewPanel.append(previewHeader, previewCurrent, previewCard, previewAccent);
       preview.append(previewPanel);
 
-      const copy = document.createElement("span");
-      copy.className = "theme-copy";
-
-      const name = document.createElement("span");
-      name.className = "theme-name";
-      name.textContent = theme.name;
-
-      const description = document.createElement("span");
-      description.className = "theme-description";
-      description.textContent = theme.description;
-
-      copy.append(name, description);
-      button.append(preview, copy);
+      button.title = theme.name;
+      button.setAttribute("aria-label", theme.name);
+      button.append(preview);
 
       button.addEventListener("click", async () => {
         selectedTheme = theme.id;
