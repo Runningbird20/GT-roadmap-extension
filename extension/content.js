@@ -6,8 +6,11 @@
 
   const DEFAULT_SETTINGS = {
     selectedTheme: "gt-classic",
+    selectedFont: "default",
     themeEnabled: true,
-    compactMode: false,
+    showCourseName: true,
+    showCourseCredits: true,
+    showCourseGpa: true,
     dimCompleted: false,
     emphasizePrereqs: false,
     customThemeColors: {
@@ -34,16 +37,66 @@
     "gt-theme-custom"
   ];
 
+  const FONT_STACKS = {
+    default: "",
+    "jetbrains-mono": '"GT JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font", "JetBrainsMono NF", "JetBrains Mono", monospace',
+    "fira-code": '"GT FiraCode Nerd Font", "FiraCode Nerd Font", "FiraCode NF", "Fira Code", monospace',
+    hack: '"GT Hack Nerd Font", "Hack Nerd Font", "Hack NF", Hack, monospace',
+    meslo: '"GT MesloLGS Nerd Font", "MesloLGS NF", "MesloLGSDZ Nerd Font", Menlo, monospace',
+    caskaydia: '"GT CaskaydiaCove Nerd Font", "CaskaydiaCove Nerd Font", "CaskaydiaCove NF", Consolas, monospace',
+    iosevka: '"GT Iosevka Nerd Font", "Iosevka Nerd Font", "Iosevka NF", Iosevka, monospace',
+    mononoki: '"GT Mononoki Nerd Font", "Mononoki Nerd Font", "Mononoki NF", Mononoki, monospace'
+  };
+
+  const FONT_FACE_STYLE_ID = "gt-roadmap-bundled-font-faces";
+
+  const FONT_FACE_DEFINITIONS = [
+    {
+      family: "GT JetBrainsMono Nerd Font",
+      file: "assets/fonts/JetBrainsMonoNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT FiraCode Nerd Font",
+      file: "assets/fonts/FiraCodeNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT Hack Nerd Font",
+      file: "assets/fonts/HackNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT MesloLGS Nerd Font",
+      file: "assets/fonts/MesloLGSNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT CaskaydiaCove Nerd Font",
+      file: "assets/fonts/CaskaydiaCoveNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT Iosevka Nerd Font",
+      file: "assets/fonts/IosevkaNerdFontMono-Regular.ttf"
+    },
+    {
+      family: "GT Mononoki Nerd Font",
+      file: "assets/fonts/MononokiNerdFontMono-Regular.ttf"
+    }
+  ];
+
   const BODY_CLASSES = {
     themeEnabled: "gt-theme-enabled",
-    compactMode: "gt-roadmap-compact-mode",
+    fontEnabled: "gt-roadmap-font-enabled",
+    hideCourseName: "gt-roadmap-hide-course-name",
+    hideCourseCredits: "gt-roadmap-hide-course-credits",
+    hideCourseGpa: "gt-roadmap-hide-course-gpa",
     dimCompleted: "gt-roadmap-dim-completed",
     emphasizePrereqs: "gt-roadmap-emphasize-prereqs"
   };
 
   const ALL_CONTROL_CLASSES = [
     BODY_CLASSES.themeEnabled,
-    BODY_CLASSES.compactMode,
+    BODY_CLASSES.fontEnabled,
+    BODY_CLASSES.hideCourseName,
+    BODY_CLASSES.hideCourseCredits,
+    BODY_CLASSES.hideCourseGpa,
     BODY_CLASSES.dimCompleted,
     BODY_CLASSES.emphasizePrereqs,
     "gt-roadmap-customizer-enabled",
@@ -51,7 +104,6 @@
   ];
 
   const TOOLBAR_TOGGLES = [
-    { key: "compactMode", label: "Compact", title: "Toggle compact roadmap spacing" },
     { key: "dimCompleted", label: "Done", title: "Toggle completed course dimming" },
     { key: "emphasizePrereqs", label: "Prereqs", title: "Toggle prerequisite warning emphasis" }
   ];
@@ -68,6 +120,18 @@
 
   function normalizeThemeName(themeName) {
     return THEME_CLASSES.includes(`gt-theme-${themeName}`) ? themeName : DEFAULT_SETTINGS.selectedTheme;
+  }
+
+  function normalizeFontId(fontId) {
+    return Object.prototype.hasOwnProperty.call(FONT_STACKS, fontId) ? fontId : DEFAULT_SETTINGS.selectedFont;
+  }
+
+  function getExtensionUrl(path) {
+    if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.getURL) {
+      return chrome.runtime.getURL(path);
+    }
+
+    return path;
   }
 
   function normalizeHex(value, fallback) {
@@ -146,6 +210,34 @@
     ].forEach((name) => element.style.removeProperty(name));
   }
 
+  function ensureBundledFontFaces() {
+    if (!document.documentElement || document.getElementById(FONT_FACE_STYLE_ID)) return;
+
+    const style = document.createElement("style");
+    style.id = FONT_FACE_STYLE_ID;
+    style.textContent = FONT_FACE_DEFINITIONS.map(
+      (font) => `
+@font-face {
+  font-family: "${font.family}";
+  src: url("${getExtensionUrl(font.file)}") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}`
+    ).join("\n");
+
+    (document.head || document.documentElement).appendChild(style);
+  }
+
+  function applyFontVariable(element, selectedFont) {
+    const fontStack = FONT_STACKS[normalizeFontId(selectedFont)];
+    if (fontStack) {
+      element.style.setProperty("--gtc-font-family", fontStack);
+    } else {
+      element.style.removeProperty("--gtc-font-family");
+    }
+  }
+
   function applyCustomThemeVariables(element, colors) {
     const textSoft = `color-mix(in srgb, ${colors.muted} 78%, ${colors.page})`;
     const hover = `color-mix(in srgb, ${colors.card} 84%, ${colors.accent})`;
@@ -206,8 +298,11 @@
   async function readSettings() {
     const stored = await getStorage({
       selectedTheme: DEFAULT_SETTINGS.selectedTheme,
+      selectedFont: DEFAULT_SETTINGS.selectedFont,
       themeEnabled: DEFAULT_SETTINGS.themeEnabled,
-      compactMode: DEFAULT_SETTINGS.compactMode,
+      showCourseName: DEFAULT_SETTINGS.showCourseName,
+      showCourseCredits: DEFAULT_SETTINGS.showCourseCredits,
+      showCourseGpa: DEFAULT_SETTINGS.showCourseGpa,
       dimCompleted: DEFAULT_SETTINGS.dimCompleted,
       emphasizePrereqs: DEFAULT_SETTINGS.emphasizePrereqs,
       customThemeColors: DEFAULT_SETTINGS.customThemeColors,
@@ -217,14 +312,17 @@
     const legacy = stored[LEGACY_SETTINGS_KEY] || {};
     return {
       selectedTheme: normalizeThemeName(stored.selectedTheme || DEFAULT_SETTINGS.selectedTheme),
+      selectedFont: normalizeFontId(stored.selectedFont),
       themeEnabled:
         typeof stored.themeEnabled === "boolean"
           ? stored.themeEnabled
           : Boolean(legacy.theme ?? DEFAULT_SETTINGS.themeEnabled),
-      compactMode:
-        typeof stored.compactMode === "boolean"
-          ? stored.compactMode
-          : Boolean(legacy.compact ?? DEFAULT_SETTINGS.compactMode),
+      showCourseName:
+        typeof stored.showCourseName === "boolean" ? stored.showCourseName : DEFAULT_SETTINGS.showCourseName,
+      showCourseCredits:
+        typeof stored.showCourseCredits === "boolean" ? stored.showCourseCredits : DEFAULT_SETTINGS.showCourseCredits,
+      showCourseGpa:
+        typeof stored.showCourseGpa === "boolean" ? stored.showCourseGpa : DEFAULT_SETTINGS.showCourseGpa,
       dimCompleted:
         typeof stored.dimCompleted === "boolean"
           ? stored.dimCompleted
@@ -254,9 +352,13 @@
   function applySettings() {
     if (!document.documentElement || !document.body) return;
 
+    ensureBundledFontFaces();
+
     [document.documentElement, document.body].forEach((element) => {
       element.classList.remove(...ALL_CONTROL_CLASSES);
       element.classList.toggle(BODY_CLASSES.themeEnabled, Boolean(settings.themeEnabled));
+      element.classList.toggle(BODY_CLASSES.fontEnabled, normalizeFontId(settings.selectedFont) !== "default");
+      applyFontVariable(element, settings.selectedFont);
 
       if (settings.themeEnabled) {
         element.classList.add(`gt-theme-${normalizeThemeName(settings.selectedTheme)}`);
@@ -268,7 +370,9 @@
         clearCustomThemeVariables(element);
       }
 
-      element.classList.toggle(BODY_CLASSES.compactMode, Boolean(settings.compactMode));
+      element.classList.toggle(BODY_CLASSES.hideCourseName, !settings.showCourseName);
+      element.classList.toggle(BODY_CLASSES.hideCourseCredits, !settings.showCourseCredits);
+      element.classList.toggle(BODY_CLASSES.hideCourseGpa, !settings.showCourseGpa);
       element.classList.toggle(BODY_CLASSES.dimCompleted, Boolean(settings.dimCompleted));
       element.classList.toggle(BODY_CLASSES.emphasizePrereqs, Boolean(settings.emphasizePrereqs));
     });
@@ -331,10 +435,119 @@
         "[data-testid='course-card']",
         "[data-course-id]",
         "[data-gt-roadmap-course-card='true']",
+        "[class*='bg-background-elevated'][class*='rounded-lg'][class*='border']",
+        "[class*='bg-background-elevated-dark'][class*='rounded-lg'][class*='border']",
         ".bg-background-elevated.border",
         ".dark\\:bg-background-elevated-dark.border"
       ].join(", ")
     );
+  }
+
+  function clearCourseCardDetailAnnotations(card) {
+    [
+      "data-gt-roadmap-course-detail-row",
+      "data-gt-roadmap-course-name-row"
+    ].forEach((attribute) => card.removeAttribute(attribute));
+
+    card
+      .querySelectorAll(
+        [
+          "[data-gt-roadmap-course-gpa]",
+          "[data-gt-roadmap-course-credits]",
+          "[data-gt-roadmap-course-name]",
+          "[data-gt-roadmap-course-status]",
+          "[data-gt-roadmap-course-detail-row]",
+          "[data-gt-roadmap-course-name-row]"
+        ].join(", ")
+      )
+      .forEach((element) => {
+        element.removeAttribute("data-gt-roadmap-course-gpa");
+        element.removeAttribute("data-gt-roadmap-course-credits");
+        element.removeAttribute("data-gt-roadmap-course-name");
+        element.removeAttribute("data-gt-roadmap-course-status");
+        element.removeAttribute("data-gt-roadmap-course-detail-row");
+        element.removeAttribute("data-gt-roadmap-course-name-row");
+      });
+  }
+
+  function annotateCourseCardDetails(card) {
+    clearCourseCardDetailAnnotations(card);
+
+    const directRows = Array.from(card.children).filter((child) => child instanceof HTMLElement);
+    const detailRow = directRows[1];
+    const nameRow = directRows[2];
+
+    if (detailRow) {
+      detailRow.setAttribute("data-gt-roadmap-course-detail-row", "true");
+    }
+
+    if (nameRow) {
+      nameRow.setAttribute("data-gt-roadmap-course-name-row", "true");
+      const statusChip = Array.from(
+        nameRow.querySelectorAll(".text-satisfied, .text-ready, .text-locked, .text-ap")
+      )[0];
+      const statusWrapper = statusChip ? statusChip.parentElement : null;
+
+      if (statusWrapper) {
+        statusWrapper.setAttribute("data-gt-roadmap-course-status", "true");
+      }
+
+      const courseName = Array.from(nameRow.querySelectorAll("span")).find((span) => {
+        const text = (span.textContent || "").trim();
+        if (span.closest("[data-gt-roadmap-course-status='true']")) return false;
+        return text && !/^(ready|locked|satisfied|completed|ap|in progress)$/i.test(text);
+      });
+
+      if (courseName) {
+        courseName.setAttribute("data-gt-roadmap-course-name", "true");
+      }
+    }
+
+    Array.from(card.querySelectorAll("span, div")).forEach((element) => {
+      if (element.children.length > 0) return;
+
+      const text = (element.textContent || "").replace(/\s+/g, " ").trim();
+      if (/^GPA:\s*/i.test(text)) {
+        element.setAttribute("data-gt-roadmap-course-gpa", "true");
+      }
+
+      if (/^\d+(?:\.\d+)?\s+credits?$/i.test(text)) {
+        element.setAttribute("data-gt-roadmap-course-credits", "true");
+      }
+    });
+  }
+
+  function promoteCourseCardsFromDescendants() {
+    document
+      .querySelectorAll(
+        [
+          "[data-course-menu]",
+          ".text-satisfied",
+          ".text-ready",
+          ".text-locked",
+          ".text-ap",
+          ".text-text-tertiary",
+          ".dark\\:text-text-tertiary-dark"
+        ].join(", ")
+      )
+      .forEach((element) => {
+        const card = closestCourseCard(element);
+        if (card) {
+          card.setAttribute("data-gt-roadmap-course-card", "true");
+        }
+      });
+
+    document.querySelectorAll("span, div").forEach((element) => {
+      if (element.children.length > 0) return;
+
+      const text = (element.textContent || "").replace(/\s+/g, " ").trim();
+      if (!/^GPA:\s*/i.test(text) && !/^\d+(?:\.\d+)?\s+credits?$/i.test(text)) return;
+
+      const card = closestCourseCard(element);
+      if (card) {
+        card.setAttribute("data-gt-roadmap-course-card", "true");
+      }
+    });
   }
 
   function annotateCourseCards() {
@@ -343,6 +556,8 @@
         "[data-testid='course-card']",
         "[data-course-id]",
         "[class*='course'][class*='card']",
+        "[class*='bg-background-elevated'][class*='rounded-lg'][class*='border']:has([data-course-menu])",
+        "[class*='bg-background-elevated'][class*='rounded-lg'][class*='border']:has(.text-ready, .text-locked, .text-satisfied, .text-ap)",
         ".bg-background-elevated.border:has([data-course-menu])",
         ".dark\\:bg-background-elevated-dark.border:has([data-course-menu])",
         ".bg-background-elevated.border:has(.text-ready, .text-locked, .text-satisfied, .text-ap)",
@@ -350,6 +565,8 @@
       ].join(", "),
       "data-gt-roadmap-course-card"
     );
+
+    promoteCourseCardsFromDescendants();
 
     annotateAll(
       [
@@ -378,6 +595,10 @@
         card.setAttribute("data-gt-roadmap-completed", "true");
       }
     });
+
+    document
+      .querySelectorAll("[data-gt-roadmap-course-card='true']")
+      .forEach((card) => annotateCourseCardDetails(card));
   }
 
   function annotateStableTargets() {
@@ -512,7 +733,13 @@
 
       console.info("[GT Roadmap Customizer]", {
         selectedTheme: settings.selectedTheme,
+        selectedFont: settings.selectedFont,
         themeEnabled: settings.themeEnabled,
+        courseCardDetails: {
+          name: settings.showCourseName,
+          credits: settings.showCourseCredits,
+          gpa: settings.showCourseGpa
+        },
         htmlClasses: Array.from(document.documentElement.classList),
         bodyClasses: Array.from(document.body.classList),
         found
@@ -562,8 +789,11 @@
       if (areaName !== "sync") return;
       const watchedKeys = [
         "selectedTheme",
+        "selectedFont",
         "themeEnabled",
-        "compactMode",
+        "showCourseName",
+        "showCourseCredits",
+        "showCourseGpa",
         "dimCompleted",
         "emphasizePrereqs",
         "customThemeColors",

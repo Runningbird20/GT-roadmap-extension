@@ -3,14 +3,26 @@
 
   const DEFAULT_SETTINGS = {
     selectedTheme: "gt-classic",
+    selectedFont: "default",
     themeEnabled: true,
-    compactMode: false,
+    showCourseName: true,
+    showCourseCredits: true,
+    showCourseGpa: true,
     dimCompleted: false,
     emphasizePrereqs: false
   };
 
+  const TOGGLE_KEYS = [
+    "showCourseName",
+    "showCourseCredits",
+    "showCourseGpa",
+    "dimCompleted",
+    "emphasizePrereqs"
+  ];
+
   const form = document.getElementById("settings-form");
   const chooseThemeButton = document.getElementById("choose-theme-button");
+  const chooseFontButton = document.getElementById("choose-font-button");
   const resetButton = document.getElementById("reset-button");
   const status = document.getElementById("status");
 
@@ -47,7 +59,7 @@
   }
 
   function render(settings) {
-    ["compactMode", "dimCompleted", "emphasizePrereqs"].forEach((key) => {
+    TOGGLE_KEYS.forEach((key) => {
       if (form.elements[key]) {
         form.elements[key].checked = Boolean(settings[key]);
       }
@@ -73,10 +85,14 @@
       window.location.href = "themes.html";
     });
 
+    chooseFontButton.addEventListener("click", () => {
+      window.location.href = "fonts.html";
+    });
+
     form.addEventListener("change", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLInputElement)) return;
-      if (!["compactMode", "dimCompleted", "emphasizePrereqs"].includes(target.name)) return;
+      if (!TOGGLE_KEYS.includes(target.name)) return;
 
       saveToggle(target.name, target.checked);
     });

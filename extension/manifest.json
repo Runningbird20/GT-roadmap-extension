@@ -24,5 +24,15 @@
       "js": ["content.js"],
       "run_at": "document_idle"
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/fonts/*.ttf"],
+      "matches": [
+        "https://degree-roadmap.gatech.edu/*",
+        "https://dev-gt-degree-roadmap.vercel.app/*",
+        "http://localhost:*/*"
+      ]
+    }
   ]
 }

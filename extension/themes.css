@@ -12,6 +12,62 @@
   --focus: rgba(179, 163, 105, 0.42);
 }
 
+@font-face {
+  font-family: "GT JetBrainsMono Nerd Font";
+  src: url("assets/fonts/JetBrainsMonoNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT FiraCode Nerd Font";
+  src: url("assets/fonts/FiraCodeNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT Hack Nerd Font";
+  src: url("assets/fonts/HackNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT MesloLGS Nerd Font";
+  src: url("assets/fonts/MesloLGSNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT CaskaydiaCove Nerd Font";
+  src: url("assets/fonts/CaskaydiaCoveNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT Iosevka Nerd Font";
+  src: url("assets/fonts/IosevkaNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT Mononoki Nerd Font";
+  src: url("assets/fonts/MononokiNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -44,7 +100,8 @@ input[type="color"] {
 
 .theme-header,
 .enable-card,
-.custom-theme-card {
+.custom-theme-card,
+.font-card {
   border: 1px solid var(--border);
   border-radius: 22px;
   background: var(--panel);
@@ -212,19 +269,27 @@ p,
   padding: 12px;
 }
 
+.font-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
 .custom-theme-card.is-active {
   border-color: var(--gt-gold);
   background: var(--panel-solid);
 }
 
-.custom-theme-header {
+.custom-theme-header,
+.font-card-header {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 10px;
   align-items: center;
 }
 
-.custom-theme-header h2 {
+.custom-theme-header h2,
+.font-card-header h2 {
   margin: 0;
   color: var(--text);
   font-size: 14px;
@@ -246,6 +311,66 @@ p,
 .custom-color-grid {
   display: grid;
   gap: 8px;
+}
+
+.font-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.font-option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--panel-solid) 74%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.font-option:hover {
+  border-color: rgba(179, 163, 105, 0.42);
+  background: var(--panel-solid);
+}
+
+.font-option:active {
+  transform: scale(0.99);
+}
+
+.font-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus);
+}
+
+.font-option[aria-pressed="true"] {
+  border-color: var(--gt-gold);
+  background: var(--panel-solid);
+  box-shadow: 0 0 0 2px rgba(179, 163, 105, 0.2);
+}
+
+.font-option-name {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.font-option-sample {
+  color: var(--muted);
+  font-family: var(--font-preview-family);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .custom-mode-control {

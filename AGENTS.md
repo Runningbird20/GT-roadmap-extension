@@ -27,6 +27,9 @@ The `prereq-roadmap copy/` folder is reference source only. Do not edit files in
 - The zoom control is intentionally themed as its own component and should not depend on the app's light/dark mode classes.
 - The search bar is intentionally transparent when themed.
 - Draft settings uses HeroUI generated slots. Keep modal/input/select rules scoped enough to avoid repainting the whole app.
+- Font customization is separate from color theming. It uses `fonts.html`, `fonts.js`, `selectedFont`, and `gt-roadmap-font-enabled`.
+- Bundled font files live in `extension/assets/fonts/` and are exposed through `web_accessible_resources`; do not add remote runtime font downloads.
+- Course card detail controls use `showCourseName`, `showCourseCredits`, and `showCourseGpa`; the content script annotates card sub-elements before CSS hides and reshapes them.
 
 ## Custom Theme
 
@@ -50,6 +53,23 @@ The editable custom keys are:
 - `warning`
 
 The content script derives the full `--gtc-*` variable set from those values when `selectedTheme` is `custom`.
+
+## Font Options
+
+The selected font is stored in `chrome.storage.sync` as `selectedFont`.
+
+Supported values are:
+
+- `default`
+- `jetbrains-mono`
+- `fira-code`
+- `hack`
+- `meslo`
+- `caskaydia`
+- `iosevka`
+- `mononoki`
+
+The content script maps those values to bundled Nerd Font family stacks and sets `--gtc-font-family` on `html` and `body`. The CSS override lives behind `gt-roadmap-font-enabled`.
 
 ## Verification
 

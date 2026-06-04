@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose Font</title>
+    <link rel="stylesheet" href="themes.css">
+  </head>
+  <body>
+    <main class="theme-shell" aria-labelledby="font-title">
+      <header class="theme-header">
+        <button class="back-button" id="back-button" type="button" aria-label="Back to popup">Back</button>
+        <div>
+          <h1 id="font-title">Choose Font</h1>
+          <p>Set the typeface for Degree Roadmap.</p>
+        </div>
+      </header>
+
+      <section class="font-card" aria-labelledby="font-heading">
+        <div class="font-card-header">
+          <div>
+            <h2 id="font-heading">Nerd Fonts</h2>
+            <p>These fonts are bundled with the extension.</p>
+          </div>
+        </div>
+        <div class="font-grid" id="font-grid" aria-label="Available font options"></div>
+      </section>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </main>
+    <script src="fonts.js"></script>
+  </body>
+</html>
