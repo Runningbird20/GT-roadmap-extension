@@ -82,6 +82,7 @@
   --gtc-current-shadow: 0 0 0 1px rgba(179, 163, 105, 0.3);
   --gtc-warning: #dc3545;
   --gtc-warning-bg: rgba(220, 53, 69, 0.08);
+  --gtc-radius: 8px;
 }
 
 /* Optional font override -------------------------------------------------- */
@@ -93,6 +94,64 @@ body.gt-roadmap-font-enabled {
 body.gt-roadmap-font-enabled
   *:not(svg):not(path):not(rect):not(circle):not(line):not(polyline):not(polygon):not(ellipse) {
   font-family: var(--gtc-font-family) !important;
+}
+
+/* Optional roundness override -------------------------------------------- */
+:is(html, body) {
+  --gtc-radius-sm: max(0px, calc(var(--gtc-radius, 8px) - 4px));
+  --gtc-radius-lg: calc(var(--gtc-radius, 8px) + 6px);
+  --gtc-radius-xl: calc(var(--gtc-radius, 8px) + 12px);
+}
+
+body :is(
+  [data-testid="course-card"],
+  [data-course-id],
+  [data-gt-roadmap-course-card="true"],
+  [data-testid="drop-zone"],
+  [data-tour="search-bar"],
+  [data-gt-roadmap-search="true"],
+  [data-tour="toolbar"],
+  [data-tour="course-panel"],
+  [data-tour="control-panel"],
+  [data-slot="input-wrapper"],
+  [data-slot="trigger"],
+  [role="dialog"],
+  dialog,
+  .modal-content,
+  [role="listbox"],
+  [data-slot="popover"],
+  [data-slot="content"],
+  input,
+  select,
+  textarea
+) {
+  border-radius: var(--gtc-radius) !important;
+}
+
+body :is(
+  button:not(.theme-card-button):not(.back-button):not(.reset-button),
+  [role="button"],
+  [data-gt-roadmap-zoom-control="true"],
+  [data-gt-roadmap-semester-action="true"],
+  [class*="chip" i],
+  [class*="badge" i],
+  [class*="pill" i]
+) {
+  border-radius: var(--gtc-radius-sm) !important;
+}
+
+body :is(
+  [data-testid="semester-column"],
+  [data-semester],
+  [data-gt-roadmap-scroll-surface="true"],
+  [data-tour="semester-columns"] .scrollbar-themed,
+  #gt-roadmap-customizer-toolbar
+) {
+  border-radius: var(--gtc-radius-lg) !important;
+}
+
+body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
+  border-radius: var(--gtc-radius-xl) !important;
 }
 
 /* Theme-specific palettes ------------------------------------------------ */
@@ -1152,6 +1211,55 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
   [data-gt-roadmap-course-card="true"] {
   min-height: 54px !important;
   padding: 8px 10px !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-code-row="true"] {
+  transform: translateY(clamp(0px, calc(var(--gtc-radius, 8px) * 0.28), 7px)) !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-detail-row="true"],
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-name-row="true"] {
+  display: none !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"]) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-code-row="true"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex: 1 1 auto !important;
+  min-height: auto !important;
+  transform: none !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-code-row="true"] > :first-child {
+  align-items: center !important;
+}
+
+body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-menu="true"] {
+  align-self: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits

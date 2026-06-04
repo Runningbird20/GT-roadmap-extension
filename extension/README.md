@@ -34,6 +34,7 @@ To debug:
 ## Toggles
 
 - **Custom theme**: Enables the GT navy/gold color treatment, softer shadows, rounded course cards, semester styling, and drag/drop feedback.
+- **Rounded corners**: Adjusts the roundness level for roadmap cards, panels, controls, and modals.
 - **Course card details**: Shows or hides course names, credits, and GPA while reshaping cards to remove empty detail rows.
 - **Emphasize prerequisite warnings**: Highlights prerequisite or corequisite warnings using stable selectors and conservative text-based fallback annotations.
 

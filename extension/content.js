@@ -11,6 +11,7 @@
     showCourseName: true,
     showCourseCredits: true,
     showCourseGpa: true,
+    cornerRadius: 8,
     emphasizePrereqs: false,
     customThemeColors: {
       page: "#0f2118",
@@ -120,6 +121,12 @@
 
   function normalizeFontId(fontId) {
     return Object.prototype.hasOwnProperty.call(FONT_STACKS, fontId) ? fontId : DEFAULT_SETTINGS.selectedFont;
+  }
+
+  function normalizeCornerRadius(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return DEFAULT_SETTINGS.cornerRadius;
+    return Math.max(0, Math.min(24, Math.round(number)));
   }
 
   function getExtensionUrl(path) {
@@ -234,6 +241,10 @@
     }
   }
 
+  function applyCornerRadiusVariable(element, cornerRadius) {
+    element.style.setProperty("--gtc-radius", `${normalizeCornerRadius(cornerRadius)}px`);
+  }
+
   function applyCustomThemeVariables(element, colors) {
     const textSoft = `color-mix(in srgb, ${colors.muted} 78%, ${colors.page})`;
     const hover = `color-mix(in srgb, ${colors.card} 84%, ${colors.accent})`;
@@ -299,6 +310,7 @@
       showCourseName: DEFAULT_SETTINGS.showCourseName,
       showCourseCredits: DEFAULT_SETTINGS.showCourseCredits,
       showCourseGpa: DEFAULT_SETTINGS.showCourseGpa,
+      cornerRadius: DEFAULT_SETTINGS.cornerRadius,
       emphasizePrereqs: DEFAULT_SETTINGS.emphasizePrereqs,
       customThemeColors: DEFAULT_SETTINGS.customThemeColors,
       [LEGACY_SETTINGS_KEY]: null
@@ -318,6 +330,7 @@
         typeof stored.showCourseCredits === "boolean" ? stored.showCourseCredits : DEFAULT_SETTINGS.showCourseCredits,
       showCourseGpa:
         typeof stored.showCourseGpa === "boolean" ? stored.showCourseGpa : DEFAULT_SETTINGS.showCourseGpa,
+      cornerRadius: normalizeCornerRadius(stored.cornerRadius),
       emphasizePrereqs:
         typeof stored.emphasizePrereqs === "boolean"
           ? stored.emphasizePrereqs
@@ -350,6 +363,7 @@
       element.classList.toggle(BODY_CLASSES.themeEnabled, Boolean(settings.themeEnabled));
       element.classList.toggle(BODY_CLASSES.fontEnabled, normalizeFontId(settings.selectedFont) !== "default");
       applyFontVariable(element, settings.selectedFont);
+      applyCornerRadiusVariable(element, settings.cornerRadius);
 
       if (settings.themeEnabled) {
         element.classList.add(`gt-theme-${normalizeThemeName(settings.selectedTheme)}`);
@@ -436,7 +450,9 @@
   function clearCourseCardDetailAnnotations(card) {
     [
       "data-gt-roadmap-course-detail-row",
-      "data-gt-roadmap-course-name-row"
+      "data-gt-roadmap-course-code-row",
+      "data-gt-roadmap-course-name-row",
+      "data-gt-roadmap-has-course-status"
     ].forEach((attribute) => card.removeAttribute(attribute));
 
     card
@@ -446,6 +462,8 @@
           "[data-gt-roadmap-course-credits]",
           "[data-gt-roadmap-course-name]",
           "[data-gt-roadmap-course-status]",
+          "[data-gt-roadmap-course-menu]",
+          "[data-gt-roadmap-course-code-row]",
           "[data-gt-roadmap-course-detail-row]",
           "[data-gt-roadmap-course-name-row]"
         ].join(", ")
@@ -455,6 +473,8 @@
         element.removeAttribute("data-gt-roadmap-course-credits");
         element.removeAttribute("data-gt-roadmap-course-name");
         element.removeAttribute("data-gt-roadmap-course-status");
+        element.removeAttribute("data-gt-roadmap-course-menu");
+        element.removeAttribute("data-gt-roadmap-course-code-row");
         element.removeAttribute("data-gt-roadmap-course-detail-row");
         element.removeAttribute("data-gt-roadmap-course-name-row");
       });
@@ -464,8 +484,17 @@
     clearCourseCardDetailAnnotations(card);
 
     const directRows = Array.from(card.children).filter((child) => child instanceof HTMLElement);
+    const codeRow = directRows[0];
     const detailRow = directRows[1];
     const nameRow = directRows[2];
+
+    if (codeRow) {
+      codeRow.setAttribute("data-gt-roadmap-course-code-row", "true");
+      const menu = codeRow.querySelector("[data-course-menu], button[aria-haspopup='menu'], button[aria-label*='menu' i]");
+      if (menu) {
+        menu.setAttribute("data-gt-roadmap-course-menu", "true");
+      }
+    }
 
     if (detailRow) {
       detailRow.setAttribute("data-gt-roadmap-course-detail-row", "true");
@@ -480,6 +509,7 @@
 
       if (statusWrapper) {
         statusWrapper.setAttribute("data-gt-roadmap-course-status", "true");
+        card.setAttribute("data-gt-roadmap-has-course-status", "true");
       }
 
       const courseName = Array.from(nameRow.querySelectorAll("span")).find((span) => {
@@ -730,6 +760,7 @@
           credits: settings.showCourseCredits,
           gpa: settings.showCourseGpa
         },
+        cornerRadius: settings.cornerRadius,
         htmlClasses: Array.from(document.documentElement.classList),
         bodyClasses: Array.from(document.body.classList),
         found
@@ -784,6 +815,7 @@
         "showCourseName",
         "showCourseCredits",
         "showCourseGpa",
+        "cornerRadius",
         "emphasizePrereqs",
         "customThemeColors",
         LEGACY_SETTINGS_KEY

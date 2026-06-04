@@ -30,6 +30,7 @@ The `prereq-roadmap copy/` folder is reference source only. Do not edit files in
 - Font customization is separate from color theming. It uses `fonts.html`, `fonts.js`, `selectedFont`, and `gt-roadmap-font-enabled`.
 - Bundled font files live in `extension/assets/fonts/` and are exposed through `web_accessible_resources`; do not add remote runtime font downloads.
 - Course card detail controls live in `course-card.html` / `course-card.js` and use `showCourseName`, `showCourseCredits`, and `showCourseGpa`; the content script annotates card sub-elements before CSS hides and reshapes them.
+- Rounded corner customization uses `cornerRadius` and the `--gtc-radius` CSS variable. Keep radius rules targeted to controls/cards/panels rather than broad universal selectors.
 
 ## Custom Theme
 
