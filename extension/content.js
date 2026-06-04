@@ -9,7 +9,18 @@
     themeEnabled: true,
     compactMode: false,
     dimCompleted: false,
-    emphasizePrereqs: false
+    emphasizePrereqs: false,
+    customThemeColors: {
+      page: "#0f2118",
+      panel: "#1d3527",
+      card: "#254331",
+      input: "#203b2c",
+      text: "#edf8f0",
+      muted: "#bdd1c3",
+      accent: "#6fd294",
+      border: "#5fbf83",
+      warning: "#ffbf7a"
+    }
   };
 
   const THEME_CLASSES = [
@@ -19,7 +30,8 @@
     "gt-theme-true-black",
     "gt-theme-forest-green",
     "gt-theme-ocean-blue",
-    "gt-theme-sunset-orange"
+    "gt-theme-sunset-orange",
+    "gt-theme-custom"
   ];
 
   const BODY_CLASSES = {
@@ -58,6 +70,115 @@
     return THEME_CLASSES.includes(`gt-theme-${themeName}`) ? themeName : DEFAULT_SETTINGS.selectedTheme;
   }
 
+  function normalizeHex(value, fallback) {
+    const text = String(value || "").trim();
+    const full = /^#?([0-9a-f]{6})$/i.exec(text);
+    if (full) return `#${full[1].toLowerCase()}`;
+
+    const short = /^#?([0-9a-f]{3})$/i.exec(text);
+    if (short) {
+      return `#${short[1]
+        .split("")
+        .map((character) => character + character)
+        .join("")
+        .toLowerCase()}`;
+    }
+
+    return fallback;
+  }
+
+  function normalizeCustomColors(colors) {
+    return Object.fromEntries(
+      Object.entries(DEFAULT_SETTINGS.customThemeColors).map(([key, fallback]) => [
+        key,
+        normalizeHex(colors && colors[key], fallback)
+      ])
+    );
+  }
+
+  function hexToRgb(hex) {
+    const normalized = normalizeHex(hex, "#000000").slice(1);
+    return {
+      r: parseInt(normalized.slice(0, 2), 16),
+      g: parseInt(normalized.slice(2, 4), 16),
+      b: parseInt(normalized.slice(4, 6), 16)
+    };
+  }
+
+  function getReadableTextColor(backgroundHex) {
+    const { r, g, b } = hexToRgb(backgroundHex);
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance > 0.58 ? "#000000" : "#ffffff";
+  }
+
+  function setThemeVariable(element, name, value) {
+    element.style.setProperty(name, value);
+  }
+
+  function clearCustomThemeVariables(element) {
+    [
+      "--gtc-page-bg",
+      "--gtc-header-bg",
+      "--gtc-sidebar-bg",
+      "--gtc-main-bg",
+      "--gtc-panel-bg",
+      "--gtc-panel-bg-elevated",
+      "--gtc-card-bg",
+      "--gtc-card-hover-bg",
+      "--gtc-input-bg",
+      "--gtc-menu-bg",
+      "--gtc-border",
+      "--gtc-border-strong",
+      "--gtc-text",
+      "--gtc-text-muted",
+      "--gtc-text-soft",
+      "--gtc-focus-ring",
+      "--gtc-hover-bg",
+      "--gtc-selected-bg",
+      "--gtc-selected-text",
+      "--gtc-current-bg",
+      "--gtc-current-text",
+      "--gtc-current-border",
+      "--gtc-current-ring",
+      "--gtc-current-shadow",
+      "--gtc-warning",
+      "--gtc-warning-bg"
+    ].forEach((name) => element.style.removeProperty(name));
+  }
+
+  function applyCustomThemeVariables(element, colors) {
+    const textSoft = `color-mix(in srgb, ${colors.muted} 78%, ${colors.page})`;
+    const hover = `color-mix(in srgb, ${colors.card} 84%, ${colors.accent})`;
+    const accentText = getReadableTextColor(colors.accent);
+
+    setThemeVariable(element, "--gtc-page-bg", colors.page);
+    setThemeVariable(element, "--gtc-header-bg", colors.panel);
+    setThemeVariable(element, "--gtc-sidebar-bg", colors.panel);
+    setThemeVariable(element, "--gtc-main-bg", colors.page);
+    setThemeVariable(element, "--gtc-panel-bg", colors.panel);
+    setThemeVariable(element, "--gtc-panel-bg-elevated", `color-mix(in srgb, ${colors.panel} 86%, ${colors.card})`);
+    setThemeVariable(element, "--gtc-card-bg", colors.card);
+    setThemeVariable(element, "--gtc-card-hover-bg", hover);
+    setThemeVariable(element, "--gtc-input-bg", colors.input);
+    setThemeVariable(element, "--gtc-menu-bg", colors.card);
+    setThemeVariable(element, "--gtc-border", colors.border);
+    setThemeVariable(element, "--gtc-border-strong", colors.accent);
+    setThemeVariable(element, "--gtc-text", colors.text);
+    setThemeVariable(element, "--gtc-text-muted", colors.muted);
+    setThemeVariable(element, "--gtc-text-soft", textSoft);
+    setThemeVariable(element, "--gtc-focus-ring", `color-mix(in srgb, ${colors.accent} 36%, transparent)`);
+    setThemeVariable(element, "--gtc-hover-bg", hover);
+    setThemeVariable(element, "--gtc-selected-bg", colors.accent);
+    setThemeVariable(element, "--gtc-selected-text", accentText);
+    setThemeVariable(element, "--gtc-current-bg", colors.accent);
+    setThemeVariable(element, "--gtc-current-text", accentText);
+    setThemeVariable(element, "--gtc-current-border", colors.border);
+    setThemeVariable(element, "--gtc-current-ring", `color-mix(in srgb, ${colors.accent} 32%, transparent)`);
+    setThemeVariable(element, "--gtc-current-shadow", `0 0 0 1px color-mix(in srgb, ${colors.accent} 44%, transparent)`);
+    setThemeVariable(element, "--gtc-warning", colors.warning);
+    setThemeVariable(element, "--gtc-warning-bg", `color-mix(in srgb, ${colors.warning} 16%, transparent)`);
+  }
+
   function getStorage(keys) {
     return new Promise((resolve) => {
       if (!hasChromeStorage) {
@@ -89,6 +210,7 @@
       compactMode: DEFAULT_SETTINGS.compactMode,
       dimCompleted: DEFAULT_SETTINGS.dimCompleted,
       emphasizePrereqs: DEFAULT_SETTINGS.emphasizePrereqs,
+      customThemeColors: DEFAULT_SETTINGS.customThemeColors,
       [LEGACY_SETTINGS_KEY]: null
     });
 
@@ -110,7 +232,8 @@
       emphasizePrereqs:
         typeof stored.emphasizePrereqs === "boolean"
           ? stored.emphasizePrereqs
-          : Boolean(legacy.emphasizePrereqs ?? DEFAULT_SETTINGS.emphasizePrereqs)
+          : Boolean(legacy.emphasizePrereqs ?? DEFAULT_SETTINGS.emphasizePrereqs),
+      customThemeColors: normalizeCustomColors(stored.customThemeColors)
     };
   }
 
@@ -137,6 +260,12 @@
 
       if (settings.themeEnabled) {
         element.classList.add(`gt-theme-${normalizeThemeName(settings.selectedTheme)}`);
+      }
+
+      if (settings.themeEnabled && normalizeThemeName(settings.selectedTheme) === "custom") {
+        applyCustomThemeVariables(element, settings.customThemeColors);
+      } else {
+        clearCustomThemeVariables(element);
       }
 
       element.classList.toggle(BODY_CLASSES.compactMode, Boolean(settings.compactMode));
@@ -189,6 +318,68 @@
     });
   }
 
+  function annotateAll(selector, attribute, value = "true") {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.setAttribute(attribute, value);
+    });
+  }
+
+  function closestCourseCard(element) {
+    if (!(element instanceof Element)) return null;
+    return element.closest(
+      [
+        "[data-testid='course-card']",
+        "[data-course-id]",
+        "[data-gt-roadmap-course-card='true']",
+        ".bg-background-elevated.border",
+        ".dark\\:bg-background-elevated-dark.border"
+      ].join(", ")
+    );
+  }
+
+  function annotateCourseCards() {
+    annotateAll(
+      [
+        "[data-testid='course-card']",
+        "[data-course-id]",
+        "[class*='course'][class*='card']",
+        ".bg-background-elevated.border:has([data-course-menu])",
+        ".dark\\:bg-background-elevated-dark.border:has([data-course-menu])",
+        ".bg-background-elevated.border:has(.text-ready, .text-locked, .text-satisfied, .text-ap)",
+        ".dark\\:bg-background-elevated-dark.border:has(.text-ready, .text-locked, .text-satisfied, .text-ap)"
+      ].join(", "),
+      "data-gt-roadmap-course-card"
+    );
+
+    annotateAll(
+      [
+        "[data-gt-roadmap-course-card='true'].border-error",
+        "[data-gt-roadmap-course-card='true']:has(.text-locked)",
+        ".bg-background-elevated.border-error",
+        ".dark\\:bg-background-elevated-dark.border-error"
+      ].join(", "),
+      "data-gt-roadmap-prereq-warning"
+    );
+
+    annotateAll(
+      [
+        "[data-gt-roadmap-course-card='true'].border-selected",
+        "[data-gt-roadmap-course-card='true'].shadow-highlight",
+        ".bg-background-elevated.border-selected",
+        ".dark\\:bg-background-elevated-dark.border-selected"
+      ].join(", "),
+      "data-gt-roadmap-selected-course"
+    );
+
+    document.querySelectorAll(".text-satisfied").forEach((element) => {
+      const text = (element.textContent || "").trim().toLowerCase();
+      const card = closestCourseCard(element);
+      if (card && /^(satisfied|completed)$/.test(text)) {
+        card.setAttribute("data-gt-roadmap-completed", "true");
+      }
+    });
+  }
+
   function annotateStableTargets() {
     if (!document.body) return;
 
@@ -196,41 +387,49 @@
     // Prefer source-owned hooks such as data-testid, data-course-id, ARIA labels,
     // roles, and semantic attributes. Text scanning is deliberately conservative
     // and only annotates leaf-like nodes so it does not fight React layout.
-    document
-      .querySelectorAll(
-        '[data-testid="prereq-warning"], [aria-label*="prereq" i], [aria-label*="coreq" i], [role="alert"]'
-      )
-      .forEach((element) => {
-        element.setAttribute("data-gt-roadmap-prereq-warning", "true");
-      });
+    annotateAll(
+      [
+        '[data-testid="prereq-warning"]',
+        '[aria-label*="prereq" i]',
+        '[aria-label*="coreq" i]',
+        '[aria-label*="conflict" i]',
+        '[role="alert"]',
+        ".border-error",
+        ".text-locked",
+        ".text-status-error"
+      ].join(", "),
+      "data-gt-roadmap-prereq-warning"
+    );
 
-    document
-      .querySelectorAll('[data-completed="true"], [data-status="completed"], [aria-label*="completed" i]')
-      .forEach((element) => {
-        element.setAttribute("data-gt-roadmap-completed", "true");
-      });
+    annotateAll(
+      [
+        '[data-completed="true"]',
+        '[data-status="completed"]',
+        '[aria-label*="completed" i]',
+        '[aria-label*="satisfied" i]',
+        ".text-satisfied"
+      ].join(", "),
+      "data-gt-roadmap-completed"
+    );
 
-    document.querySelectorAll('[data-tour="course-panel"]').forEach((element) => {
-      element.setAttribute("data-gt-roadmap-course-panel", "true");
-    });
-
-    document.querySelectorAll('[data-tour="toolbar"], #roadmap-toolbar').forEach((element) => {
-      element.setAttribute("data-gt-roadmap-toolbar", "true");
-    });
-
-    document.querySelectorAll('[data-tour="semester-columns"]').forEach((element) => {
-      element.setAttribute("data-gt-roadmap-workspace", "true");
-    });
-
-    document.querySelectorAll('[data-semester]').forEach((element) => {
-      element.setAttribute("data-gt-roadmap-semester", "true");
-    });
+    annotateAll('[data-tour="course-panel"]', "data-gt-roadmap-course-panel");
+    annotateAll('[data-tour="toolbar"], #roadmap-toolbar', "data-gt-roadmap-toolbar");
+    annotateAll('[data-tour="semester-columns"]', "data-gt-roadmap-workspace");
+    annotateAll('[data-tour="control-panel"]', "data-gt-roadmap-control-panel");
+    annotateAll('[data-tour="search-bar"]', "data-gt-roadmap-search");
+    annotateAll('[data-tour="course-filters"]', "data-gt-roadmap-course-filters");
+    annotateAll('[data-semester]', "data-gt-roadmap-semester");
+    annotateAll('[aria-label*="notes" i], textarea[placeholder*="notes" i]', "data-gt-roadmap-notes");
+    annotateAll('[aria-label^="Add "][aria-label*=" semester bin"], [aria-label^="Remove "][aria-label*=" semester bin"]', "data-gt-roadmap-semester-action");
+    annotateAll('[aria-label*="Zoom " i]', "data-gt-roadmap-zoom-control");
 
     annotateCurrentSemester();
+    annotateCourseCards();
 
-    document.querySelectorAll('[data-semester] .scrollbar-themed, [data-tour="semester-columns"] .scrollbar-themed').forEach((element) => {
-      element.setAttribute("data-gt-roadmap-scroll-surface", "true");
-    });
+    annotateAll(
+      '[data-semester] .scrollbar-themed, [data-tour="semester-columns"] .scrollbar-themed',
+      "data-gt-roadmap-scroll-surface"
+    );
 
     const warningTextPattern = /\b(prereq|prerequisite|coreq|co-requisite|missing requirement)\b/i;
     document.querySelectorAll("p, li, div, span").forEach((element) => {
@@ -367,6 +566,7 @@
         "compactMode",
         "dimCompleted",
         "emphasizePrereqs",
+        "customThemeColors",
         LEGACY_SETTINGS_KEY
       ];
 

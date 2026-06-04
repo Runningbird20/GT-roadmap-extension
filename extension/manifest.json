@@ -6,6 +6,7 @@
   "permissions": ["storage"],
   "host_permissions": [
     "https://degree-roadmap.gatech.edu/*",
+    "https://dev-gt-degree-roadmap.vercel.app/*",
     "http://localhost:*/*"
   ],
   "action": {
@@ -16,6 +17,7 @@
     {
       "matches": [
         "https://degree-roadmap.gatech.edu/*",
+        "https://dev-gt-degree-roadmap.vercel.app/*",
         "http://localhost:*/*"
       ],
       "css": ["styles.css"],
