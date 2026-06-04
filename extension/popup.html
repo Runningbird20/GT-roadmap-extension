@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Roadmap Customizer</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup-shell" aria-labelledby="popup-title">
+      <header class="popup-header">
+        <div class="brand-mark" aria-hidden="true">GT</div>
+        <div>
+          <h1 id="popup-title">Roadmap Customizer</h1>
+          <p>Personalize your Degree Roadmap</p>
+        </div>
+      </header>
+
+      <form class="settings-panel" id="settings-form">
+        <section class="settings-section" aria-labelledby="appearance-heading">
+          <h2 id="appearance-heading">Appearance</h2>
+
+          <button class="theme-card-button" id="choose-theme-button" type="button">
+            <span class="theme-card-copy">
+              <span class="toggle-title">Choose Theme</span>
+              <span class="toggle-helper">Pick a color palette and enable or disable site theming.</span>
+            </span>
+            <span class="theme-card-swatches" aria-hidden="true">
+              <span class="swatch navy"></span>
+              <span class="swatch gold"></span>
+              <span class="swatch rose"></span>
+            </span>
+          </button>
+
+          <label class="toggle-row" for="compact-toggle">
+            <span class="toggle-copy">
+              <span class="toggle-title">Compact mode</span>
+              <span class="toggle-helper">Tighten spacing so more semesters and courses fit on screen.</span>
+            </span>
+            <input id="compact-toggle" type="checkbox" name="compactMode" role="switch">
+            <span class="switch" aria-hidden="true"></span>
+          </label>
+        </section>
+
+        <section class="settings-section" aria-labelledby="course-display-heading">
+          <h2 id="course-display-heading">Course Display</h2>
+
+          <label class="toggle-row" for="dim-completed-toggle">
+            <span class="toggle-copy">
+              <span class="toggle-title">Dim completed courses</span>
+              <span class="toggle-helper">Reduce emphasis on completed work while keeping it readable.</span>
+            </span>
+            <input id="dim-completed-toggle" type="checkbox" name="dimCompleted" role="switch">
+            <span class="switch" aria-hidden="true"></span>
+          </label>
+
+          <label class="toggle-row" for="emphasize-prereqs-toggle">
+            <span class="toggle-copy">
+              <span class="toggle-title">Prerequisite warnings</span>
+              <span class="toggle-helper">Make prerequisite and corequisite warnings easier to spot.</span>
+            </span>
+            <input id="emphasize-prereqs-toggle" type="checkbox" name="emphasizePrereqs" role="switch">
+            <span class="switch" aria-hidden="true"></span>
+          </label>
+        </section>
+
+        <section class="settings-section utilities-section" aria-labelledby="utilities-heading">
+          <h2 id="utilities-heading">Utilities</h2>
+          <button type="button" class="reset-button" id="reset-button">Reset defaults</button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </section>
+      </form>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

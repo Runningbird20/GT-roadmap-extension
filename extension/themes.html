@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose Theme</title>
+    <link rel="stylesheet" href="themes.css">
+  </head>
+  <body>
+    <main class="theme-shell" aria-labelledby="theme-title">
+      <header class="theme-header">
+        <button class="back-button" id="back-button" type="button" aria-label="Back to popup">Back</button>
+        <div>
+          <h1 id="theme-title">Choose Theme</h1>
+          <p>Set the color palette for Degree Roadmap.</p>
+        </div>
+      </header>
+
+      <section class="enable-card" aria-labelledby="theme-enable-heading">
+        <label class="enable-row" for="theme-enabled-toggle">
+          <span>
+            <span id="theme-enable-heading" class="enable-title">Enable themes</span>
+            <span class="enable-helper">Turn all custom colors on or off without changing your selected palette.</span>
+          </span>
+          <input id="theme-enabled-toggle" type="checkbox" role="switch">
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <section class="theme-grid" id="theme-grid" aria-label="Available themes"></section>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </main>
+    <script src="themes.js"></script>
+  </body>
+</html>

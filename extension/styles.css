@@ -1,0 +1,906 @@
+/* Theme variables --------------------------------------------------------- */
+:is(html, body).gt-theme-enabled {
+  --gtc-page-bg: #f4f6f9;
+  --gtc-header-bg: #ffffff;
+  --gtc-sidebar-bg: #eef2f6;
+  --gtc-main-bg: #f4f6f9;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #f7f9fc;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: rgba(0, 48, 87, 0.18);
+  --gtc-border-strong: rgba(0, 48, 87, 0.34);
+  --gtc-text: #17202a;
+  --gtc-text-muted: #5f6f7f;
+  --gtc-text-soft: #7c8794;
+  --gtc-shadow: 0 12px 30px rgba(0, 31, 63, 0.12);
+  --gtc-focus-ring: rgba(179, 163, 105, 0.26);
+  --gtc-hover-bg: #eef2f6;
+  --gtc-selected-bg: #b3a369;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #003057;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(179, 163, 105, 0.72);
+  --gtc-current-ring: rgba(179, 163, 105, 0.28);
+  --gtc-current-shadow: 0 0 0 3px rgba(179, 163, 105, 0.18), 0 10px 24px rgba(0, 31, 63, 0.16);
+  --gtc-warning: #a94200;
+  --gtc-warning-bg: #fff4df;
+  --gtc-radius: 10px;
+}
+
+/* Theme-specific palettes ------------------------------------------------ */
+:is(html, body).gt-theme-enabled.gt-theme-pink {
+  --gtc-page-bg: #fff1f7;
+  --gtc-header-bg: #fff8fb;
+  --gtc-sidebar-bg: #ffe5f0;
+  --gtc-main-bg: #fff1f7;
+  --gtc-panel-bg: #fff9fc;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #fff1f7;
+  --gtc-input-bg: #fff7fb;
+  --gtc-menu-bg: #fff9fc;
+  --gtc-border: rgba(188, 72, 122, 0.24);
+  --gtc-border-strong: rgba(188, 72, 122, 0.44);
+  --gtc-text: #321620;
+  --gtc-text-muted: #7d5363;
+  --gtc-text-soft: #9b7482;
+  --gtc-shadow: 0 12px 30px rgba(188, 72, 122, 0.12);
+  --gtc-focus-ring: rgba(213, 79, 139, 0.22);
+  --gtc-hover-bg: #ffeaf2;
+  --gtc-selected-bg: #d54f8b;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #c93678;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(255, 185, 215, 0.82);
+  --gtc-current-ring: rgba(213, 79, 139, 0.24);
+  --gtc-current-shadow: 0 0 0 3px rgba(213, 79, 139, 0.16), 0 10px 24px rgba(188, 72, 122, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-purple {
+  --gtc-page-bg: #171126;
+  --gtc-header-bg: #271a46;
+  --gtc-sidebar-bg: #24183f;
+  --gtc-main-bg: #171126;
+  --gtc-panel-bg: #211638;
+  --gtc-panel-bg-elevated: #2a1d46;
+  --gtc-card-bg: #342454;
+  --gtc-card-hover-bg: #3f2b66;
+  --gtc-input-bg: #281b45;
+  --gtc-menu-bg: #24183f;
+  --gtc-border: rgba(190, 160, 255, 0.22);
+  --gtc-border-strong: rgba(190, 160, 255, 0.42);
+  --gtc-text: #f5efff;
+  --gtc-text-muted: #c9b8e8;
+  --gtc-text-soft: #a995d1;
+  --gtc-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --gtc-focus-ring: rgba(167, 121, 255, 0.3);
+  --gtc-hover-bg: #2b1d49;
+  --gtc-selected-bg: #a779ff;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #a779ff;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(220, 205, 255, 0.86);
+  --gtc-current-ring: rgba(167, 121, 255, 0.32);
+  --gtc-current-shadow: 0 0 0 3px rgba(167, 121, 255, 0.2), 0 14px 32px rgba(0, 0, 0, 0.32);
+  --gtc-warning: #ffd08a;
+  --gtc-warning-bg: rgba(255, 208, 138, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-true-black {
+  --gtc-page-bg: #000000;
+  --gtc-header-bg: #0c0c0c;
+  --gtc-sidebar-bg: #080808;
+  --gtc-main-bg: #000000;
+  --gtc-panel-bg: #101010;
+  --gtc-panel-bg-elevated: #151515;
+  --gtc-card-bg: #171717;
+  --gtc-card-hover-bg: #222222;
+  --gtc-input-bg: #151515;
+  --gtc-menu-bg: #101010;
+  --gtc-border: rgba(255, 255, 255, 0.18);
+  --gtc-border-strong: rgba(255, 255, 255, 0.34);
+  --gtc-text: #f5f5f5;
+  --gtc-text-muted: #b7b7b7;
+  --gtc-text-soft: #969696;
+  --gtc-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --gtc-focus-ring: rgba(255, 255, 255, 0.22);
+  --gtc-hover-bg: #222222;
+  --gtc-selected-bg: #333333;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #f5f5f5;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(255, 255, 255, 0.72);
+  --gtc-current-ring: rgba(255, 255, 255, 0.22);
+  --gtc-current-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14), 0 14px 32px rgba(0, 0, 0, 0.44);
+  --gtc-warning: #ffbf7a;
+  --gtc-warning-bg: rgba(255, 191, 122, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-forest-green {
+  --gtc-page-bg: #0f2118;
+  --gtc-header-bg: #173322;
+  --gtc-sidebar-bg: #142a1d;
+  --gtc-main-bg: #0f2118;
+  --gtc-panel-bg: #1d3527;
+  --gtc-panel-bg-elevated: #223d2d;
+  --gtc-card-bg: #254331;
+  --gtc-card-hover-bg: #2f563f;
+  --gtc-input-bg: #203b2c;
+  --gtc-menu-bg: #173322;
+  --gtc-border: rgba(164, 222, 185, 0.22);
+  --gtc-border-strong: rgba(164, 222, 185, 0.42);
+  --gtc-text: #edf8f0;
+  --gtc-text-muted: #bdd1c3;
+  --gtc-text-soft: #9db4a5;
+  --gtc-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  --gtc-focus-ring: rgba(95, 191, 131, 0.28);
+  --gtc-hover-bg: #254331;
+  --gtc-selected-bg: #5fbf83;
+  --gtc-selected-text: #082012;
+  --gtc-current-bg: #6fd294;
+  --gtc-current-text: #082012;
+  --gtc-current-border: rgba(190, 245, 210, 0.78);
+  --gtc-current-ring: rgba(95, 191, 131, 0.28);
+  --gtc-current-shadow: 0 0 0 3px rgba(95, 191, 131, 0.16), 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-ocean-blue {
+  --gtc-page-bg: #0c2032;
+  --gtc-header-bg: #102d44;
+  --gtc-sidebar-bg: #102b40;
+  --gtc-main-bg: #0c2032;
+  --gtc-panel-bg: #173a56;
+  --gtc-panel-bg-elevated: #1b4260;
+  --gtc-card-bg: #1f4968;
+  --gtc-card-hover-bg: #285b7f;
+  --gtc-input-bg: #183d5a;
+  --gtc-menu-bg: #102d44;
+  --gtc-border: rgba(130, 213, 245, 0.24);
+  --gtc-border-strong: rgba(130, 213, 245, 0.44);
+  --gtc-text: #edf8ff;
+  --gtc-text-muted: #bad2e5;
+  --gtc-text-soft: #93b7d0;
+  --gtc-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  --gtc-focus-ring: rgba(69, 199, 240, 0.28);
+  --gtc-hover-bg: #1f4968;
+  --gtc-selected-bg: #45c7f0;
+  --gtc-selected-text: #062234;
+  --gtc-current-bg: #60d5ff;
+  --gtc-current-text: #062234;
+  --gtc-current-border: rgba(178, 235, 255, 0.78);
+  --gtc-current-ring: rgba(69, 199, 240, 0.28);
+  --gtc-current-shadow: 0 0 0 3px rgba(69, 199, 240, 0.16), 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-sunset-orange {
+  --gtc-page-bg: #fff6eb;
+  --gtc-header-bg: #fffaf3;
+  --gtc-sidebar-bg: #ffe7d0;
+  --gtc-main-bg: #fff6eb;
+  --gtc-panel-bg: #fffaf3;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #fff0df;
+  --gtc-input-bg: #fff8f0;
+  --gtc-menu-bg: #fffaf3;
+  --gtc-border: rgba(217, 96, 38, 0.24);
+  --gtc-border-strong: rgba(217, 96, 38, 0.44);
+  --gtc-text: #352012;
+  --gtc-text-muted: #815d45;
+  --gtc-text-soft: #9c765c;
+  --gtc-shadow: 0 12px 30px rgba(201, 79, 26, 0.12);
+  --gtc-focus-ring: rgba(217, 96, 38, 0.24);
+  --gtc-hover-bg: #ffe7d0;
+  --gtc-selected-bg: #d96026;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #d96026;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(255, 185, 125, 0.78);
+  --gtc-current-ring: rgba(217, 96, 38, 0.24);
+  --gtc-current-shadow: 0 0 0 3px rgba(217, 96, 38, 0.16), 0 10px 24px rgba(201, 79, 26, 0.14);
+}
+
+/* Source selector map -----------------------------------------------------
+   Reference-only source inspected:
+   - app/page.tsx: app shell is a fixed-height flex column containing NavBar and DragAndDropManager.
+   - components/NavBar.tsx: top header is a fixed div using bg-background-secondary and border-accent-primary.
+   - components/DragAndDropManager.tsx: sidebar wrapper is [data-tour="course-panel"], secondary toolbar is
+     [data-tour="toolbar"]/#roadmap-toolbar, main roadmap wrapper is [data-tour="semester-columns"], zoom control
+     is an absolute bottom control with bg-background-secondary/80.
+   - components/roadmap/Roadmap.tsx: scroll-mode roadmap canvas is .scrollbar-themed.p-4.rounded-lg.shadow
+     with inline roadmapBackgroundSurfaceStyle; semester roots use [data-semester]. The current semester
+     title uses bg-accent-primary text-white font-semibold, and timeline markers use
+     border-accent-primary bg-accent-primary shadow-highlight.
+   - components/DragAndDropBin.tsx: semester drop zones use bg-background-secondary, min-h-[400px], scrollbar-themed.
+   - components/roadmap/coursecard/CourseCard.tsx: course cards use bg-background-elevated, border-border-primary,
+     text-text-secondary/tertiary, and status subcomponents.
+   - components/roadmap/coursepanel/*: search uses [data-tour="search-bar"], course panel is bg-background-secondary.
+*/
+
+/* App design-token overrides -------------------------------------------- */
+:is(html, body).gt-theme-enabled {
+  --background: var(--gtc-main-bg);
+  --foreground: var(--gtc-text);
+  --card: var(--gtc-card-bg);
+  --card-foreground: var(--gtc-text);
+  --popover: var(--gtc-menu-bg);
+  --popover-foreground: var(--gtc-text);
+  --secondary: var(--gtc-panel-bg);
+  --secondary-foreground: var(--gtc-text);
+  --muted: var(--gtc-panel-bg);
+  --muted-foreground: var(--gtc-text-muted);
+  --accent: var(--gtc-card-hover-bg);
+  --accent-foreground: var(--gtc-text);
+  --border: var(--gtc-border);
+  --input: var(--gtc-input-bg);
+  --ring: var(--gtc-focus-ring);
+  --theme-bg-primary: var(--gtc-main-bg);
+  --theme-bg-secondary: var(--gtc-sidebar-bg);
+  --theme-bg-elevated: var(--gtc-card-bg);
+  --theme-bg-panel: var(--gtc-panel-bg-elevated);
+  --theme-surface-interactive: var(--gtc-input-bg);
+  --theme-surface-hover: var(--gtc-card-hover-bg);
+  --theme-surface-elevated: var(--gtc-card-bg);
+  --theme-accent-primary: var(--gtc-current-bg);
+  --theme-accent-hover: color-mix(in srgb, var(--gtc-current-bg) 82%, var(--gtc-card-hover-bg));
+  --theme-accent-border: var(--gtc-current-border);
+  --theme-accent-light: color-mix(in srgb, var(--gtc-current-bg) 40%, var(--gtc-text));
+  --theme-accent-muted: color-mix(in srgb, var(--gtc-current-bg) 55%, var(--gtc-panel-bg));
+  --theme-text-primary: var(--gtc-text);
+  --theme-text-secondary: var(--gtc-text-muted);
+  --theme-text-tertiary: var(--gtc-text-soft);
+  --theme-text-muted: var(--gtc-text-soft);
+  --theme-text-gold: var(--gtc-text);
+  --theme-border-primary: var(--gtc-border);
+  --theme-border-secondary: var(--gtc-border-strong);
+  --color-bg-primary: var(--gtc-main-bg);
+  --color-bg-secondary: var(--gtc-panel-bg);
+  --color-bg-tertiary: var(--gtc-card-bg);
+  --color-bg-panel: var(--gtc-panel-bg);
+  --color-bg-input: var(--gtc-input-bg);
+  --color-bg-input-hover: var(--gtc-card-hover-bg);
+  --color-bg-interactive-hover: var(--gtc-card-hover-bg);
+  --color-border-light: var(--gtc-border);
+  --color-border-medium: var(--gtc-border-strong);
+  --color-border-hover: var(--gtc-border-strong);
+  --color-text-primary: var(--gtc-text);
+  --color-text-secondary: var(--gtc-text-muted);
+  --color-text-muted: var(--gtc-text-soft);
+  --color-selected: var(--gtc-selected-bg);
+  --color-highlight: color-mix(in srgb, var(--gtc-selected-bg) 30%, transparent);
+}
+
+/* Full-page surface theming ---------------------------------------------- */
+html.gt-theme-enabled,
+body.gt-theme-enabled {
+  background: var(--gtc-page-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is(#root, #app, [id="root"], [id="app"], .app, [data-testid="app"]) {
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+/* Tailwind token class overrides observed in copied source. */
+body.gt-theme-enabled :is(.bg-background-primary, .dark\:bg-background-primary-dark) {
+  background-color: var(--gtc-main-bg) !important;
+}
+
+body.gt-theme-enabled :is(.bg-background-secondary, .dark\:bg-background-secondary-dark) {
+  background-color: var(--gtc-panel-bg) !important;
+}
+
+body.gt-theme-enabled :is(.bg-background-elevated, .dark\:bg-background-elevated-dark) {
+  background-color: var(--gtc-card-bg) !important;
+}
+
+body.gt-theme-enabled :is(.bg-background-panel, .dark\:bg-background-panel-dark) {
+  background-color: var(--gtc-panel-bg) !important;
+}
+
+body.gt-theme-enabled :is(.bg-surface-interactive, .dark\:bg-surface-interactive-dark) {
+  background-color: var(--gtc-input-bg) !important;
+}
+
+body.gt-theme-enabled :is(.bg-surface-hover, .dark\:bg-surface-hover-dark) {
+  background-color: var(--gtc-card-hover-bg) !important;
+}
+
+body.gt-theme-enabled :is(.text-text-primary, .dark\:text-text-primary-dark) {
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is(.text-text-secondary, .dark\:text-text-secondary-dark) {
+  color: var(--gtc-text-muted) !important;
+}
+
+body.gt-theme-enabled :is(.text-text-tertiary, .dark\:text-text-tertiary-dark, .text-text-muted, .dark\:text-text-muted-dark) {
+  color: var(--gtc-text-soft) !important;
+}
+
+body.gt-theme-enabled :is(.border-border-primary, .dark\:border-border-primary-dark) {
+  border-color: var(--gtc-border) !important;
+}
+
+body.gt-theme-enabled :is(.border-border-secondary, .dark\:border-border-secondary-dark) {
+  border-color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled :is(.scrollbar-themed, .modal-content .scrollbar-themed) {
+  scrollbar-color: var(--gtc-border-strong) transparent !important;
+}
+
+body.gt-theme-enabled :is(.scrollbar-themed, .modal-content .scrollbar-themed)::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+body.gt-theme-enabled :is(.scrollbar-themed, .modal-content .scrollbar-themed)::-webkit-scrollbar-thumb {
+  background: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled :is(main, [role="main"], [data-testid*="roadmap" i], [data-testid*="workspace" i], [class*="roadmap" i], [class*="workspace" i]) {
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([data-tour="semester-columns"], [data-gt-roadmap-workspace="true"]) {
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-tour="semester-columns"] > div,
+  [data-tour="semester-columns"] .rounded-lg.shadow,
+  [data-tour="semester-columns"] .scrollbar-themed,
+  [data-gt-roadmap-scroll-surface="true"],
+  div[style*="overflow-x: auto"],
+  div[style*="overflowX"]
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: var(--gtc-shadow) !important;
+}
+
+body.gt-theme-enabled :is(header, nav, [role="banner"], [role="navigation"], [class*="header" i], [class*="navbar" i], [class*="topbar" i]) {
+  border-color: var(--gtc-border-strong) !important;
+  background: var(--gtc-header-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+body.gt-theme-enabled :is(aside, [role="complementary"], [aria-label*="sidebar" i], [data-testid*="sidebar" i], [data-testid*="course-list" i], [class*="sidebar" i], [class*="course-list" i], [class*="explore" i]) {
+  border-color: var(--gtc-border-strong) !important;
+  background: var(--gtc-sidebar-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([data-tour="course-panel"], [data-gt-roadmap-course-panel="true"]) {
+  background: var(--gtc-sidebar-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([data-tour="course-panel"] > div, [data-tour="course-panel"] .h-full, [data-gt-roadmap-course-panel="true"] > div) {
+  background-color: var(--gtc-sidebar-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([class*="toolbar" i], [class*="actionbar" i], [class*="controls" i]):not(#gt-roadmap-customizer-toolbar):not(
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i]
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([data-tour="toolbar"], [data-gt-roadmap-toolbar="true"], #roadmap-toolbar) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+/* Panels, cards, columns, menus, popovers -------------------------------- */
+body.gt-theme-enabled :is(
+  [data-testid="semester-column"],
+  [data-testid="drop-zone"],
+  [data-testid="requirement-section"],
+  [data-semester],
+  [data-gt-roadmap-semester="true"],
+  [data-is-over],
+  [aria-label*="semester" i],
+  [aria-label*="drop" i],
+  [aria-dropeffect],
+  [class*="semester" i],
+  [class*="term" i],
+  [class*="column" i],
+  [class*="dropzone" i],
+  [class*="drop-zone" i],
+  [class*="panel" i],
+  [class*="drawer" i],
+  [class*="empty" i]
+):not(
+  [class*="badge" i],
+  [class*="chip" i],
+  [class*="pill" i],
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  border-color: var(--gtc-border) !important;
+  border-radius: var(--gtc-radius) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: var(--gtc-shadow);
+}
+
+body.gt-theme-enabled :is([data-semester] > div, [data-gt-roadmap-semester="true"] > div):not(
+  [class*="badge" i],
+  [class*="chip" i],
+  [class*="pill" i],
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  border-color: var(--gtc-border) !important;
+  background-color: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([data-gt-roadmap-current-semester="true"], [data-semester][data-gt-roadmap-current-semester="true"]) {
+  border-color: var(--gtc-current-border) !important;
+}
+
+body.gt-theme-enabled :is(
+  .gt-roadmap-current-semester-indicator,
+  [data-gt-roadmap-current-semester="true"] > div:first-child p.bg-accent-primary,
+  [data-semester] > div:first-child p.bg-accent-primary,
+  [data-tour="semester-columns"] p.bg-accent-primary.text-white.font-semibold
+) {
+  border: 1px solid var(--gtc-current-border) !important;
+  border-radius: 8px !important;
+  background: var(--gtc-current-bg) !important;
+  color: var(--gtc-current-text) !important;
+  box-shadow: var(--gtc-current-shadow) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-gt-roadmap-current-semester="true"] .border-accent-primary.bg-accent-primary,
+  [data-tour="semester-columns"] .border-accent-primary.bg-accent-primary.shadow-highlight,
+  [data-tour="semester-columns"] .border-accent-primary.bg-accent-primary
+) {
+  border-color: var(--gtc-current-border) !important;
+  background: var(--gtc-current-bg) !important;
+  box-shadow: var(--gtc-current-shadow) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-testid="course-card"],
+  [data-course-id],
+  article[aria-label*="course" i],
+  [role="listitem"][aria-label*="course" i],
+  [class*="course" i][class*="card" i],
+  [class*="card" i]:has([class*="credit" i]),
+  [class*="card" i]:has([aria-label*="course" i]),
+  aside [class*="card" i],
+  [role="complementary"] [class*="card" i]
+):not(
+  [class*="badge" i],
+  [class*="chip" i],
+  [class*="pill" i],
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  border-color: var(--gtc-border) !important;
+  border-radius: var(--gtc-radius) !important;
+  background: var(--gtc-card-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.16);
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease,
+    filter 160ms ease;
+}
+
+body.gt-theme-enabled :is(
+  [data-testid="course-card"],
+  [data-course-id],
+  article[aria-label*="course" i],
+  [role="listitem"][aria-label*="course" i],
+  [class*="course" i][class*="card" i],
+  [class*="card" i]:has([class*="credit" i]),
+  [class*="card" i]:has([aria-label*="course" i])
+):hover {
+  background: var(--gtc-card-hover-bg) !important;
+  box-shadow: var(--gtc-shadow);
+}
+
+body.gt-theme-enabled :is([role="dialog"], dialog, [aria-modal="true"], [class*="modal" i], [class*="popover" i], [class*="dropdown" i], [class*="menu" i]) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-menu-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: var(--gtc-shadow) !important;
+}
+
+/* Narrow fallback for generated wrappers with meaningful app surface names. */
+body.gt-theme-enabled :is(div, section, article)[class*="container" i]:not(
+  [class*="badge" i],
+  [class*="chip" i],
+  [class*="pill" i],
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  background-color: transparent;
+}
+
+/* Inputs, dropdown triggers, selected labels ----------------------------- */
+body.gt-theme-enabled :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea, [role="textbox"], [role="searchbox"], [aria-label*="search" i], [class*="search" i] input) {
+  border-color: var(--gtc-border-strong) !important;
+  background: var(--gtc-input-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is(input, textarea)::placeholder {
+  color: var(--gtc-text-soft) !important;
+}
+
+body.gt-theme-enabled :is([aria-selected="true"], [class*="selected" i]):not(
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background: var(--gtc-selected-bg) !important;
+  color: var(--gtc-selected-text) !important;
+}
+
+body.gt-theme-enabled :is([class*="credit" i], [aria-label*="credit" i]):not(
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  border-color: var(--gtc-border) !important;
+  background: color-mix(in srgb, var(--gtc-card-bg) 72%, var(--gtc-selected-bg) 28%) !important;
+  color: var(--gtc-text) !important;
+}
+
+/* Text theming ------------------------------------------------------------ */
+body.gt-theme-enabled :is(
+  main,
+  [role="main"],
+  aside,
+  [role="complementary"],
+  header,
+  nav,
+  [data-testid="course-card"],
+  [data-course-id],
+  [data-testid="semester-column"],
+  [data-testid="drop-zone"],
+  [data-tour="semester-columns"],
+  [data-tour="course-panel"],
+  [role="dialog"],
+  dialog,
+  [aria-modal="true"],
+  [class*="course" i],
+  [class*="semester" i],
+  [class*="sidebar" i],
+  [class*="panel" i],
+  [class*="modal" i],
+  [class*="popover" i],
+  [class*="dropdown" i],
+  [class*="menu" i]
+) :is(h1, h2, h3, h4, h5, h6, p, label, small, span, strong):not(
+  button,
+  button *,
+  a,
+  a *,
+  [role="button"],
+  [role="status"],
+  [role="status"] *,
+  [class*="badge" i],
+  [class*="badge" i] *,
+  [class*="chip" i],
+  [class*="chip" i] *,
+  [class*="pill" i],
+  [class*="pill" i] *,
+  [class*="status" i],
+  [class*="status" i] *,
+  [class*="ready" i],
+  [class*="ready" i] *,
+  [class*="locked" i],
+  [class*="locked" i] *,
+  [class*="satisfied" i],
+  [class*="satisfied" i] *,
+  [class*="success" i],
+  [class*="success" i] *,
+  [class*="error" i],
+  [class*="error" i] *,
+  [class*="warning" i],
+  [class*="warning" i] *,
+  [class*="danger" i],
+  [class*="danger" i] *,
+  svg,
+  svg *
+) {
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is([class*="muted" i], [class*="description" i], [class*="gpa" i], [class*="helper" i]):not(
+  [class*="badge" i],
+  [class*="chip" i],
+  [class*="pill" i],
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i],
+  [class*="success" i],
+  [class*="error" i],
+  [class*="warning" i],
+  [class*="danger" i]
+) {
+  color: var(--gtc-text-muted) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-tour="search-bar"],
+  [data-tour="toolbar"],
+  #roadmap-toolbar,
+  [aria-haspopup="listbox"],
+  [aria-haspopup="menu"],
+  [data-resources-dropdown] button,
+  button[aria-label*="zoom" i],
+  [class*="zoom" i] button
+):hover {
+  background-color: var(--gtc-hover-bg) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-tour="search-bar"],
+  [aria-haspopup="listbox"],
+  [aria-haspopup="menu"],
+  input,
+  textarea,
+  select
+):focus-within {
+  border-color: var(--gtc-border-strong) !important;
+  box-shadow: 0 0 0 3px var(--gtc-focus-ring) !important;
+}
+
+body.gt-theme-enabled :is(
+  [data-tour="search-bar"],
+  [data-resources-dropdown] > div,
+  [data-user-modal],
+  .modal-content,
+  [role="listbox"],
+  [data-slot="popover"],
+  [data-slot="content"]
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-menu-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: var(--gtc-shadow);
+}
+
+body.gt-theme-enabled :is(
+  button:not([class*="ready" i]):not([class*="locked" i]):not([class*="satisfied" i]):not([class*="success" i]):not([class*="error" i]):not([class*="warning" i]):not([class*="danger" i]),
+  [role="button"]:not([class*="ready" i]):not([class*="locked" i]):not([class*="satisfied" i]):not([class*="success" i]):not([class*="error" i]):not([class*="warning" i]):not([class*="danger" i])
+):focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--gtc-focus-ring) !important;
+}
+
+body.gt-theme-enabled :is(header, nav, [class*="toolbar" i], [data-testid="course-card"], [data-course-id])
+  svg:not(
+    [class*="status" i],
+    [class*="ready" i],
+    [class*="locked" i],
+    [class*="satisfied" i],
+    [class*="success" i],
+    [class*="error" i],
+    [class*="warning" i],
+    [class*="danger" i]
+  ) {
+  color: var(--gtc-text) !important;
+  stroke: currentColor;
+}
+
+/* Floating buttons, zoom controls, and extension toolbar ----------------- */
+body.gt-theme-enabled :is([class*="floating" i], [class*="fab" i], [class*="zoom" i], [aria-label*="zoom" i]):not(
+  [class*="status" i],
+  [class*="ready" i],
+  [class*="locked" i],
+  [class*="satisfied" i]
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+  box-shadow: var(--gtc-shadow);
+}
+
+#gt-roadmap-customizer-toolbar {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 2147483647;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  width: min(158px, calc(100vw - 28px));
+  padding: 10px;
+  border: 1px solid var(--gtc-border-strong, rgba(0, 48, 87, 0.28));
+  border-radius: 14px;
+  background: var(--gtc-panel-bg, rgba(255, 255, 255, 0.96));
+  box-shadow: var(--gtc-shadow, 0 12px 32px rgba(0, 31, 63, 0.2));
+  color: var(--gtc-text, #17202a);
+  font: 13px/1.35 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#gt-roadmap-customizer-toolbar .gt-roadmap-customizer-toolbar-title {
+  color: var(--gtc-text, #003057);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+#gt-roadmap-customizer-toolbar button {
+  min-height: 32px;
+  border: 1px solid var(--gtc-border, rgba(0, 48, 87, 0.22));
+  border-radius: 9px;
+  background: var(--gtc-card-bg, #f6f8fb);
+  color: var(--gtc-text, #17202a);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+#gt-roadmap-customizer-toolbar button:hover,
+#gt-roadmap-customizer-toolbar button:focus-visible {
+  border-color: var(--gtc-border-strong, rgba(0, 48, 87, 0.36));
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gtc-border-strong, rgba(0, 48, 87, 0.36)) 45%, transparent);
+}
+
+#gt-roadmap-customizer-toolbar button.is-active {
+  border-color: var(--gtc-border-strong, rgba(0, 48, 87, 0.36));
+  background: var(--gtc-card-hover-bg, #e9eef4);
+  color: var(--gtc-text, #17202a);
+}
+
+/* Drag/drop feedback ------------------------------------------------------ */
+body.gt-theme-enabled :is([data-testid="drop-zone"], [aria-label*="drop" i], [aria-dropeffect], [class*="dropzone" i], [class*="drop-zone" i]):is(:hover, :focus-within) {
+  background: var(--gtc-card-hover-bg) !important;
+  box-shadow: inset 0 0 0 2px var(--gtc-border-strong);
+}
+
+body.gt-theme-enabled [draggable="true"]:active,
+body.gt-theme-enabled [aria-grabbed="true"] {
+  cursor: grabbing;
+  opacity: 0.88;
+  transform: scale(1.015);
+}
+
+/* Compact mode ----------------------------------------------------------- */
+:is(html, body).gt-roadmap-compact-mode {
+  font-size: 0.96em;
+}
+
+body.gt-roadmap-compact-mode main,
+body.gt-roadmap-compact-mode [role="main"] {
+  gap: 10px !important;
+}
+
+body.gt-roadmap-compact-mode :is([data-testid="semester-column"], [aria-label*="semester" i], section:has([data-testid="course-card"])) {
+  gap: 8px !important;
+  padding: 10px !important;
+}
+
+body.gt-roadmap-compact-mode :is([data-testid="course-card"], [data-course-id], article[aria-label*="course" i], [role="listitem"][aria-label*="course" i], [class*="course" i][class*="card" i]) {
+  margin-block: 5px !important;
+  padding: 8px 10px !important;
+  font-size: 0.94em;
+}
+
+body.gt-roadmap-compact-mode :is(h1, h2, h3, h4) {
+  margin-block: 0.3em !important;
+}
+
+body.gt-roadmap-compact-mode :is([data-testid="requirement-section"], [aria-label*="requirement" i], [aria-label*="progress" i]) {
+  padding: 10px !important;
+}
+
+/* Completed dimming ------------------------------------------------------ */
+body.gt-roadmap-dim-completed :is([data-completed="true"], [data-status="completed"], [aria-label*="completed" i], [data-gt-roadmap-completed="true"], [class*="completed" i], [class*="complete" i]) {
+  opacity: 0.62 !important;
+  filter: grayscale(0.28) saturate(0.86);
+}
+
+body.gt-roadmap-dim-completed :is([data-completed="true"], [data-status="completed"], [aria-label*="completed" i], [class*="completed" i], [class*="complete" i]):is(:hover, :focus-within) {
+  opacity: 0.82 !important;
+}
+
+/* Prerequisite warning emphasis ----------------------------------------- */
+body.gt-roadmap-emphasize-prereqs :is([data-testid="prereq-warning"], [data-gt-roadmap-prereq-warning="true"], [role="alert"][aria-label*="prereq" i], [role="alert"][aria-label*="coreq" i]) {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--gtc-warning, #a94200) 34%, transparent) !important;
+  border-left: 4px solid var(--gtc-warning, #a94200) !important;
+  border-radius: 10px !important;
+  background: var(--gtc-warning-bg, #fff4df) !important;
+  color: var(--gtc-warning, #a94200) !important;
+  font-weight: 650;
+}
+
+body.gt-roadmap-emphasize-prereqs :is([data-testid="prereq-warning"], [data-gt-roadmap-prereq-warning="true"], [role="alert"][aria-label*="prereq" i], [role="alert"][aria-label*="coreq" i])::before {
+  content: "!";
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--gtc-warning, #a94200);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  vertical-align: text-bottom;
+}
+
+@media (max-width: 640px) {
+  body.gt-theme-enabled :is([data-testid="semester-column"], [aria-label*="semester" i], section:has([data-testid="course-card"])) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  #gt-roadmap-customizer-toolbar {
+    right: 10px;
+    bottom: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(330px, calc(100vw - 20px));
+  }
+
+  #gt-roadmap-customizer-toolbar .gt-roadmap-customizer-toolbar-title {
+    grid-column: 1 / -1;
+  }
+}

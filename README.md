@@ -1,2 +1,3 @@
 # GT-roadmap-extension
-An customization extension for the GT degreeroadmap
+
+A customization extension for the GT Degree Roadmap.

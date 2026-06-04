@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "GT Degree Roadmap Customizer",
+  "version": "0.2.0",
+  "description": "Theme picker and local styling controls for the Georgia Tech Degree Roadmap site.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://degree-roadmap.gatech.edu/*",
+    "http://localhost:*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "GT Roadmap Customizer"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://degree-roadmap.gatech.edu/*",
+        "http://localhost:*/*"
+      ],
+      "css": ["styles.css"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
