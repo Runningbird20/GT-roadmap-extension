@@ -3,6 +3,7 @@
 
   const DEFAULT_SETTINGS = {
     selectedTheme: "gt-classic",
+    selectedAccessibilityMode: "none",
     themeEnabled: true,
     customThemeMode: "easy",
     customThemeBaseColor: "#0f2118",
@@ -124,6 +125,136 @@
       }
     },
     {
+      id: "zelda",
+      name: "Zelda",
+      description: "Heroic green and gold",
+      preview: {
+        page: "#102616",
+        panel: "#17351f",
+        card: "#21472b",
+        text: "#f3f4dc",
+        current: "#d6b35a",
+        accent: "#6dbb67"
+      }
+    },
+    {
+      id: "cyberpunk",
+      name: "Cyberpunk",
+      description: "Neon night palette",
+      preview: {
+        page: "#12071f",
+        panel: "#231036",
+        card: "#311548",
+        text: "#fff3a6",
+        current: "#00e5ff",
+        accent: "#ff2bd6"
+      }
+    },
+    {
+      id: "terminal-hacker",
+      name: "Terminal/Hacker",
+      description: "CRT green terminal",
+      preview: {
+        page: "#00150a",
+        panel: "#062110",
+        card: "#0b2c16",
+        text: "#b8ffcb",
+        current: "#39ff88",
+        accent: "#17c964"
+      }
+    },
+    {
+      id: "georgia-tech-dark",
+      name: "Georgia Tech Dark",
+      description: "Navy and Tech gold",
+      preview: {
+        page: "#061527",
+        panel: "#0b2037",
+        card: "#12304c",
+        text: "#f2e6b3",
+        current: "#b3a369",
+        accent: "#d7c98a"
+      }
+    },
+    {
+      id: "material-you",
+      name: "Material You",
+      description: "Soft dynamic blue",
+      preview: {
+        page: "#f4f7fb",
+        panel: "#e7eef8",
+        card: "#ffffff",
+        text: "#172033",
+        current: "#5a6ff0",
+        accent: "#7c8cff"
+      }
+    },
+    {
+      id: "glassmorphism",
+      name: "Glassmorphism",
+      description: "Cool translucent glass",
+      preview: {
+        page: "#eaf3ff",
+        panel: "#f7fbff",
+        card: "#ffffff",
+        text: "#142033",
+        current: "#4b8dff",
+        accent: "#8fd3ff"
+      }
+    },
+    {
+      id: "amoled-black",
+      name: "AMOLED Black",
+      description: "Black with neon accents",
+      preview: {
+        page: "#000000",
+        panel: "#050505",
+        card: "#0b0b0b",
+        text: "#f7fff9",
+        current: "#00ff85",
+        accent: "#00c2ff"
+      }
+    },
+    {
+      id: "catppuccin",
+      name: "Catppuccin",
+      description: "Mocha pastel dark",
+      preview: {
+        page: "#1e1e2e",
+        panel: "#242438",
+        card: "#313244",
+        text: "#cdd6f4",
+        current: "#cba6f7",
+        accent: "#f5c2e7"
+      }
+    },
+    {
+      id: "nord",
+      name: "Nord",
+      description: "Arctic blue-gray",
+      preview: {
+        page: "#2e3440",
+        panel: "#3b4252",
+        card: "#434c5e",
+        text: "#eceff4",
+        current: "#88c0d0",
+        accent: "#a3be8c"
+      }
+    },
+    {
+      id: "gruvbox",
+      name: "Gruvbox",
+      description: "Warm retro terminal",
+      preview: {
+        page: "#282828",
+        panel: "#32302f",
+        card: "#3c3836",
+        text: "#ebdbb2",
+        current: "#fabd2f",
+        accent: "#b8bb26"
+      }
+    },
+    {
       id: "custom",
       name: "Custom",
       description: "Your saved color palette",
@@ -132,6 +263,7 @@
   ];
 
   const backButton = document.getElementById("back-button");
+  const chooseAccessibilityColorsButton = document.getElementById("choose-accessibility-colors-button");
   const enabledToggle = document.getElementById("theme-enabled-toggle");
   const themeGrid = document.getElementById("theme-grid");
   const customThemeCard = document.getElementById("custom-theme-card");
@@ -140,6 +272,7 @@
   const status = document.getElementById("status");
 
   let selectedTheme = DEFAULT_SETTINGS.selectedTheme;
+  let selectedAccessibilityMode = DEFAULT_SETTINGS.selectedAccessibilityMode;
   let themeEnabled = DEFAULT_SETTINGS.themeEnabled;
   let customThemeMode = DEFAULT_SETTINGS.customThemeMode;
   let customThemeBaseColor = DEFAULT_SETTINGS.customThemeBaseColor;
@@ -269,7 +402,9 @@
 
     if (activate) {
       selectedTheme = "custom";
+      selectedAccessibilityMode = DEFAULT_SETTINGS.selectedAccessibilityMode;
       values.selectedTheme = selectedTheme;
+      values.selectedAccessibilityMode = selectedAccessibilityMode;
       values.themeEnabled = themeEnabled;
     }
 
@@ -309,7 +444,9 @@
 
     if (activate) {
       selectedTheme = "custom";
+      selectedAccessibilityMode = DEFAULT_SETTINGS.selectedAccessibilityMode;
       values.selectedTheme = selectedTheme;
+      values.selectedAccessibilityMode = selectedAccessibilityMode;
       values.themeEnabled = themeEnabled;
     }
 
@@ -342,7 +479,10 @@
       button.type = "button";
       button.className = "theme-card";
       button.dataset.themeId = theme.id;
-      button.setAttribute("aria-pressed", String(theme.id === selectedTheme));
+      button.setAttribute(
+        "aria-pressed",
+        String(selectedAccessibilityMode === DEFAULT_SETTINGS.selectedAccessibilityMode && theme.id === selectedTheme)
+      );
 
       const preview = document.createElement("span");
       preview.className = "theme-preview";
@@ -379,8 +519,12 @@
 
       button.addEventListener("click", async () => {
         selectedTheme = theme.id;
-        await setStorage({ selectedTheme, themeEnabled });
+        selectedAccessibilityMode = DEFAULT_SETTINGS.selectedAccessibilityMode;
+        themeEnabled = true;
+        enabledToggle.checked = true;
+        await setStorage({ selectedTheme, selectedAccessibilityMode, themeEnabled });
         renderThemes();
+        renderCustomEditor();
         await notifyActiveTab();
       });
 
@@ -389,8 +533,10 @@
   }
 
   function renderCustomEditor() {
-    customThemeCard.classList.toggle("is-active", selectedTheme === "custom");
-    useCustomButton.textContent = selectedTheme === "custom" ? "Using Custom" : "Use Custom";
+    const customIsActive =
+      selectedAccessibilityMode === DEFAULT_SETTINGS.selectedAccessibilityMode && selectedTheme === "custom";
+    customThemeCard.classList.toggle("is-active", customIsActive);
+    useCustomButton.textContent = customIsActive ? "Using Custom" : "Use Custom";
     customColorGrid.innerHTML = "";
 
     const modeControl = document.createElement("div");
@@ -440,14 +586,14 @@
 
       swatch.addEventListener("change", () => {
         hex.value = swatch.value;
-        saveEasyBaseColor(swatch.value, selectedTheme === "custom");
+        saveEasyBaseColor(swatch.value, customIsActive);
       });
 
       hex.addEventListener("change", () => {
         const normalized = normalizeHex(hex.value, customThemeBaseColor);
         hex.value = normalized;
         swatch.value = normalized;
-        saveEasyBaseColor(normalized, selectedTheme === "custom");
+        saveEasyBaseColor(normalized, customIsActive);
       });
 
       const helper = document.createElement("p");
@@ -483,7 +629,7 @@
       const update = async (value) => {
         const nextValue = normalizeHex(value, customThemeColors[field.key]);
         const nextColors = { ...customThemeColors, [field.key]: nextValue };
-        await saveCustomColors(nextColors, selectedTheme === "custom");
+        await saveCustomColors(nextColors, customIsActive);
       };
 
       swatch.addEventListener("input", () => {
@@ -510,6 +656,7 @@
   async function init() {
     const settings = await getStorage(DEFAULT_SETTINGS);
     selectedTheme = settings.selectedTheme || DEFAULT_SETTINGS.selectedTheme;
+    selectedAccessibilityMode = settings.selectedAccessibilityMode || DEFAULT_SETTINGS.selectedAccessibilityMode;
     themeEnabled = Boolean(settings.themeEnabled);
     customThemeMode = settings.customThemeMode === "advanced" ? "advanced" : "easy";
     customThemeBaseColor = normalizeHex(settings.customThemeBaseColor, DEFAULT_SETTINGS.customThemeBaseColor);
@@ -525,6 +672,10 @@
       window.location.href = "popup.html";
     });
 
+    chooseAccessibilityColorsButton.addEventListener("click", () => {
+      window.location.href = "accessibility-colors.html";
+    });
+
     enabledToggle.addEventListener("change", async () => {
       themeEnabled = enabledToggle.checked;
       await setStorage({ themeEnabled, selectedTheme });
@@ -533,6 +684,7 @@
 
     useCustomButton.addEventListener("click", async () => {
       selectedTheme = "custom";
+      selectedAccessibilityMode = DEFAULT_SETTINGS.selectedAccessibilityMode;
       themeEnabled = true;
       enabledToggle.checked = true;
       if (customThemeMode === "easy") {

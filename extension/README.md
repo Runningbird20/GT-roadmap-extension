@@ -13,9 +13,8 @@ Local Chrome/Edge Manifest V3 extension for customizing `https://degree-roadmap.
 ## Test locally
 
 - Open the Degree Roadmap site or a local app page.
-- Confirm the floating **Roadmap** toolbar appears in the bottom-right corner.
-- Toggle each control from the toolbar and confirm the page updates immediately.
 - Open the extension popup and confirm the same settings are reflected there.
+- Change theme, font, language, rounded corners, and course card controls from the popup pages and confirm the roadmap updates immediately.
 - Use **Reset defaults** in the popup to restore the default settings.
 
 The extension uses `chrome.storage.sync`, so settings may sync across browser profiles when sync is enabled.
@@ -36,7 +35,10 @@ To debug:
 - **Custom theme**: Enables the GT navy/gold color treatment, softer shadows, rounded course cards, semester styling, and drag/drop feedback.
 - **Rounded corners**: Adjusts the roundness level for roadmap cards, panels, controls, and modals.
 - **Course card details**: Shows or hides course names, credits, and GPA while reshaping cards to remove empty detail rows.
-- **Emphasize prerequisite warnings**: Highlights prerequisite or corequisite warnings using stable selectors and conservative text-based fallback annotations.
+- **Language**: Translates known roadmap interface text, placeholders, titles, aria labels, semester labels, course status labels, GPA labels, and credit counts. English also has optional fun wording modes. Real non-English selections restore the default font for glyph coverage.
+- **Accessibility colors**: Provides a dedicated page from the theme picker for one-click high contrast, WCAG AA/AAA, and color-blind-friendly palettes for protanopia, deuteranopia, and tritanopia. These palettes use the main theme toggle for on/off and replace the active theme while selected.
+- **Fonts**: Provides a dedicated picker for bundled and local font options, with dyslexia-support fonts shown first.
+- **Clutter reduction**: Adds a distraction-free mode that removes background decoration, shadows, and extra widgets.
 
 ## Stable selector notes
 

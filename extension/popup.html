@@ -66,15 +66,35 @@
           </button>
         </section>
 
-        <section class="settings-section" aria-labelledby="course-display-heading">
-          <h2 id="course-display-heading">Course Display</h2>
+        <section class="settings-section" aria-labelledby="language-heading">
+          <h2 id="language-heading">Language</h2>
 
-          <label class="toggle-row" for="emphasize-prereqs-toggle">
-            <span class="toggle-copy">
-              <span class="toggle-title">Prerequisite warnings</span>
-              <span class="toggle-helper">Make prerequisite and corequisite warnings easier to spot.</span>
+          <label class="select-row" for="language-select">
+            <span class="select-copy">
+              <span class="toggle-title">Page language</span>
+              <span class="toggle-helper">Translate roadmap interface text. Non-English languages use the default font.</span>
             </span>
-            <input id="emphasize-prereqs-toggle" type="checkbox" name="emphasizePrereqs" role="switch">
+            <select id="language-select" name="selectedLanguage"></select>
+          </label>
+
+          <label class="select-row" id="fun-language-row" for="fun-language-select" hidden>
+            <span class="select-copy">
+              <span class="toggle-title">Fun stuff</span>
+              <span class="toggle-helper">Keep English, but change the roadmap wording.</span>
+            </span>
+            <select id="fun-language-select" name="selectedFunLanguage"></select>
+          </label>
+        </section>
+
+        <section class="settings-section" aria-labelledby="accessibility-heading">
+          <h2 id="accessibility-heading">Accessibility</h2>
+
+          <label class="toggle-row" for="distraction-free-toggle">
+            <span class="toggle-copy">
+              <span class="toggle-title">Distraction-free mode</span>
+              <span class="toggle-helper">Hide backgrounds, decorations, and extra visual noise.</span>
+            </span>
+            <input id="distraction-free-toggle" type="checkbox" name="distractionFreeMode" role="switch">
             <span class="switch" aria-hidden="true"></span>
           </label>
         </section>
@@ -86,6 +106,7 @@
         </section>
       </form>
     </main>
+    <script src="language-options.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

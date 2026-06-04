@@ -9,17 +9,35 @@
     showCourseCredits: true,
     showCourseGpa: true,
     cornerRadius: 8,
-    emphasizePrereqs: false
+    selectedLanguage: "en",
+    selectedFunLanguage: "en",
+    selectedAccessibilityMode: "none",
+    selectedReadableFont: "default",
+    bodyFontScale: 100,
+    courseCardFontScale: 100,
+    semesterHeaderFontScale: 100,
+    readabilityLetterSpacing: 0,
+    readabilityWordSpacing: 0,
+    readabilityLineHeight: 140,
+    distractionFreeMode: false
   };
 
-  const TOGGLE_KEYS = [
-    "emphasizePrereqs"
+  const TOGGLE_KEYS = ["distractionFreeMode"];
+
+  const LANGUAGE_OPTIONS = globalThis.GT_ROADMAP_LANGUAGES || [
+    { id: "en", label: "English 🇺🇸", name: "English", htmlLang: "en", dir: "ltr" }
   ];
+  const FUN_LANGUAGE_IDS = globalThis.GT_ROADMAP_FUN_LANGUAGE_IDS || [];
+  const REAL_LANGUAGE_OPTIONS = LANGUAGE_OPTIONS.filter((language) => !FUN_LANGUAGE_IDS.includes(language.id));
+  const FUN_LANGUAGE_OPTIONS = LANGUAGE_OPTIONS.filter((language) => FUN_LANGUAGE_IDS.includes(language.id));
 
   const form = document.getElementById("settings-form");
   const chooseThemeButton = document.getElementById("choose-theme-button");
   const chooseCourseCardButton = document.getElementById("choose-course-card-button");
   const chooseFontButton = document.getElementById("choose-font-button");
+  const languageSelect = document.getElementById("language-select");
+  const funLanguageRow = document.getElementById("fun-language-row");
+  const funLanguageSelect = document.getElementById("fun-language-select");
   const cornerRadiusSlider = document.getElementById("corner-radius-slider");
   const cornerRadiusValue = document.getElementById("corner-radius-value");
   const resetButton = document.getElementById("reset-button");
@@ -33,6 +51,18 @@
     const number = Number(value);
     if (!Number.isFinite(number)) return DEFAULT_SETTINGS.cornerRadius;
     return Math.max(0, Math.min(24, Math.round(number)));
+  }
+
+  function normalizeLanguageId(languageId) {
+    return REAL_LANGUAGE_OPTIONS.some((language) => language.id === languageId)
+      ? languageId
+      : DEFAULT_SETTINGS.selectedLanguage;
+  }
+
+  function normalizeFunLanguageId(languageId) {
+    return FUN_LANGUAGE_OPTIONS.some((language) => language.id === languageId)
+      ? languageId
+      : DEFAULT_SETTINGS.selectedFunLanguage;
   }
 
   function getStorage(defaults) {
@@ -70,9 +100,35 @@
       }
     });
 
+    const selectedLanguage = normalizeLanguageId(settings.selectedLanguage);
+    const selectedFunLanguage = FUN_LANGUAGE_IDS.includes(settings.selectedLanguage)
+      ? settings.selectedLanguage
+      : settings.selectedFunLanguage;
+    languageSelect.value = selectedLanguage;
+    funLanguageSelect.value = normalizeFunLanguageId(selectedFunLanguage);
+    funLanguageRow.hidden = selectedLanguage !== "en";
+
     const cornerRadius = normalizeCornerRadius(settings.cornerRadius);
     cornerRadiusSlider.value = String(cornerRadius);
     cornerRadiusValue.textContent = `${cornerRadius}px`;
+  }
+
+  async function saveLanguage(value) {
+    const selectedLanguage = normalizeLanguageId(value);
+    const updates = { selectedLanguage };
+    if (selectedLanguage !== "en") {
+      updates.selectedFont = DEFAULT_SETTINGS.selectedFont;
+      updates.selectedFunLanguage = DEFAULT_SETTINGS.selectedFunLanguage;
+    }
+
+    await setStorage(updates);
+    await notifyActiveTab();
+  }
+
+  async function saveFunLanguage(value) {
+    const selectedFunLanguage = normalizeFunLanguageId(value);
+    await setStorage({ selectedLanguage: "en", selectedFunLanguage });
+    await notifyActiveTab();
   }
 
   async function saveToggle(key, value) {
@@ -95,6 +151,25 @@
   }
 
   async function init() {
+    REAL_LANGUAGE_OPTIONS.forEach((language) => {
+      const option = document.createElement("option");
+      option.value = language.id;
+      option.textContent = language.label;
+      languageSelect.appendChild(option);
+    });
+
+    const defaultFunOption = document.createElement("option");
+    defaultFunOption.value = DEFAULT_SETTINGS.selectedFunLanguage;
+    defaultFunOption.textContent = "Default English";
+    funLanguageSelect.appendChild(defaultFunOption);
+
+    FUN_LANGUAGE_OPTIONS.forEach((language) => {
+      const option = document.createElement("option");
+      option.value = language.id;
+      option.textContent = language.label;
+      funLanguageSelect.appendChild(option);
+    });
+
     const settings = await getStorage(DEFAULT_SETTINGS);
     render(settings);
 
@@ -108,6 +183,16 @@
 
     chooseFontButton.addEventListener("click", () => {
       window.location.href = "fonts.html";
+    });
+
+    languageSelect.addEventListener("change", () => {
+      saveLanguage(languageSelect.value).then(() => {
+        funLanguageRow.hidden = languageSelect.value !== "en";
+      });
+    });
+
+    funLanguageSelect.addEventListener("change", () => {
+      saveFunLanguage(funLanguageSelect.value);
     });
 
     form.addEventListener("change", (event) => {

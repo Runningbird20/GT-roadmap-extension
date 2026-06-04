@@ -6,7 +6,7 @@
     <title>Choose Font</title>
     <link rel="stylesheet" href="themes.css">
   </head>
-  <body>
+  <body class="font-page">
     <main class="theme-shell" aria-labelledby="font-title">
       <header class="theme-header">
         <button class="back-button" id="back-button" type="button" aria-label="Back to popup">Back</button>
@@ -19,8 +19,8 @@
       <section class="font-card" aria-labelledby="font-heading">
         <div class="font-card-header">
           <div>
-            <h2 id="font-heading">Nerd Fonts</h2>
-            <p>These fonts are bundled with the extension.</p>
+            <h2 id="font-heading">Fonts</h2>
+            <p>Choose a preview style for Degree Roadmap.</p>
           </div>
         </div>
         <div class="font-grid" id="font-grid" aria-label="Available font options"></div>
@@ -28,6 +28,8 @@
 
       <div class="status" id="status" role="status" aria-live="polite"></div>
     </main>
+    <script src="font-options.js"></script>
+    <script src="language-options.js"></script>
     <script src="fonts.js"></script>
   </body>
 </html>

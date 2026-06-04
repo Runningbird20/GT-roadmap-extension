@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accessibility Colors</title>
+    <link rel="stylesheet" href="themes.css">
+  </head>
+  <body>
+    <main class="theme-shell" aria-labelledby="accessibility-colors-title">
+      <header class="theme-header">
+        <button class="back-button" id="back-button" type="button" aria-label="Back to themes">Back</button>
+        <div>
+          <h1 id="accessibility-colors-title">Accessibility Colors</h1>
+          <p>Choose a high contrast or color-blind-friendly palette.</p>
+        </div>
+      </header>
+
+      <section class="font-card" aria-labelledby="accessibility-colors-heading">
+        <div class="font-card-header">
+          <div>
+            <h2 id="accessibility-colors-heading">Color Modes</h2>
+            <p>One-click palettes for safer visual contrast. Use the theme toggle to turn them on or off.</p>
+          </div>
+        </div>
+        <div class="accessibility-color-grid" id="accessibility-color-grid" role="group" aria-label="Accessibility color modes"></div>
+      </section>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </main>
+    <script src="accessibility-colors.js"></script>
+  </body>
+</html>

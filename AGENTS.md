@@ -27,8 +27,13 @@ The `prereq-roadmap copy/` folder is reference source only. Do not edit files in
 - The zoom control is intentionally themed as its own component and should not depend on the app's light/dark mode classes.
 - The search bar is intentionally transparent when themed.
 - Draft settings uses HeroUI generated slots. Keep modal/input/select rules scoped enough to avoid repainting the whole app.
-- Font customization is separate from color theming. It uses `fonts.html`, `fonts.js`, `selectedFont`, and `gt-roadmap-font-enabled`.
-- Bundled font files live in `extension/assets/fonts/` and are exposed through `web_accessible_resources`; do not add remote runtime font downloads.
+- Font customization is separate from color theming. It uses `fonts.html`, `fonts.js`, `font-options.js`, `selectedFont`, and `gt-roadmap-font-enabled`.
+- Keep font options centralized in `extension/font-options.js` so the picker and content script stay in sync.
+- Bundled font files live in `extension/assets/fonts/` and are exposed through `web_accessible_resources`; do not add remote runtime font downloads. Proprietary fonts such as SF Pro Display and Aptos should stay local/system-only options, not bundled files.
+- Language customization uses `language-options.js`, `selectedLanguage`, and `selectedFunLanguage`. Fun modes are English variants selected only when `selectedLanguage` is `en`; they must not force `selectedFont` back to `default`. Real non-English languages should still force `selectedFont` back to `default` for glyph coverage.
+- Accessibility color customization is launched from `themes.html` and uses `accessibility-colors.html` / `accessibility-colors.js`, `selectedAccessibilityMode`, and `gt-accessibility-*` classes. Do not show an Off option on the accessibility colors page; `none` is only the internal inactive state restored when a normal theme is chosen. Accessibility color classes should only apply when `themeEnabled` is true.
+- Dyslexia-support fonts live in the main `fonts.html` picker and should stay at the top of the font groups.
+- Clutter-reduction controls use `distractionFreeMode`.
 - Course card detail controls live in `course-card.html` / `course-card.js` and use `showCourseName`, `showCourseCredits`, and `showCourseGpa`; the content script annotates card sub-elements before CSS hides and reshapes them.
 - Rounded corner customization uses `cornerRadius` and the `--gtc-radius` CSS variable. Keep radius rules targeted to controls/cards/panels rather than broad universal selectors.
 
@@ -59,18 +64,17 @@ The content script derives the full `--gtc-*` variable set from those values whe
 
 The selected font is stored in `chrome.storage.sync` as `selectedFont`.
 
-Supported values are:
+Supported values are defined in `extension/font-options.js`, including bundled Google Fonts, bundled Nerd Fonts, and local/system-only entries.
 
-- `default`
-- `jetbrains-mono`
-- `fira-code`
-- `hack`
-- `meslo`
-- `caskaydia`
-- `iosevka`
-- `mononoki`
+The content script maps those values to font family stacks and sets `--gtc-font-family` on `html` and `body`. The CSS override lives behind `gt-roadmap-font-enabled`.
 
-The content script maps those values to bundled Nerd Font family stacks and sets `--gtc-font-family` on `html` and `body`. The CSS override lives behind `gt-roadmap-font-enabled`.
+## Language Options
+
+The selected language is stored in `chrome.storage.sync` as `selectedLanguage`.
+
+Fun English variants are stored separately as `selectedFunLanguage` and only apply when `selectedLanguage` is `en`.
+
+Supported values are defined in `extension/language-options.js`. Translation is local and dictionary/pattern based; keep new roadmap UI copy in that file when adding labels the extension should translate.
 
 ## Verification
 
@@ -81,6 +85,7 @@ node --check extension/content.js
 node --check extension/popup.js
 node --check extension/themes.js
 node --check extension/fonts.js
+node --check extension/accessibility-colors.js
 node --check extension/course-card.js
 node -e "JSON.parse(require('fs').readFileSync('extension/manifest.json','utf8')); console.log('manifest ok')"
 ```

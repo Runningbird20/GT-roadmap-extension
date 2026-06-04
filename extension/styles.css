@@ -96,6 +96,42 @@ body.gt-roadmap-font-enabled
   font-family: var(--gtc-font-family) !important;
 }
 
+/* Readability controls --------------------------------------------------- */
+body.gt-roadmap-readability-enabled {
+  font-size: var(--gtc-body-font-scale, 100%) !important;
+}
+
+body.gt-roadmap-readability-enabled
+  *:not(svg):not(path):not(rect):not(circle):not(line):not(polyline):not(polygon):not(ellipse) {
+  font-family: var(--gtc-readable-font-family, inherit) !important;
+  letter-spacing: var(--gtc-readability-letter-spacing, 0) !important;
+  line-height: var(--gtc-readability-line-height, inherit) !important;
+  word-spacing: var(--gtc-readability-word-spacing, normal) !important;
+}
+
+body.gt-roadmap-readability-enabled :is(
+  [data-testid="course-card"],
+  [data-course-id],
+  [data-gt-roadmap-course-card="true"]
+) {
+  font-size: var(--gtc-course-card-font-scale, 100%) !important;
+}
+
+body.gt-roadmap-readability-enabled :is(
+  [data-semester] > div:first-child,
+  [data-semester] > div:first-child p,
+  [data-semester] > div:first-child h2,
+  [data-semester] > div:first-child h3,
+  [data-testid="semester-column"] > div:first-child,
+  [data-tour="semester-columns"] [data-semester] > div:first-child
+) {
+  font-size: var(--gtc-semester-header-font-scale, 100%) !important;
+}
+
+body.gt-roadmap-readability-enabled :is(button, [role="button"], input, select, textarea) {
+  min-height: max(32px, 1.85em);
+}
+
 /* Optional roundness override -------------------------------------------- */
 :is(html, body) {
   --gtc-radius-sm: max(0px, calc(var(--gtc-radius, 8px) - 4px));
@@ -319,6 +355,280 @@ body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
   --gtc-current-border: rgba(255, 185, 125, 0.78);
   --gtc-current-ring: rgba(217, 96, 38, 0.24);
   --gtc-current-shadow: 0 0 0 1px rgba(217, 96, 38, 0.3);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-zelda {
+  --gtc-page-bg: #102616;
+  --gtc-header-bg: #17351f;
+  --gtc-sidebar-bg: #142f1c;
+  --gtc-main-bg: #102616;
+  --gtc-panel-bg: #17351f;
+  --gtc-panel-bg-elevated: #1c3f25;
+  --gtc-card-bg: #21472b;
+  --gtc-card-hover-bg: #2c5b38;
+  --gtc-input-bg: #193922;
+  --gtc-menu-bg: #17351f;
+  --gtc-border: rgba(214, 179, 90, 0.24);
+  --gtc-border-strong: rgba(214, 179, 90, 0.5);
+  --gtc-text: #f3f4dc;
+  --gtc-text-muted: #c9d3a9;
+  --gtc-text-soft: #a7b68a;
+  --gtc-focus-ring: rgba(214, 179, 90, 0.28);
+  --gtc-hover-bg: #21472b;
+  --gtc-selected-bg: #d6b35a;
+  --gtc-selected-text: #132212;
+  --gtc-current-bg: #d6b35a;
+  --gtc-current-text: #132212;
+  --gtc-current-border: rgba(255, 230, 145, 0.78);
+  --gtc-current-ring: rgba(214, 179, 90, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(214, 179, 90, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-cyberpunk {
+  --gtc-page-bg: #12071f;
+  --gtc-header-bg: #231036;
+  --gtc-sidebar-bg: #1c0b2e;
+  --gtc-main-bg: #12071f;
+  --gtc-panel-bg: #231036;
+  --gtc-panel-bg-elevated: #2a1142;
+  --gtc-card-bg: #311548;
+  --gtc-card-hover-bg: #44185f;
+  --gtc-input-bg: #25103a;
+  --gtc-menu-bg: #231036;
+  --gtc-border: rgba(0, 229, 255, 0.26);
+  --gtc-border-strong: rgba(255, 43, 214, 0.52);
+  --gtc-text: #fff3a6;
+  --gtc-text-muted: #f0b9ff;
+  --gtc-text-soft: #8eeaff;
+  --gtc-focus-ring: rgba(255, 43, 214, 0.3);
+  --gtc-hover-bg: #311548;
+  --gtc-selected-bg: #00e5ff;
+  --gtc-selected-text: #12071f;
+  --gtc-current-bg: #ff2bd6;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(0, 229, 255, 0.76);
+  --gtc-current-ring: rgba(0, 229, 255, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(255, 43, 214, 0.36);
+  --gtc-warning: #ffef5c;
+  --gtc-warning-bg: rgba(255, 239, 92, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-terminal-hacker {
+  --gtc-page-bg: #00150a;
+  --gtc-header-bg: #062110;
+  --gtc-sidebar-bg: #041b0d;
+  --gtc-main-bg: #00150a;
+  --gtc-panel-bg: #062110;
+  --gtc-panel-bg-elevated: #082914;
+  --gtc-card-bg: #0b2c16;
+  --gtc-card-hover-bg: #0e3a1c;
+  --gtc-input-bg: #061f10;
+  --gtc-menu-bg: #062110;
+  --gtc-border: rgba(57, 255, 136, 0.22);
+  --gtc-border-strong: rgba(57, 255, 136, 0.48);
+  --gtc-text: #b8ffcb;
+  --gtc-text-muted: #75d695;
+  --gtc-text-soft: #50ad70;
+  --gtc-focus-ring: rgba(57, 255, 136, 0.26);
+  --gtc-hover-bg: #0b2c16;
+  --gtc-selected-bg: #39ff88;
+  --gtc-selected-text: #00150a;
+  --gtc-current-bg: #39ff88;
+  --gtc-current-text: #00150a;
+  --gtc-current-border: rgba(184, 255, 203, 0.78);
+  --gtc-current-ring: rgba(57, 255, 136, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(57, 255, 136, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-georgia-tech-dark {
+  --gtc-page-bg: #061527;
+  --gtc-header-bg: #0b2037;
+  --gtc-sidebar-bg: #091b30;
+  --gtc-main-bg: #061527;
+  --gtc-panel-bg: #0b2037;
+  --gtc-panel-bg-elevated: #102943;
+  --gtc-card-bg: #12304c;
+  --gtc-card-hover-bg: #183d5f;
+  --gtc-input-bg: #0d2540;
+  --gtc-menu-bg: #0b2037;
+  --gtc-border: rgba(215, 201, 138, 0.24);
+  --gtc-border-strong: rgba(179, 163, 105, 0.52);
+  --gtc-text: #f2e6b3;
+  --gtc-text-muted: #c9d3e5;
+  --gtc-text-soft: #9eacc1;
+  --gtc-focus-ring: rgba(179, 163, 105, 0.28);
+  --gtc-hover-bg: #12304c;
+  --gtc-selected-bg: #b3a369;
+  --gtc-selected-text: #061527;
+  --gtc-current-bg: #d7c98a;
+  --gtc-current-text: #061527;
+  --gtc-current-border: rgba(242, 230, 179, 0.78);
+  --gtc-current-ring: rgba(179, 163, 105, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(179, 163, 105, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-material-you {
+  --gtc-page-bg: #f4f7fb;
+  --gtc-header-bg: #e7eef8;
+  --gtc-sidebar-bg: #eaf0fa;
+  --gtc-main-bg: #f4f7fb;
+  --gtc-panel-bg: #e7eef8;
+  --gtc-panel-bg-elevated: #f7faff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #eef3ff;
+  --gtc-input-bg: #edf3fb;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: rgba(90, 111, 240, 0.2);
+  --gtc-border-strong: rgba(90, 111, 240, 0.44);
+  --gtc-text: #172033;
+  --gtc-text-muted: #58667f;
+  --gtc-text-soft: #7c8aa4;
+  --gtc-focus-ring: rgba(90, 111, 240, 0.22);
+  --gtc-hover-bg: #eef3ff;
+  --gtc-selected-bg: #5a6ff0;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #5a6ff0;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(124, 140, 255, 0.76);
+  --gtc-current-ring: rgba(90, 111, 240, 0.24);
+  --gtc-current-shadow: 0 0 0 1px rgba(90, 111, 240, 0.3);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-glassmorphism {
+  --gtc-page-bg: #eaf3ff;
+  --gtc-header-bg: rgba(247, 251, 255, 0.72);
+  --gtc-sidebar-bg: rgba(237, 246, 255, 0.76);
+  --gtc-main-bg: #eaf3ff;
+  --gtc-panel-bg: rgba(247, 251, 255, 0.7);
+  --gtc-panel-bg-elevated: rgba(255, 255, 255, 0.78);
+  --gtc-card-bg: rgba(255, 255, 255, 0.8);
+  --gtc-card-hover-bg: rgba(230, 244, 255, 0.86);
+  --gtc-input-bg: rgba(255, 255, 255, 0.58);
+  --gtc-menu-bg: rgba(255, 255, 255, 0.86);
+  --gtc-border: rgba(75, 141, 255, 0.18);
+  --gtc-border-strong: rgba(75, 141, 255, 0.44);
+  --gtc-text: #142033;
+  --gtc-text-muted: #4f657f;
+  --gtc-text-soft: #7588a0;
+  --gtc-focus-ring: rgba(75, 141, 255, 0.22);
+  --gtc-hover-bg: rgba(230, 244, 255, 0.86);
+  --gtc-selected-bg: #4b8dff;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #4b8dff;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(143, 211, 255, 0.8);
+  --gtc-current-ring: rgba(75, 141, 255, 0.24);
+  --gtc-current-shadow: 0 0 0 1px rgba(75, 141, 255, 0.3);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-amoled-black {
+  --gtc-page-bg: #000000;
+  --gtc-header-bg: #050505;
+  --gtc-sidebar-bg: #030303;
+  --gtc-main-bg: #000000;
+  --gtc-panel-bg: #050505;
+  --gtc-panel-bg-elevated: #080808;
+  --gtc-card-bg: #0b0b0b;
+  --gtc-card-hover-bg: #141414;
+  --gtc-input-bg: #080808;
+  --gtc-menu-bg: #050505;
+  --gtc-border: rgba(0, 255, 133, 0.2);
+  --gtc-border-strong: rgba(0, 255, 133, 0.5);
+  --gtc-text: #f7fff9;
+  --gtc-text-muted: #b0cabb;
+  --gtc-text-soft: #7f9b8c;
+  --gtc-focus-ring: rgba(0, 255, 133, 0.24);
+  --gtc-hover-bg: #111111;
+  --gtc-selected-bg: #00ff85;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #00ff85;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(0, 194, 255, 0.78);
+  --gtc-current-ring: rgba(0, 255, 133, 0.26);
+  --gtc-current-shadow: 0 0 0 1px rgba(0, 255, 133, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-catppuccin {
+  --gtc-page-bg: #1e1e2e;
+  --gtc-header-bg: #242438;
+  --gtc-sidebar-bg: #202033;
+  --gtc-main-bg: #1e1e2e;
+  --gtc-panel-bg: #242438;
+  --gtc-panel-bg-elevated: #2b2c40;
+  --gtc-card-bg: #313244;
+  --gtc-card-hover-bg: #3b3c52;
+  --gtc-input-bg: #292a3d;
+  --gtc-menu-bg: #242438;
+  --gtc-border: rgba(203, 166, 247, 0.22);
+  --gtc-border-strong: rgba(203, 166, 247, 0.48);
+  --gtc-text: #cdd6f4;
+  --gtc-text-muted: #bac2de;
+  --gtc-text-soft: #a6adc8;
+  --gtc-focus-ring: rgba(203, 166, 247, 0.28);
+  --gtc-hover-bg: #313244;
+  --gtc-selected-bg: #cba6f7;
+  --gtc-selected-text: #1e1e2e;
+  --gtc-current-bg: #cba6f7;
+  --gtc-current-text: #1e1e2e;
+  --gtc-current-border: rgba(245, 194, 231, 0.78);
+  --gtc-current-ring: rgba(203, 166, 247, 0.3);
+  --gtc-current-shadow: 0 0 0 1px rgba(203, 166, 247, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-nord {
+  --gtc-page-bg: #2e3440;
+  --gtc-header-bg: #3b4252;
+  --gtc-sidebar-bg: #343b49;
+  --gtc-main-bg: #2e3440;
+  --gtc-panel-bg: #3b4252;
+  --gtc-panel-bg-elevated: #40485a;
+  --gtc-card-bg: #434c5e;
+  --gtc-card-hover-bg: #4c566a;
+  --gtc-input-bg: #394152;
+  --gtc-menu-bg: #3b4252;
+  --gtc-border: rgba(136, 192, 208, 0.22);
+  --gtc-border-strong: rgba(136, 192, 208, 0.48);
+  --gtc-text: #eceff4;
+  --gtc-text-muted: #d8dee9;
+  --gtc-text-soft: #aeb8c8;
+  --gtc-focus-ring: rgba(136, 192, 208, 0.26);
+  --gtc-hover-bg: #434c5e;
+  --gtc-selected-bg: #88c0d0;
+  --gtc-selected-text: #2e3440;
+  --gtc-current-bg: #88c0d0;
+  --gtc-current-text: #2e3440;
+  --gtc-current-border: rgba(163, 190, 140, 0.78);
+  --gtc-current-ring: rgba(136, 192, 208, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(136, 192, 208, 0.32);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-gruvbox {
+  --gtc-page-bg: #282828;
+  --gtc-header-bg: #32302f;
+  --gtc-sidebar-bg: #2f2d2c;
+  --gtc-main-bg: #282828;
+  --gtc-panel-bg: #32302f;
+  --gtc-panel-bg-elevated: #363433;
+  --gtc-card-bg: #3c3836;
+  --gtc-card-hover-bg: #504945;
+  --gtc-input-bg: #343231;
+  --gtc-menu-bg: #32302f;
+  --gtc-border: rgba(250, 189, 47, 0.22);
+  --gtc-border-strong: rgba(250, 189, 47, 0.48);
+  --gtc-text: #ebdbb2;
+  --gtc-text-muted: #d5c4a1;
+  --gtc-text-soft: #bdae93;
+  --gtc-focus-ring: rgba(250, 189, 47, 0.26);
+  --gtc-hover-bg: #3c3836;
+  --gtc-selected-bg: #fabd2f;
+  --gtc-selected-text: #282828;
+  --gtc-current-bg: #fabd2f;
+  --gtc-current-text: #282828;
+  --gtc-current-border: rgba(184, 187, 38, 0.78);
+  --gtc-current-ring: rgba(250, 189, 47, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(250, 189, 47, 0.32);
+  --gtc-warning: #fb4934;
+  --gtc-warning-bg: rgba(251, 73, 52, 0.14);
 }
 
 /* Source selector map -----------------------------------------------------
@@ -1122,29 +1432,333 @@ body.gt-theme-enabled [aria-grabbed="true"] {
   transform: scale(1.015);
 }
 
+/* Debug conflicts and course tree --------------------------------------- */
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .bg-background-elevated,
+  .dark\:bg-background-elevated-dark,
+  .bg-background-elevated\/30,
+  .dark\:bg-background-elevated-dark\/30,
+  .bg-background-secondary,
+  .dark\:bg-background-secondary-dark,
+  .bg-surface-interactive,
+  .dark\:bg-surface-interactive-dark
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-card-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .bg-red-50,
+  .dark\:bg-red-900\/20,
+  [data-gt-roadmap-conflict-card="error"]
+) {
+  border-color: var(--gtc-warning) !important;
+  background: color-mix(in srgb, var(--gtc-warning) 14%, var(--gtc-card-bg)) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .border-red-300,
+  .dark\:border-red-600\/30,
+  .border-red-500
+) {
+  border-color: var(--gtc-warning) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .text-red-700,
+  .dark\:text-red-300,
+  .text-red-600,
+  .dark\:text-red-200,
+  .text-red-500,
+  .dark\:text-red-400
+) {
+  color: var(--gtc-warning) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .bg-green-50,
+  .dark\:bg-green-900\/20,
+  [data-gt-roadmap-conflict-card="success"]
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background: color-mix(in srgb, var(--gtc-current-bg) 16%, var(--gtc-card-bg)) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .border-green-300,
+  .dark\:border-green-600\/30,
+  .border-green-500
+) {
+  border-color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .text-green-700,
+  .dark\:text-green-300,
+  .text-green-600,
+  .dark\:text-green-200,
+  .text-green-400,
+  .text-\[\#2F855A\]
+) {
+  color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .bg-amber-50,
+  .dark\:bg-amber-900\/20,
+  .bg-amber-500\/80,
+  [data-gt-roadmap-conflict-card="info"]
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background: color-mix(in srgb, var(--gtc-selected-bg) 16%, var(--gtc-card-bg)) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .border-amber-300,
+  .dark\:border-amber-600\/30,
+  .border-amber-500
+) {
+  border-color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  .text-amber-700,
+  .dark\:text-amber-300,
+  .text-amber-600,
+  .dark\:text-amber-200,
+  .text-amber-400
+) {
+  color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled [data-gt-roadmap-debug-conflicts="true"] :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  small,
+  strong,
+  label
+) {
+  color: inherit;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] {
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .min-h-screen,
+  .bg-background-primary,
+  .dark\:bg-background-primary-dark
+) {
+  background: var(--gtc-main-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-background-secondary,
+  .dark\:bg-background-secondary-dark,
+  .bg-background-secondary\/80,
+  .dark\:bg-background-secondary-dark\/80,
+  .bg-background-elevated,
+  .dark\:bg-background-elevated-dark,
+  .bg-background-elevated\/30,
+  .dark\:bg-background-elevated-dark\/30
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-panel-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-surface-interactive,
+  .dark\:bg-surface-interactive-dark,
+  .bg-surface-hover,
+  .dark\:bg-surface-hover-dark
+) {
+  background: var(--gtc-card-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .border-border-primary,
+  .dark\:border-border-primary-dark,
+  .border-border-secondary,
+  .dark\:border-border-secondary-dark,
+  .border-gray-500,
+  .border-gray-600,
+  .border-gray-600\/50
+) {
+  border-color: var(--gtc-border) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .text-text-primary,
+  .dark\:text-text-primary-dark,
+  .text-white,
+  .text-gray-100,
+  .text-gray-200
+) {
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .text-text-secondary,
+  .dark\:text-text-secondary-dark,
+  .text-text-tertiary,
+  .dark\:text-text-tertiary-dark,
+  .text-gray-300,
+  .text-gray-400
+) {
+  color: var(--gtc-text-muted) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-green-600,
+  .bg-ready
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background-color: var(--gtc-current-bg) !important;
+  color: var(--gtc-current-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .border-green-500,
+  .border-ready
+) {
+  border-color: var(--gtc-current-border) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .text-green-400,
+  .text-\[\#2F855A\]
+) {
+  color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-locked,
+  .bg-red-600
+) {
+  border-color: var(--gtc-warning) !important;
+  background-color: var(--gtc-warning) !important;
+  color: #ffffff !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .border-locked,
+  .border-red-500
+) {
+  border-color: var(--gtc-warning) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .text-locked,
+  .text-red-400
+) {
+  color: var(--gtc-warning) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-amber-500\/80,
+  .bg-amber-500
+) {
+  border-color: var(--gtc-border-strong) !important;
+  background-color: var(--gtc-selected-bg) !important;
+  color: var(--gtc-selected-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .border-amber-500,
+  .text-amber-400
+) {
+  border-color: var(--gtc-border-strong) !important;
+  color: var(--gtc-border-strong) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .bg-gray-800,
+  .dark\:bg-gray-800,
+  .bg-gray-900
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-menu-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .backdrop-blur-sm,
+  .backdrop-blur-md
+) {
+  backdrop-filter: none !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  select,
+  option,
+  input,
+  textarea
+) {
+  border-color: var(--gtc-border) !important;
+  background: var(--gtc-input-bg) !important;
+  color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  .konvajs-content,
+  .konvajs-content canvas,
+  [data-gt-roadmap-course-tree-canvas="true"]
+) {
+  background: transparent !important;
+}
+
+body.gt-theme-enabled[data-gt-roadmap-course-tree-page] :is(
+  [data-gt-roadmap-course-tree-canvas="true"],
+  [data-gt-roadmap-course-tree-node="true"],
+  [data-gt-roadmap-course-tree-node="true"] *
+) {
+  color: inherit;
+}
+
 /* Course card customization --------------------------------------------- */
 body:is(.gt-roadmap-hide-course-name, .gt-roadmap-hide-course-credits, .gt-roadmap-hide-course-gpa)
-  [data-gt-roadmap-course-card="true"] {
+  [data-gt-roadmap-course-card-customizable="true"] {
   position: relative !important;
   min-height: 74px !important;
   padding: 9px 11px !important;
 }
 
-[data-gt-roadmap-course-card="true"] [data-gt-roadmap-course-detail-row="true"] {
+[data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-detail-row="true"] {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   width: 100% !important;
 }
 
-[data-gt-roadmap-course-card="true"] [data-gt-roadmap-course-name-row="true"] {
+[data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-name-row="true"] {
   display: flex !important;
   align-items: flex-end !important;
   justify-content: space-between !important;
   width: 100% !important;
 }
 
-[data-gt-roadmap-course-card="true"] [data-gt-roadmap-course-status="true"] {
+[data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-status="true"] {
   display: flex !important;
   flex: 0 0 auto !important;
   flex-shrink: 0 !important;
@@ -1156,6 +1770,7 @@ body:is(.gt-roadmap-hide-course-name, .gt-roadmap-hide-course-credits, .gt-roadm
 }
 
 body:is(.gt-roadmap-hide-course-name, .gt-roadmap-hide-course-credits, .gt-roadmap-hide-course-gpa)
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-status="true"] {
   position: static !important;
   z-index: 1 !important;
@@ -1163,72 +1778,78 @@ body:is(.gt-roadmap-hide-course-name, .gt-roadmap-hide-course-credits, .gt-roadm
 }
 
 body:is(.gt-roadmap-hide-course-name, .gt-roadmap-hide-course-credits, .gt-roadmap-hide-course-gpa)
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-name-row="true"] {
   min-height: 18px !important;
   padding-right: 0 !important;
 }
 
-body.gt-roadmap-hide-course-name [data-gt-roadmap-course-name="true"],
-body.gt-roadmap-hide-course-credits [data-gt-roadmap-course-credits="true"],
-body.gt-roadmap-hide-course-gpa [data-gt-roadmap-course-gpa="true"] {
+body.gt-roadmap-hide-course-name [data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-name="true"],
+body.gt-roadmap-hide-course-credits [data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-credits="true"],
+body.gt-roadmap-hide-course-gpa [data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-gpa="true"] {
   display: none !important;
 }
 
 body:is(.gt-roadmap-hide-course-credits, .gt-roadmap-hide-course-gpa)
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-detail-row="true"] {
   min-height: 0 !important;
   margin-top: 4px !important;
 }
 
 body.gt-roadmap-hide-course-gpa:not(.gt-roadmap-hide-course-credits)
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-detail-row="true"] {
   justify-content: flex-end !important;
   padding-right: 0 !important;
 }
 
 body.gt-roadmap-hide-course-credits:not(.gt-roadmap-hide-course-gpa)
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-detail-row="true"] {
   justify-content: flex-start !important;
 }
 
 body.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-detail-row="true"] {
   display: none !important;
 }
 
-body.gt-roadmap-hide-course-name [data-gt-roadmap-course-name-row="true"] {
+body.gt-roadmap-hide-course-name [data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-name-row="true"] {
   justify-content: flex-end !important;
   min-height: 0 !important;
   margin-top: 6px !important;
   padding-right: 0 !important;
 }
 
-body.gt-roadmap-hide-course-name [data-gt-roadmap-course-status="true"] {
+body.gt-roadmap-hide-course-name [data-gt-roadmap-course-card-customizable="true"] [data-gt-roadmap-course-status="true"] {
   margin-left: auto !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"] {
+  [data-gt-roadmap-course-card-customizable="true"] {
   min-height: 54px !important;
   padding: 8px 10px !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-code-row="true"] {
   transform: translateY(clamp(0px, calc(var(--gtc-radius, 8px) * 0.28), 7px)) !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"])
   [data-gt-roadmap-course-detail-row="true"],
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"])
   [data-gt-roadmap-course-name-row="true"] {
   display: none !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"]) {
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"]) {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -1236,7 +1857,7 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"])
   [data-gt-roadmap-course-code-row="true"] {
   display: flex !important;
   align-items: center !important;
@@ -1249,13 +1870,13 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"])
   [data-gt-roadmap-course-code-row="true"] > :first-child {
   align-items: center !important;
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
-  [data-gt-roadmap-course-card="true"]:not([data-gt-roadmap-has-course-status="true"])
+  [data-gt-roadmap-course-card-customizable="true"]:not([data-gt-roadmap-has-course-status="true"])
   [data-gt-roadmap-course-menu="true"] {
   align-self: center !important;
   margin-top: 0 !important;
@@ -1263,6 +1884,7 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-name-row="true"] {
   display: flex !important;
   justify-content: flex-end !important;
@@ -1272,45 +1894,362 @@ body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-cour
 }
 
 body.gt-roadmap-hide-course-name.gt-roadmap-hide-course-gpa.gt-roadmap-hide-course-credits
+  [data-gt-roadmap-course-card-customizable="true"]
   [data-gt-roadmap-course-status="true"] {
   margin-left: auto !important;
 }
 
-/* Prerequisite warning emphasis ----------------------------------------- */
-body.gt-roadmap-emphasize-prereqs :is([data-testid="prereq-warning"], [data-gt-roadmap-prereq-warning="true"]:not([data-gt-roadmap-course-card="true"]), [role="alert"][aria-label*="prereq" i], [role="alert"][aria-label*="coreq" i]) {
-  position: relative;
-  border: 1px solid color-mix(in srgb, var(--gtc-warning, #a94200) 34%, transparent) !important;
-  border-left: 4px solid var(--gtc-warning, #a94200) !important;
-  border-radius: 10px !important;
-  background: var(--gtc-warning-bg, #fff4df) !important;
-  color: var(--gtc-warning, #a94200) !important;
-  font-weight: 650;
+/* Distraction-free mode -------------------------------------------------- */
+body.gt-roadmap-distraction-free,
+html.gt-roadmap-distraction-free {
+  --gtc-current-shadow: none;
 }
 
-body.gt-roadmap-emphasize-prereqs :is([data-gt-roadmap-course-card="true"]:has(.text-locked), [data-gt-roadmap-course-card="true"].border-error) {
-  border-color: var(--gtc-warning, #a94200) !important;
-  border-left: 4px solid var(--gtc-warning, #a94200) !important;
-  background: color-mix(in srgb, var(--gtc-card-bg) 74%, var(--gtc-warning-bg, #fff4df) 26%) !important;
+body.gt-roadmap-distraction-free {
+  background: var(--gtc-page-bg, #ffffff) !important;
 }
 
-body.gt-roadmap-emphasize-prereqs :is([data-gt-roadmap-course-card="true"]:has(.text-locked), [data-gt-roadmap-course-card="true"].border-error) :is(span, p, strong):not(.text-locked):not(.text-status-error) {
-  color: var(--gtc-text) !important;
+body.gt-roadmap-distraction-free :is(
+  *,
+  *::before,
+  *::after
+) {
+  box-shadow: none !important;
+  text-shadow: none !important;
 }
 
-body.gt-roadmap-emphasize-prereqs :is([data-testid="prereq-warning"], [data-gt-roadmap-prereq-warning="true"]:not([data-gt-roadmap-course-card="true"]), [role="alert"][aria-label*="prereq" i], [role="alert"][aria-label*="coreq" i])::before {
-  content: "!";
-  display: inline-grid;
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-  place-items: center;
-  border-radius: 999px;
-  background: var(--gtc-warning, #a94200);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1;
-  vertical-align: text-bottom;
+body.gt-roadmap-distraction-free :is(
+  [class*="gradient" i],
+  [class*="shadow" i],
+  [class*="blur" i],
+  [class*="backdrop" i],
+  [data-tour="control-panel"],
+  [data-tour="course-filters"],
+  [data-gt-roadmap-control-panel="true"],
+  [data-gt-roadmap-course-filters="true"]
+) {
+  background-image: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+body.gt-roadmap-distraction-free :is(
+  [aria-label*="feedback" i],
+  [aria-label*="what's new" i],
+  [data-tour="control-panel"],
+  [data-gt-roadmap-control-panel="true"]
+) {
+  display: none !important;
+}
+
+/* Accessibility color modes --------------------------------------------- */
+:is(html, body).gt-accessibility-high-contrast-bw,
+:is(html, body).gt-accessibility-high-contrast-navy-yellow,
+:is(html, body).gt-accessibility-high-contrast-bright-dark,
+:is(html, body).gt-accessibility-wcag-aa,
+:is(html, body).gt-accessibility-wcag-aaa,
+:is(html, body).gt-accessibility-protanopia,
+:is(html, body).gt-accessibility-deuteranopia,
+:is(html, body).gt-accessibility-tritanopia {
+  --gtc-focus-ring: rgba(255, 255, 255, 0.5);
+  --gtc-current-shadow: 0 0 0 2px var(--gtc-current-border);
+}
+
+:is(html, body).gt-accessibility-high-contrast-bw {
+  --gtc-page-bg: #000000;
+  --gtc-header-bg: #000000;
+  --gtc-sidebar-bg: #000000;
+  --gtc-main-bg: #000000;
+  --gtc-panel-bg: #000000;
+  --gtc-panel-bg-elevated: #101010;
+  --gtc-card-bg: #000000;
+  --gtc-card-hover-bg: #1a1a1a;
+  --gtc-input-bg: #000000;
+  --gtc-menu-bg: #000000;
+  --gtc-border: #ffffff;
+  --gtc-border-strong: #ffffff;
+  --gtc-text: #ffffff;
+  --gtc-text-muted: #ffffff;
+  --gtc-text-soft: #f0f0f0;
+  --gtc-hover-bg: #1a1a1a;
+  --gtc-selected-bg: #ffffff;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #ffffff;
+  --gtc-current-text: #000000;
+  --gtc-current-border: #ffffff;
+  --gtc-warning: #ffffff;
+  --gtc-warning-bg: #1a1a1a;
+}
+
+:is(html, body).gt-accessibility-high-contrast-navy-yellow {
+  --gtc-page-bg: #001b33;
+  --gtc-header-bg: #00264d;
+  --gtc-sidebar-bg: #001f3f;
+  --gtc-main-bg: #001b33;
+  --gtc-panel-bg: #00264d;
+  --gtc-panel-bg-elevated: #003366;
+  --gtc-card-bg: #002b55;
+  --gtc-card-hover-bg: #003d7a;
+  --gtc-input-bg: #001f3f;
+  --gtc-menu-bg: #00264d;
+  --gtc-border: #ffd900;
+  --gtc-border-strong: #fff36b;
+  --gtc-text: #ffffff;
+  --gtc-text-muted: #fff36b;
+  --gtc-text-soft: #ffe766;
+  --gtc-focus-ring: rgba(255, 217, 0, 0.52);
+  --gtc-hover-bg: #003d7a;
+  --gtc-selected-bg: #ffd900;
+  --gtc-selected-text: #001b33;
+  --gtc-current-bg: #ffd900;
+  --gtc-current-text: #000000;
+  --gtc-current-border: #fff36b;
+  --gtc-warning: #ffb000;
+  --gtc-warning-bg: rgba(255, 176, 0, 0.18);
+}
+
+:is(html, body).gt-accessibility-high-contrast-bright-dark {
+  --gtc-page-bg: #05070a;
+  --gtc-header-bg: #111827;
+  --gtc-sidebar-bg: #0b1220;
+  --gtc-main-bg: #05070a;
+  --gtc-panel-bg: #111827;
+  --gtc-panel-bg-elevated: #172033;
+  --gtc-card-bg: #1f2937;
+  --gtc-card-hover-bg: #2f3b4f;
+  --gtc-input-bg: #0b1220;
+  --gtc-menu-bg: #111827;
+  --gtc-border: #93c5fd;
+  --gtc-border-strong: #facc15;
+  --gtc-text: #ffffff;
+  --gtc-text-muted: #e5e7eb;
+  --gtc-text-soft: #d1d5db;
+  --gtc-focus-ring: rgba(250, 204, 21, 0.45);
+  --gtc-hover-bg: #2f3b4f;
+  --gtc-selected-bg: #facc15;
+  --gtc-selected-text: #111827;
+  --gtc-current-bg: #facc15;
+  --gtc-current-text: #000000;
+  --gtc-current-border: #fde68a;
+  --gtc-warning: #fbbf24;
+  --gtc-warning-bg: rgba(251, 191, 36, 0.18);
+}
+
+:is(html, body).gt-accessibility-wcag-aa {
+  --gtc-page-bg: #f7fafc;
+  --gtc-header-bg: #ffffff;
+  --gtc-sidebar-bg: #edf2f7;
+  --gtc-main-bg: #f7fafc;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #edf2f7;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: #4a5568;
+  --gtc-border-strong: #1a365d;
+  --gtc-text: #1a202c;
+  --gtc-text-muted: #2d3748;
+  --gtc-text-soft: #4a5568;
+  --gtc-focus-ring: rgba(26, 54, 93, 0.35);
+  --gtc-hover-bg: #edf2f7;
+  --gtc-selected-bg: #1a365d;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #1a365d;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: #2b6cb0;
+  --gtc-warning: #9b2c2c;
+  --gtc-warning-bg: #fff5f5;
+}
+
+:is(html, body).gt-accessibility-wcag-aaa {
+  --gtc-page-bg: #ffffff;
+  --gtc-header-bg: #ffffff;
+  --gtc-sidebar-bg: #f2f2f2;
+  --gtc-main-bg: #ffffff;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #eeeeee;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: #111111;
+  --gtc-border-strong: #000000;
+  --gtc-text: #000000;
+  --gtc-text-muted: #111111;
+  --gtc-text-soft: #222222;
+  --gtc-focus-ring: rgba(0, 0, 0, 0.36);
+  --gtc-hover-bg: #eeeeee;
+  --gtc-selected-bg: #000000;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #000000;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: #000000;
+  --gtc-warning: #7f1d1d;
+  --gtc-warning-bg: #fff1f1;
+}
+
+:is(html, body).gt-accessibility-protanopia {
+  --gtc-page-bg: #f8fafc;
+  --gtc-header-bg: #eef6ff;
+  --gtc-sidebar-bg: #eef6ff;
+  --gtc-main-bg: #f8fafc;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #edf7ff;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: #0072b2;
+  --gtc-border-strong: #005a8c;
+  --gtc-text: #111827;
+  --gtc-text-muted: #374151;
+  --gtc-text-soft: #4b5563;
+  --gtc-focus-ring: rgba(0, 114, 178, 0.34);
+  --gtc-hover-bg: #edf7ff;
+  --gtc-selected-bg: #0072b2;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #0072b2;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: #005a8c;
+  --gtc-warning: #a45a00;
+  --gtc-warning-bg: #fff4df;
+}
+
+:is(html, body).gt-accessibility-deuteranopia {
+  --gtc-page-bg: #fbfaf7;
+  --gtc-header-bg: #f5f0e6;
+  --gtc-sidebar-bg: #f5f0e6;
+  --gtc-main-bg: #fbfaf7;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #f5f0e6;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: #785ef0;
+  --gtc-border-strong: #5f46c8;
+  --gtc-text: #111827;
+  --gtc-text-muted: #374151;
+  --gtc-text-soft: #4b5563;
+  --gtc-focus-ring: rgba(120, 94, 240, 0.32);
+  --gtc-hover-bg: #f5f0e6;
+  --gtc-selected-bg: #785ef0;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #785ef0;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: #5f46c8;
+  --gtc-warning: #b15a00;
+  --gtc-warning-bg: #fff4df;
+}
+
+:is(html, body).gt-accessibility-tritanopia {
+  --gtc-page-bg: #fff8fb;
+  --gtc-header-bg: #fff0f5;
+  --gtc-sidebar-bg: #fff0f5;
+  --gtc-main-bg: #fff8fb;
+  --gtc-panel-bg: #ffffff;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #fff0f5;
+  --gtc-input-bg: #ffffff;
+  --gtc-menu-bg: #ffffff;
+  --gtc-border: #c2185b;
+  --gtc-border-strong: #8c1242;
+  --gtc-text: #111827;
+  --gtc-text-muted: #374151;
+  --gtc-text-soft: #4b5563;
+  --gtc-focus-ring: rgba(194, 24, 91, 0.32);
+  --gtc-hover-bg: #fff0f5;
+  --gtc-selected-bg: #c2185b;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #c2185b;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: #8c1242;
+  --gtc-warning: #8a5a00;
+  --gtc-warning-bg: #fff7df;
+}
+
+body:is(
+  .gt-accessibility-protanopia,
+  .gt-accessibility-deuteranopia,
+  .gt-accessibility-tritanopia
+) :is(.text-ready, .text-satisfied, .text-locked, .text-ap, .text-status-error, [data-gt-roadmap-course-status="true"]) {
+  font-weight: 850 !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+}
+
+body.gt-theme-enabled:is(
+  .gt-accessibility-high-contrast-bw,
+  .gt-accessibility-high-contrast-navy-yellow,
+  .gt-accessibility-high-contrast-bright-dark,
+  .gt-accessibility-wcag-aa,
+  .gt-accessibility-wcag-aaa,
+  .gt-accessibility-protanopia,
+  .gt-accessibility-deuteranopia,
+  .gt-accessibility-tritanopia
+) :is(
+  .gt-roadmap-current-semester-indicator,
+  [data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-semester][data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-tour="semester-columns"] p.bg-accent-primary,
+  [data-tour="semester-columns"] .bg-accent-primary.text-white
+),
+body.gt-theme-enabled:is(
+  .gt-accessibility-high-contrast-bw,
+  .gt-accessibility-high-contrast-navy-yellow,
+  .gt-accessibility-high-contrast-bright-dark,
+  .gt-accessibility-wcag-aa,
+  .gt-accessibility-wcag-aaa,
+  .gt-accessibility-protanopia,
+  .gt-accessibility-deuteranopia,
+  .gt-accessibility-tritanopia
+) :is(
+  .gt-roadmap-current-semester-indicator,
+  [data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-semester][data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-tour="semester-columns"] p.bg-accent-primary,
+  [data-tour="semester-columns"] .bg-accent-primary.text-white
+) * {
+  color: var(--gtc-current-text) !important;
+}
+
+body.gt-accessibility-protanopia :is(.text-ready, .text-satisfied, [data-gt-roadmap-completed="true"] [data-gt-roadmap-course-status="true"]) {
+  color: #0072b2 !important;
+}
+
+body.gt-accessibility-protanopia :is(.text-locked, .text-status-error) {
+  color: #a45a00 !important;
+  text-decoration-line: underline !important;
+}
+
+body.gt-accessibility-deuteranopia :is(.text-ready, .text-satisfied, [data-gt-roadmap-completed="true"] [data-gt-roadmap-course-status="true"]) {
+  color: #785ef0 !important;
+}
+
+body.gt-accessibility-deuteranopia :is(.text-locked, .text-status-error) {
+  color: #b15a00 !important;
+  text-decoration-line: underline !important;
+}
+
+body.gt-accessibility-tritanopia :is(.text-ready, .text-satisfied, [data-gt-roadmap-completed="true"] [data-gt-roadmap-course-status="true"]) {
+  color: #c2185b !important;
+}
+
+body.gt-accessibility-tritanopia :is(.text-locked, .text-status-error) {
+  color: #8a5a00 !important;
+  text-decoration-line: underline !important;
+}
+
+body:is(
+  .gt-accessibility-high-contrast-bw,
+  .gt-accessibility-high-contrast-navy-yellow,
+  .gt-accessibility-high-contrast-bright-dark,
+  .gt-accessibility-wcag-aa,
+  .gt-accessibility-wcag-aaa
+) :is(a, button, [role="button"], input, select, textarea) {
+  outline-offset: 2px;
 }
 
 @media (max-width: 640px) {

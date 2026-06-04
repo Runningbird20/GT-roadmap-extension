@@ -12,7 +12,17 @@
     showCourseCredits: true,
     showCourseGpa: true,
     cornerRadius: 8,
-    emphasizePrereqs: false,
+    selectedLanguage: "en",
+    selectedFunLanguage: "en",
+    selectedAccessibilityMode: "none",
+    selectedReadableFont: "default",
+    bodyFontScale: 100,
+    courseCardFontScale: 100,
+    semesterHeaderFontScale: 100,
+    readabilityLetterSpacing: 0,
+    readabilityWordSpacing: 0,
+    readabilityLineHeight: 140,
+    distractionFreeMode: false,
     customThemeColors: {
       page: "#0f2118",
       panel: "#1d3527",
@@ -34,10 +44,36 @@
     "gt-theme-forest-green",
     "gt-theme-ocean-blue",
     "gt-theme-sunset-orange",
+    "gt-theme-zelda",
+    "gt-theme-cyberpunk",
+    "gt-theme-terminal-hacker",
+    "gt-theme-georgia-tech-dark",
+    "gt-theme-material-you",
+    "gt-theme-glassmorphism",
+    "gt-theme-amoled-black",
+    "gt-theme-catppuccin",
+    "gt-theme-nord",
+    "gt-theme-gruvbox",
     "gt-theme-custom"
   ];
 
-  const FONT_STACKS = {
+  const ACCESSIBILITY_MODES = [
+    "none",
+    "high-contrast-bw",
+    "high-contrast-navy-yellow",
+    "high-contrast-bright-dark",
+    "wcag-aa",
+    "wcag-aaa",
+    "protanopia",
+    "deuteranopia",
+    "tritanopia"
+  ];
+
+  const ACCESSIBILITY_CLASSES = ACCESSIBILITY_MODES
+    .filter((mode) => mode !== "none")
+    .map((mode) => `gt-accessibility-${mode}`);
+
+  const FONT_STACKS = globalThis.GT_ROADMAP_FONT_STACKS || {
     default: "",
     "jetbrains-mono": '"GT JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font", "JetBrainsMono NF", "JetBrains Mono", monospace',
     "fira-code": '"GT FiraCode Nerd Font", "FiraCode Nerd Font", "FiraCode NF", "Fira Code", monospace',
@@ -50,7 +86,7 @@
 
   const FONT_FACE_STYLE_ID = "gt-roadmap-bundled-font-faces";
 
-  const FONT_FACE_DEFINITIONS = [
+  const FONT_FACE_DEFINITIONS = globalThis.GT_ROADMAP_FONT_FACES || [
     {
       family: "GT JetBrainsMono Nerd Font",
       file: "assets/fonts/JetBrainsMonoNerdFontMono-Regular.ttf"
@@ -84,31 +120,45 @@
   const BODY_CLASSES = {
     themeEnabled: "gt-theme-enabled",
     fontEnabled: "gt-roadmap-font-enabled",
+    readabilityEnabled: "gt-roadmap-readability-enabled",
+    distractionFree: "gt-roadmap-distraction-free",
     hideCourseName: "gt-roadmap-hide-course-name",
     hideCourseCredits: "gt-roadmap-hide-course-credits",
-    hideCourseGpa: "gt-roadmap-hide-course-gpa",
-    emphasizePrereqs: "gt-roadmap-emphasize-prereqs"
+    hideCourseGpa: "gt-roadmap-hide-course-gpa"
   };
 
   const ALL_CONTROL_CLASSES = [
     BODY_CLASSES.themeEnabled,
     BODY_CLASSES.fontEnabled,
+    BODY_CLASSES.readabilityEnabled,
+    BODY_CLASSES.distractionFree,
     BODY_CLASSES.hideCourseName,
     BODY_CLASSES.hideCourseCredits,
     BODY_CLASSES.hideCourseGpa,
-    BODY_CLASSES.emphasizePrereqs,
     "gt-roadmap-customizer-enabled",
-    ...THEME_CLASSES
+    ...THEME_CLASSES,
+    ...ACCESSIBILITY_CLASSES
   ];
 
-  const TOOLBAR_TOGGLES = [
-    { key: "emphasizePrereqs", label: "Prereqs", title: "Toggle prerequisite warning emphasis" }
+  const LANGUAGE_OPTIONS = globalThis.GT_ROADMAP_LANGUAGES || [
+    { id: "en", label: "English", name: "English", htmlLang: "en", dir: "ltr" }
   ];
+  const FUN_LANGUAGE_IDS = globalThis.GT_ROADMAP_FUN_LANGUAGE_IDS || [];
+  const TRANSLATIONS = globalThis.GT_ROADMAP_TRANSLATIONS || {};
+  const TRANSLATABLE_ATTRIBUTES = ["aria-label", "title", "placeholder"];
+  const DYSLEXIA_FONT_IDS = globalThis.GT_ROADMAP_DYSLEXIA_FONT_IDS || [
+    "opendyslexic",
+    "lexend",
+    "atkinson-hyperlegible"
+  ];
+  const TOOLBAR_TOGGLES = [];
 
   let settings = { ...DEFAULT_SETTINGS };
   let observer = null;
   let scanQueued = false;
   let lastDebugAt = 0;
+  const originalTextNodes = new WeakMap();
+  const originalAttributes = new WeakMap();
 
   const hasChromeStorage =
     typeof chrome !== "undefined" &&
@@ -123,10 +173,71 @@
     return Object.prototype.hasOwnProperty.call(FONT_STACKS, fontId) ? fontId : DEFAULT_SETTINGS.selectedFont;
   }
 
+  function normalizeLanguageId(languageId) {
+    return LANGUAGE_OPTIONS.some((language) => language.id === languageId && !FUN_LANGUAGE_IDS.includes(language.id))
+      ? languageId
+      : DEFAULT_SETTINGS.selectedLanguage;
+  }
+
+  function normalizeFunLanguageId(languageId) {
+    return FUN_LANGUAGE_IDS.includes(languageId) ? languageId : DEFAULT_SETTINGS.selectedFunLanguage;
+  }
+
+  function normalizeTranslationLanguageId(languageId) {
+    return LANGUAGE_OPTIONS.some((language) => language.id === languageId)
+      ? languageId
+      : DEFAULT_SETTINGS.selectedLanguage;
+  }
+
+  function getLanguageConfig(languageId) {
+    return (
+      LANGUAGE_OPTIONS.find((language) => language.id === normalizeTranslationLanguageId(languageId)) ||
+      LANGUAGE_OPTIONS[0]
+    );
+  }
+
   function normalizeCornerRadius(value) {
     const number = Number(value);
     if (!Number.isFinite(number)) return DEFAULT_SETTINGS.cornerRadius;
     return Math.max(0, Math.min(24, Math.round(number)));
+  }
+
+  function normalizeAccessibilityMode(mode) {
+    return ACCESSIBILITY_MODES.includes(mode) ? mode : DEFAULT_SETTINGS.selectedAccessibilityMode;
+  }
+
+  function clampInteger(value, fallback, min, max) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return fallback;
+    return Math.max(min, Math.min(max, Math.round(number)));
+  }
+
+  function normalizeReadableFont(fontId) {
+    return DYSLEXIA_FONT_IDS.includes(fontId) && Object.prototype.hasOwnProperty.call(FONT_STACKS, fontId)
+      ? fontId
+      : DEFAULT_SETTINGS.selectedReadableFont;
+  }
+
+  function normalizeReadabilitySettings(values) {
+    return {
+      selectedReadableFont: normalizeReadableFont(values.selectedReadableFont),
+      bodyFontScale: clampInteger(values.bodyFontScale, DEFAULT_SETTINGS.bodyFontScale, 90, 115),
+      courseCardFontScale: clampInteger(values.courseCardFontScale, DEFAULT_SETTINGS.courseCardFontScale, 85, 120),
+      semesterHeaderFontScale: clampInteger(
+        values.semesterHeaderFontScale,
+        DEFAULT_SETTINGS.semesterHeaderFontScale,
+        90,
+        125
+      ),
+      readabilityLetterSpacing: clampInteger(
+        values.readabilityLetterSpacing,
+        DEFAULT_SETTINGS.readabilityLetterSpacing,
+        0,
+        8
+      ),
+      readabilityWordSpacing: clampInteger(values.readabilityWordSpacing, DEFAULT_SETTINGS.readabilityWordSpacing, 0, 22),
+      readabilityLineHeight: clampInteger(values.readabilityLineHeight, DEFAULT_SETTINGS.readabilityLineHeight, 120, 180)
+    };
   }
 
   function getExtensionUrl(path) {
@@ -222,7 +333,7 @@
       (font) => `
 @font-face {
   font-family: "${font.family}";
-  src: url("${getExtensionUrl(font.file)}") format("truetype");
+  src: url("${getExtensionUrl(font.file)}") format("${font.format || "truetype"}");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -239,6 +350,22 @@
     } else {
       element.style.removeProperty("--gtc-font-family");
     }
+  }
+
+  function applyReadabilityVariables(element, readability) {
+    const readableFontStack = FONT_STACKS[readability.selectedReadableFont] || "";
+    if (readableFontStack) {
+      element.style.setProperty("--gtc-readable-font-family", readableFontStack);
+    } else {
+      element.style.removeProperty("--gtc-readable-font-family");
+    }
+
+    element.style.setProperty("--gtc-body-font-scale", `${readability.bodyFontScale}%`);
+    element.style.setProperty("--gtc-course-card-font-scale", `${readability.courseCardFontScale}%`);
+    element.style.setProperty("--gtc-semester-header-font-scale", `${readability.semesterHeaderFontScale}%`);
+    element.style.setProperty("--gtc-readability-letter-spacing", `${readability.readabilityLetterSpacing / 100}em`);
+    element.style.setProperty("--gtc-readability-word-spacing", `${readability.readabilityWordSpacing / 100}em`);
+    element.style.setProperty("--gtc-readability-line-height", String(readability.readabilityLineHeight / 100));
   }
 
   function applyCornerRadiusVariable(element, cornerRadius) {
@@ -278,6 +405,151 @@
     setThemeVariable(element, "--gtc-warning-bg", `color-mix(in srgb, ${colors.warning} 16%, transparent)`);
   }
 
+  function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function getDictionary(languageId) {
+    return TRANSLATIONS[normalizeTranslationLanguageId(languageId)] || null;
+  }
+
+  function lookupTranslation(dictionary, text) {
+    if (!dictionary) return null;
+    if (Object.prototype.hasOwnProperty.call(dictionary, text)) return dictionary[text];
+
+    const lowerText = text.toLowerCase();
+    const match = Object.keys(dictionary).find((key) => key.toLowerCase() === lowerText);
+    return match ? dictionary[match] : null;
+  }
+
+  function translateCoreText(text, languageId) {
+    const dictionary = getDictionary(languageId);
+    if (!dictionary || languageId === "en") return text;
+
+    const exact = lookupTranslation(dictionary, text);
+    if (exact) return exact;
+
+    const gpaMatch = /^GPA:\s*(.+)$/i.exec(text);
+    if (gpaMatch) return `${lookupTranslation(dictionary, "GPA") || "GPA"}: ${gpaMatch[1]}`;
+
+    const creditsMatch = /^(\d+(?:\.\d+)?)\s+credits?$/i.exec(text);
+    if (creditsMatch) {
+      const creditKey = Number(creditsMatch[1]) === 1 ? "credit" : "credits";
+      return `${creditsMatch[1]} ${lookupTranslation(dictionary, creditKey) || creditKey}`;
+    }
+
+    const semesterMatch = /^(Spring|Summer|Fall)\s+(\d{4})$/i.exec(text);
+    if (semesterMatch) {
+      const term = semesterMatch[1][0].toUpperCase() + semesterMatch[1].slice(1).toLowerCase();
+      return `${lookupTranslation(dictionary, term) || term} ${semesterMatch[2]}`;
+    }
+
+    let translated = text;
+    Object.keys(dictionary)
+      .filter((key) => /^[A-Za-z][A-Za-z /'-]+$/.test(key))
+      .sort((a, b) => b.length - a.length)
+      .forEach((key) => {
+        translated = translated.replace(
+          new RegExp(`(^|\\b)${escapeRegExp(key)}(\\b|$)`, "gi"),
+          (_match, prefix, suffix) => `${prefix}${dictionary[key]}${suffix}`
+        );
+      });
+
+    return translated;
+  }
+
+  function translateText(text, languageId) {
+    if (!text || !text.trim()) return text;
+
+    const leading = text.match(/^\s*/)?.[0] || "";
+    const trailing = text.match(/\s*$/)?.[0] || "";
+    const core = text.trim().replace(/\s+/g, " ");
+    return `${leading}${translateCoreText(core, languageId)}${trailing}`;
+  }
+
+  function shouldSkipTranslationNode(node) {
+    const parent = node.parentElement;
+    if (!parent) return true;
+
+    return Boolean(
+      parent.closest(
+        [
+          "script",
+          "style",
+          "noscript",
+          "svg",
+          "canvas",
+          "code",
+          "pre",
+          "textarea",
+          "input",
+          "select",
+          "[contenteditable='true']",
+          "[data-gt-roadmap-no-translate='true']"
+        ].join(", ")
+      )
+    );
+  }
+
+  function translateTextNode(node, languageId) {
+    if (shouldSkipTranslationNode(node)) return;
+
+    if (!originalTextNodes.has(node)) {
+      originalTextNodes.set(node, node.nodeValue || "");
+    }
+
+    const original = originalTextNodes.get(node);
+    const translated = languageId === "en" ? original : translateText(original, languageId);
+    if (node.nodeValue !== translated) {
+      node.nodeValue = translated;
+    }
+  }
+
+  function translateAttributes(element, languageId) {
+    TRANSLATABLE_ATTRIBUTES.forEach((attribute) => {
+      if (!element.hasAttribute(attribute)) return;
+
+      let originals = originalAttributes.get(element);
+      if (!originals) {
+        originals = {};
+        originalAttributes.set(element, originals);
+      }
+
+      if (!Object.prototype.hasOwnProperty.call(originals, attribute)) {
+        originals[attribute] = element.getAttribute(attribute) || "";
+      }
+
+      const original = originals[attribute];
+      const translated = languageId === "en" ? original : translateText(original, languageId);
+      if (element.getAttribute(attribute) !== translated) {
+        element.setAttribute(attribute, translated);
+      }
+    });
+  }
+
+  function applyLanguage() {
+    if (!document.documentElement || !document.body) return;
+
+    const baseLanguage = normalizeLanguageId(settings.selectedLanguage);
+    const selectedTranslationLanguage =
+      baseLanguage === "en" ? normalizeFunLanguageId(settings.selectedFunLanguage) : baseLanguage;
+    const language = getLanguageConfig(selectedTranslationLanguage);
+    document.documentElement.lang = language.htmlLang || selectedTranslationLanguage;
+    document.documentElement.dir = language.dir || "ltr";
+    document.body.dir = language.dir || "ltr";
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      translateTextNode(node, selectedTranslationLanguage);
+      node = walker.nextNode();
+    }
+
+    document.body
+      .querySelectorAll(TRANSLATABLE_ATTRIBUTES.map((attribute) => `[${attribute}]`).join(", "))
+      .forEach((element) => translateAttributes(element, selectedTranslationLanguage));
+  }
+
   function getStorage(keys) {
     return new Promise((resolve) => {
       if (!hasChromeStorage) {
@@ -311,15 +583,58 @@
       showCourseCredits: DEFAULT_SETTINGS.showCourseCredits,
       showCourseGpa: DEFAULT_SETTINGS.showCourseGpa,
       cornerRadius: DEFAULT_SETTINGS.cornerRadius,
-      emphasizePrereqs: DEFAULT_SETTINGS.emphasizePrereqs,
+      selectedLanguage: DEFAULT_SETTINGS.selectedLanguage,
+      selectedFunLanguage: DEFAULT_SETTINGS.selectedFunLanguage,
+      selectedAccessibilityMode: DEFAULT_SETTINGS.selectedAccessibilityMode,
+      selectedReadableFont: DEFAULT_SETTINGS.selectedReadableFont,
+      bodyFontScale: DEFAULT_SETTINGS.bodyFontScale,
+      courseCardFontScale: DEFAULT_SETTINGS.courseCardFontScale,
+      semesterHeaderFontScale: DEFAULT_SETTINGS.semesterHeaderFontScale,
+      readabilityLetterSpacing: DEFAULT_SETTINGS.readabilityLetterSpacing,
+      readabilityWordSpacing: DEFAULT_SETTINGS.readabilityWordSpacing,
+      readabilityLineHeight: DEFAULT_SETTINGS.readabilityLineHeight,
+      distractionFreeMode: DEFAULT_SETTINGS.distractionFreeMode,
       customThemeColors: DEFAULT_SETTINGS.customThemeColors,
       [LEGACY_SETTINGS_KEY]: null
     });
 
     const legacy = stored[LEGACY_SETTINGS_KEY] || {};
+    const storedLanguage = stored.selectedLanguage || DEFAULT_SETTINGS.selectedLanguage;
+    const migratedFunLanguage = FUN_LANGUAGE_IDS.includes(storedLanguage)
+      ? storedLanguage
+      : stored.selectedFunLanguage;
+    const selectedLanguage = normalizeLanguageId(storedLanguage);
+    const selectedFunLanguage =
+      selectedLanguage === "en" ? normalizeFunLanguageId(migratedFunLanguage) : DEFAULT_SETTINGS.selectedFunLanguage;
+
+    if (FUN_LANGUAGE_IDS.includes(storedLanguage)) {
+      await setStorage({ selectedLanguage: DEFAULT_SETTINGS.selectedLanguage, selectedFunLanguage });
+    }
+
+    if (selectedLanguage !== "en" && normalizeFontId(stored.selectedFont) !== DEFAULT_SETTINGS.selectedFont) {
+      await setStorage({ selectedFont: DEFAULT_SETTINGS.selectedFont });
+    }
+
+    const readability = normalizeReadabilitySettings({
+      selectedReadableFont:
+        selectedLanguage === "en" ? stored.selectedReadableFont : DEFAULT_SETTINGS.selectedReadableFont,
+      bodyFontScale: stored.bodyFontScale,
+      courseCardFontScale: stored.courseCardFontScale,
+      semesterHeaderFontScale: stored.semesterHeaderFontScale,
+      readabilityLetterSpacing: stored.readabilityLetterSpacing,
+      readabilityWordSpacing: stored.readabilityWordSpacing,
+      readabilityLineHeight: stored.readabilityLineHeight
+    });
+
+    if (selectedLanguage !== "en" && normalizeReadableFont(stored.selectedReadableFont) !== DEFAULT_SETTINGS.selectedReadableFont) {
+      await setStorage({ selectedReadableFont: DEFAULT_SETTINGS.selectedReadableFont });
+    }
+
     return {
       selectedTheme: normalizeThemeName(stored.selectedTheme || DEFAULT_SETTINGS.selectedTheme),
-      selectedFont: normalizeFontId(stored.selectedFont),
+      selectedFont: selectedLanguage === "en" ? normalizeFontId(stored.selectedFont) : DEFAULT_SETTINGS.selectedFont,
+      selectedLanguage,
+      selectedFunLanguage,
       themeEnabled:
         typeof stored.themeEnabled === "boolean"
           ? stored.themeEnabled
@@ -331,10 +646,10 @@
       showCourseGpa:
         typeof stored.showCourseGpa === "boolean" ? stored.showCourseGpa : DEFAULT_SETTINGS.showCourseGpa,
       cornerRadius: normalizeCornerRadius(stored.cornerRadius),
-      emphasizePrereqs:
-        typeof stored.emphasizePrereqs === "boolean"
-          ? stored.emphasizePrereqs
-          : Boolean(legacy.emphasizePrereqs ?? DEFAULT_SETTINGS.emphasizePrereqs),
+      selectedAccessibilityMode: normalizeAccessibilityMode(stored.selectedAccessibilityMode),
+      ...readability,
+      distractionFreeMode:
+        typeof stored.distractionFreeMode === "boolean" ? stored.distractionFreeMode : DEFAULT_SETTINGS.distractionFreeMode,
       customThemeColors: normalizeCustomColors(stored.customThemeColors)
     };
   }
@@ -353,6 +668,16 @@
     renderToolbarState();
   }
 
+  function cleanupYearCollapseFeature() {
+    document.getElementById("gt-roadmap-year-collapse-controls")?.remove();
+    document.querySelectorAll("[data-gt-roadmap-year-group], [data-gt-roadmap-year-label], [data-gt-roadmap-year-collapsed]")
+      .forEach((element) => {
+        element.removeAttribute("data-gt-roadmap-year-group");
+        element.removeAttribute("data-gt-roadmap-year-label");
+        element.removeAttribute("data-gt-roadmap-year-collapsed");
+      });
+  }
+
   function applySettings() {
     if (!document.documentElement || !document.body) return;
 
@@ -362,14 +687,28 @@
       element.classList.remove(...ALL_CONTROL_CLASSES);
       element.classList.toggle(BODY_CLASSES.themeEnabled, Boolean(settings.themeEnabled));
       element.classList.toggle(BODY_CLASSES.fontEnabled, normalizeFontId(settings.selectedFont) !== "default");
+      const readability = normalizeReadabilitySettings(settings);
+      const readabilityEnabled =
+        readability.selectedReadableFont !== DEFAULT_SETTINGS.selectedReadableFont ||
+        readability.bodyFontScale !== DEFAULT_SETTINGS.bodyFontScale ||
+        readability.courseCardFontScale !== DEFAULT_SETTINGS.courseCardFontScale ||
+        readability.semesterHeaderFontScale !== DEFAULT_SETTINGS.semesterHeaderFontScale ||
+        readability.readabilityLetterSpacing !== DEFAULT_SETTINGS.readabilityLetterSpacing ||
+        readability.readabilityWordSpacing !== DEFAULT_SETTINGS.readabilityWordSpacing ||
+        readability.readabilityLineHeight !== DEFAULT_SETTINGS.readabilityLineHeight;
+      element.classList.toggle(BODY_CLASSES.readabilityEnabled, readabilityEnabled);
       applyFontVariable(element, settings.selectedFont);
+      applyReadabilityVariables(element, readability);
       applyCornerRadiusVariable(element, settings.cornerRadius);
 
-      if (settings.themeEnabled) {
+      const accessibilityMode = normalizeAccessibilityMode(settings.selectedAccessibilityMode);
+      const accessibilityEnabled = settings.themeEnabled && accessibilityMode !== "none";
+
+      if (settings.themeEnabled && !accessibilityEnabled) {
         element.classList.add(`gt-theme-${normalizeThemeName(settings.selectedTheme)}`);
       }
 
-      if (settings.themeEnabled && normalizeThemeName(settings.selectedTheme) === "custom") {
+      if (settings.themeEnabled && !accessibilityEnabled && normalizeThemeName(settings.selectedTheme) === "custom") {
         applyCustomThemeVariables(element, settings.customThemeColors);
       } else {
         clearCustomThemeVariables(element);
@@ -378,14 +717,25 @@
       element.classList.toggle(BODY_CLASSES.hideCourseName, !settings.showCourseName);
       element.classList.toggle(BODY_CLASSES.hideCourseCredits, !settings.showCourseCredits);
       element.classList.toggle(BODY_CLASSES.hideCourseGpa, !settings.showCourseGpa);
-      element.classList.toggle(BODY_CLASSES.emphasizePrereqs, Boolean(settings.emphasizePrereqs));
+      element.classList.toggle(BODY_CLASSES.distractionFree, Boolean(settings.distractionFreeMode));
+
+      if (accessibilityEnabled) {
+        element.classList.add(`gt-accessibility-${accessibilityMode}`);
+      }
     });
 
     annotateStableTargets();
+    cleanupYearCollapseFeature();
+    applyLanguage();
     debugThemeState();
   }
 
   function ensureToolbar() {
+    if (TOOLBAR_TOGGLES.length === 0) {
+      document.getElementById(TOOLBAR_ID)?.remove();
+      return;
+    }
+
     if (!document.body || document.getElementById(TOOLBAR_ID)) return;
 
     const toolbar = document.createElement("section");
@@ -434,7 +784,7 @@
 
   function closestCourseCard(element) {
     if (!(element instanceof Element)) return null;
-    return element.closest(
+    const card = element.closest(
       [
         "[data-testid='course-card']",
         "[data-course-id]",
@@ -445,10 +795,42 @@
         ".dark\\:bg-background-elevated-dark.border"
       ].join(", ")
     );
+
+    return card instanceof HTMLElement && isCustomizableCourseCard(card) ? card : null;
+  }
+
+  function isCustomizableCourseCard(card) {
+    if (!(card instanceof HTMLElement)) return false;
+    if (document.body?.hasAttribute("data-gt-roadmap-course-tree-page")) return false;
+
+    const disallowedSurface = card.closest(
+      [
+        "[data-tour='control-panel']",
+        "[data-gt-roadmap-control-panel='true']",
+        "[data-gt-roadmap-debug-conflicts='true']",
+        "[role='dialog']",
+        "[aria-modal='true']"
+      ].join(", ")
+    );
+    if (disallowedSurface) return false;
+
+    return Boolean(
+      card.closest(
+        [
+          "[data-semester]",
+          "[data-tour='semester-columns']",
+          "[data-gt-roadmap-workspace='true']",
+          "[data-tour='course-panel']",
+          "[data-tour='course-card-menu']",
+          "[data-gt-roadmap-course-panel='true']"
+        ].join(", ")
+      )
+    );
   }
 
   function clearCourseCardDetailAnnotations(card) {
     [
+      "data-gt-roadmap-course-card-customizable",
       "data-gt-roadmap-course-detail-row",
       "data-gt-roadmap-course-code-row",
       "data-gt-roadmap-course-name-row",
@@ -458,6 +840,7 @@
     card
       .querySelectorAll(
         [
+          "[data-gt-roadmap-course-card-customizable]",
           "[data-gt-roadmap-course-gpa]",
           "[data-gt-roadmap-course-credits]",
           "[data-gt-roadmap-course-name]",
@@ -469,6 +852,7 @@
         ].join(", ")
       )
       .forEach((element) => {
+        element.removeAttribute("data-gt-roadmap-course-card-customizable");
         element.removeAttribute("data-gt-roadmap-course-gpa");
         element.removeAttribute("data-gt-roadmap-course-credits");
         element.removeAttribute("data-gt-roadmap-course-name");
@@ -482,6 +866,9 @@
 
   function annotateCourseCardDetails(card) {
     clearCourseCardDetailAnnotations(card);
+    if (!isCustomizableCourseCard(card)) return;
+
+    card.setAttribute("data-gt-roadmap-course-card-customizable", "true");
 
     const directRows = Array.from(card.children).filter((child) => child instanceof HTMLElement);
     const codeRow = directRows[0];
@@ -571,7 +958,14 @@
   }
 
   function annotateCourseCards() {
-    annotateAll(
+    document.querySelectorAll("[data-gt-roadmap-course-card='true']").forEach((card) => {
+      if (!isCustomizableCourseCard(card)) {
+        clearCourseCardDetailAnnotations(card);
+      }
+    });
+
+    document
+      .querySelectorAll(
       [
         "[data-testid='course-card']",
         "[data-course-id]",
@@ -583,20 +977,14 @@
         ".bg-background-elevated.border:has(.text-ready, .text-locked, .text-satisfied, .text-ap)",
         ".dark\\:bg-background-elevated-dark.border:has(.text-ready, .text-locked, .text-satisfied, .text-ap)"
       ].join(", "),
-      "data-gt-roadmap-course-card"
-    );
+    )
+      .forEach((card) => {
+        if (isCustomizableCourseCard(card)) {
+          card.setAttribute("data-gt-roadmap-course-card", "true");
+        }
+      });
 
     promoteCourseCardsFromDescendants();
-
-    annotateAll(
-      [
-        "[data-gt-roadmap-course-card='true'].border-error",
-        "[data-gt-roadmap-course-card='true']:has(.text-locked)",
-        ".bg-background-elevated.border-error",
-        ".dark\\:bg-background-elevated-dark.border-error"
-      ].join(", "),
-      "data-gt-roadmap-prereq-warning"
-    );
 
     annotateAll(
       [
@@ -630,20 +1018,6 @@
     // and only annotates leaf-like nodes so it does not fight React layout.
     annotateAll(
       [
-        '[data-testid="prereq-warning"]',
-        '[aria-label*="prereq" i]',
-        '[aria-label*="coreq" i]',
-        '[aria-label*="conflict" i]',
-        '[role="alert"]',
-        ".border-error",
-        ".text-locked",
-        ".text-status-error"
-      ].join(", "),
-      "data-gt-roadmap-prereq-warning"
-    );
-
-    annotateAll(
-      [
         '[data-completed="true"]',
         '[data-status="completed"]',
         '[aria-label*="completed" i]',
@@ -664,6 +1038,8 @@
     annotateAll('[aria-label^="Add "][aria-label*=" semester bin"], [aria-label^="Remove "][aria-label*=" semester bin"]', "data-gt-roadmap-semester-action");
     annotateAll('[aria-label*="Zoom " i]', "data-gt-roadmap-zoom-control");
 
+    annotateCourseTreeSurface();
+    annotateDebugConflictSurface();
     annotateCurrentSemester();
     annotateCourseCards();
 
@@ -672,12 +1048,63 @@
       "data-gt-roadmap-scroll-surface"
     );
 
-    const warningTextPattern = /\b(prereq|prerequisite|coreq|co-requisite|missing requirement)\b/i;
-    document.querySelectorAll("p, li, div, span").forEach((element) => {
-      if (element.children.length > 0) return;
-      const text = element.textContent || "";
-      if (warningTextPattern.test(text)) {
-        element.setAttribute("data-gt-roadmap-prereq-warning", "true");
+  }
+
+  function annotateCourseTreeSurface() {
+    if (!document.body) return;
+
+    const path = window.location.pathname || "";
+    const normalizedPath = path.replace(/\s+/g, "");
+    const isCourseTreeRoute =
+      /^\/[A-Za-z]+\d[\dA-Za-z]*\/?$/.test(normalizedPath) ||
+      /^\/course-tree\/[A-Za-z]+-?\d[\dA-Za-z-]*\/?$/i.test(normalizedPath);
+    document.body.toggleAttribute("data-gt-roadmap-course-tree-page", isCourseTreeRoute);
+
+    annotateAll(".course-tree-prereqs, .course-tree-current", "data-gt-roadmap-course-tree-node");
+    annotateAll(".course-tree-prereqs", "data-gt-roadmap-course-tree-prereqs");
+    annotateAll(".course-tree-current", "data-gt-roadmap-course-tree-current");
+
+    document.querySelectorAll(".course-tree-prereqs, .course-tree-current").forEach((element) => {
+      const treeRoot = element.closest(".inline-flex, [class*='konvajs-content']");
+      if (treeRoot instanceof HTMLElement) {
+        treeRoot.setAttribute("data-gt-roadmap-course-tree-canvas", "true");
+      }
+    });
+  }
+
+  function annotateDebugConflictSurface() {
+    if (!document.body) return;
+
+    document
+      .querySelectorAll("[data-gt-roadmap-debug-conflicts], [data-gt-roadmap-conflict-card]")
+      .forEach((element) => {
+        element.removeAttribute("data-gt-roadmap-debug-conflicts");
+        element.removeAttribute("data-gt-roadmap-conflict-card");
+      });
+
+    const debugButton = Array.from(document.querySelectorAll("button")).find(
+      (button) => (button.textContent || "").trim().toLowerCase() === "debug conflicts"
+    );
+    const controlPanel = debugButton?.closest("[data-tour='control-panel'], [data-gt-roadmap-control-panel='true']");
+    if (!(controlPanel instanceof HTMLElement)) return;
+
+    controlPanel.setAttribute("data-gt-roadmap-debug-conflicts", "true");
+
+    controlPanel.querySelectorAll("h4, span, p").forEach((element) => {
+      const text = (element.textContent || "").trim().toLowerCase();
+      if (!/(conflict|prerequisite|requirements|satisfied)/.test(text)) return;
+
+      const section = element.closest(".space-y-4, .space-y-3, .rounded-lg");
+      if (section instanceof HTMLElement) {
+        section.setAttribute("data-gt-roadmap-debug-conflicts", "true");
+        const sectionText = (section.textContent || "").toLowerCase();
+        if (/no conflicts detected|all prerequisites/.test(sectionText)) {
+          section.setAttribute("data-gt-roadmap-conflict-card", "success");
+        } else if (/schedule conflict|prerequisite conflict|locked|missing|not satisfied/.test(sectionText)) {
+          section.setAttribute("data-gt-roadmap-conflict-card", "error");
+        } else if (/requirements|details|debug/.test(sectionText)) {
+          section.setAttribute("data-gt-roadmap-conflict-card", "info");
+        }
       }
     });
   }
@@ -741,6 +1168,8 @@
         coursePanel: "[data-tour='course-panel']",
         workspace: "[data-tour='semester-columns']",
         currentSemester: "[data-gt-roadmap-current-semester='true'], .gt-roadmap-current-semester-indicator",
+        courseTreePage: "[data-gt-roadmap-course-tree-page]",
+        debugConflicts: "[data-gt-roadmap-debug-conflicts='true']",
         scrollSurface: "[data-gt-roadmap-scroll-surface='true']",
         semester: "[data-semester]",
         courseCard: "[data-testid='course-card'], [data-course-id], [class*='course'][class*='card']",
@@ -754,6 +1183,19 @@
       console.info("[GT Roadmap Customizer]", {
         selectedTheme: settings.selectedTheme,
         selectedFont: settings.selectedFont,
+        selectedLanguage: settings.selectedLanguage,
+        selectedFunLanguage: settings.selectedFunLanguage,
+        selectedAccessibilityMode: settings.selectedAccessibilityMode,
+        selectedReadableFont: settings.selectedReadableFont,
+        readability: {
+          body: settings.bodyFontScale,
+          courseCards: settings.courseCardFontScale,
+          semesterHeaders: settings.semesterHeaderFontScale,
+          letterSpacing: settings.readabilityLetterSpacing,
+          wordSpacing: settings.readabilityWordSpacing,
+          lineHeight: settings.readabilityLineHeight
+        },
+        distractionFreeMode: settings.distractionFreeMode,
         themeEnabled: settings.themeEnabled,
         courseCardDetails: {
           name: settings.showCourseName,
@@ -786,7 +1228,10 @@
     observer = new MutationObserver(() => queueScan());
     observer.observe(document.documentElement, {
       childList: true,
-      subtree: true
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: TRANSLATABLE_ATTRIBUTES
     });
   }
 
@@ -816,7 +1261,17 @@
         "showCourseCredits",
         "showCourseGpa",
         "cornerRadius",
-        "emphasizePrereqs",
+        "selectedLanguage",
+        "selectedFunLanguage",
+        "selectedAccessibilityMode",
+        "selectedReadableFont",
+        "bodyFontScale",
+        "courseCardFontScale",
+        "semesterHeaderFontScale",
+        "readabilityLetterSpacing",
+        "readabilityWordSpacing",
+        "readabilityLineHeight",
+        "distractionFreeMode",
         "customThemeColors",
         LEGACY_SETTINGS_KEY
       ];
