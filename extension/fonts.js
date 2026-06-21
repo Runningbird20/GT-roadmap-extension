@@ -88,7 +88,7 @@
   }
 
   async function notifyActiveTab() {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
     const tab = tabs[0];
     if (!tab || !tab.id) return;
 

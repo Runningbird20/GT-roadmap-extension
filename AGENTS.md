@@ -91,3 +91,4 @@ node -e "JSON.parse(require('fs').readFileSync('extension/manifest.json','utf8')
 ```
 
 After CSS or manifest changes, reload the unpacked extension in the browser and refresh the roadmap page.
+

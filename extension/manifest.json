@@ -27,7 +27,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/fonts/*.ttf", "assets/fonts/*.woff2"],
+      "resources": ["assets/fonts/*.ttf", "assets/fonts/*.woff2", "assets/data/*.json"],
       "matches": [
         "https://degree-roadmap.gatech.edu/*",
         "https://dev-gt-degree-roadmap.vercel.app/*",

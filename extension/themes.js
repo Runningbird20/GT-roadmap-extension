@@ -255,6 +255,97 @@
       }
     },
     {
+      id: "dracula",
+      name: "Dracula",
+      description: "Purple and pink neon dark",
+      preview: {
+        page: "#282a36",
+        panel: "#21222c",
+        card: "#353746",
+        text: "#f8f8f2",
+        current: "#ff79c6",
+        accent: "#bd93f9"
+      }
+    },
+    {
+      id: "solarized-dark",
+      name: "Solarized Dark",
+      description: "Classic teal developer theme",
+      preview: {
+        page: "#002b36",
+        panel: "#073642",
+        card: "#0d4552",
+        text: "#93a1a1",
+        current: "#2aa198",
+        accent: "#268bd2"
+      }
+    },
+    {
+      id: "rose-gold",
+      name: "Rose Gold",
+      description: "Warm blush and rose tones",
+      preview: {
+        page: "#fdf0ed",
+        panel: "#fff8f6",
+        card: "#ffffff",
+        text: "#3d1e1a",
+        current: "#c97b87",
+        accent: "#e8a8b2"
+      }
+    },
+    {
+      id: "midnight",
+      name: "Midnight",
+      description: "Deep indigo and periwinkle",
+      preview: {
+        page: "#1a1b2e",
+        panel: "#222338",
+        card: "#2d2e48",
+        text: "#e8eaf6",
+        current: "#7986cb",
+        accent: "#5c6bc0"
+      }
+    },
+    {
+      id: "crimson",
+      name: "Crimson",
+      description: "Deep dark red theme",
+      preview: {
+        page: "#130808",
+        panel: "#1e0e0e",
+        card: "#2d1818",
+        text: "#f9e4e4",
+        current: "#e53535",
+        accent: "#c62828"
+      }
+    },
+    {
+      id: "emerald",
+      name: "Emerald",
+      description: "Rich jewel green",
+      preview: {
+        page: "#051710",
+        panel: "#0c2a1c",
+        card: "#18402c",
+        text: "#d4f5e4",
+        current: "#00c853",
+        accent: "#69f0ae"
+      }
+    },
+    {
+      id: "superman",
+      name: "Superman",
+      description: "Heroic blue, red, and gold",
+      preview: {
+        page: "#060e24",
+        panel: "#0d1c40",
+        card: "#172a60",
+        text: "#e8f0ff",
+        current: "#d32f2f",
+        accent: "#f9a825"
+      }
+    },
+    {
       id: "custom",
       name: "Custom",
       description: "Your saved color palette",
@@ -457,7 +548,7 @@
   }
 
   async function notifyActiveTab() {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
     const tab = tabs[0];
     if (!tab || !tab.id) return;
 
@@ -567,11 +658,6 @@
       label.className = "custom-color-label";
       label.textContent = "Page color";
 
-      const swatch = document.createElement("input");
-      swatch.type = "color";
-      swatch.value = customThemeBaseColor;
-      swatch.setAttribute("aria-label", "Page color");
-
       const hex = document.createElement("input");
       hex.type = "text";
       hex.inputMode = "text";
@@ -580,19 +666,9 @@
       hex.pattern = "#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?";
       hex.setAttribute("aria-label", "Page color hex value");
 
-      swatch.addEventListener("input", () => {
-        hex.value = swatch.value;
-      });
-
-      swatch.addEventListener("change", () => {
-        hex.value = swatch.value;
-        saveEasyBaseColor(swatch.value, customIsActive);
-      });
-
       hex.addEventListener("change", () => {
         const normalized = normalizeHex(hex.value, customThemeBaseColor);
         hex.value = normalized;
-        swatch.value = normalized;
         saveEasyBaseColor(normalized, customIsActive);
       });
 
@@ -600,7 +676,7 @@
       helper.className = "custom-mode-helper";
       helper.textContent = "The rest of the palette is generated from this color.";
 
-      row.append(label, swatch, hex);
+      row.append(label, hex);
       customColorGrid.append(row, helper);
       return;
     }
@@ -612,11 +688,6 @@
       const label = document.createElement("span");
       label.className = "custom-color-label";
       label.textContent = field.label;
-
-      const swatch = document.createElement("input");
-      swatch.type = "color";
-      swatch.value = customThemeColors[field.key];
-      swatch.setAttribute("aria-label", `${field.label} color`);
 
       const hex = document.createElement("input");
       hex.type = "text";
@@ -632,23 +703,13 @@
         await saveCustomColors(nextColors, customIsActive);
       };
 
-      swatch.addEventListener("input", () => {
-        hex.value = swatch.value;
-      });
-
-      swatch.addEventListener("change", () => {
-        hex.value = swatch.value;
-        update(swatch.value);
-      });
-
       hex.addEventListener("change", () => {
         const normalized = normalizeHex(hex.value, customThemeColors[field.key]);
         hex.value = normalized;
-        swatch.value = normalized;
         update(normalized);
       });
 
-      row.append(label, swatch, hex);
+      row.append(label, hex);
       customColorGrid.appendChild(row);
     });
   }

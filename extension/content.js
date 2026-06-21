@@ -23,6 +23,11 @@
     readabilityWordSpacing: 0,
     readabilityLineHeight: 140,
     distractionFreeMode: false,
+    prereqHighlight: true,
+    creditLoadIndicator: true,
+    creditLoadLightBelow: 12,
+    creditLoadHeavyFrom: 18,
+    creditLoadOverloadedFrom: 21,
     customThemeColors: {
       page: "#0f2118",
       panel: "#1d3527",
@@ -54,6 +59,13 @@
     "gt-theme-catppuccin",
     "gt-theme-nord",
     "gt-theme-gruvbox",
+    "gt-theme-dracula",
+    "gt-theme-solarized-dark",
+    "gt-theme-rose-gold",
+    "gt-theme-midnight",
+    "gt-theme-crimson",
+    "gt-theme-emerald",
+    "gt-theme-superman",
     "gt-theme-custom"
   ];
 
@@ -124,7 +136,8 @@
     distractionFree: "gt-roadmap-distraction-free",
     hideCourseName: "gt-roadmap-hide-course-name",
     hideCourseCredits: "gt-roadmap-hide-course-credits",
-    hideCourseGpa: "gt-roadmap-hide-course-gpa"
+    hideCourseGpa: "gt-roadmap-hide-course-gpa",
+    creditLoadEnabled: "gt-credit-load-enabled"
   };
 
   const ALL_CONTROL_CLASSES = [
@@ -135,6 +148,7 @@
     BODY_CLASSES.hideCourseName,
     BODY_CLASSES.hideCourseCredits,
     BODY_CLASSES.hideCourseGpa,
+    BODY_CLASSES.creditLoadEnabled,
     "gt-roadmap-customizer-enabled",
     ...THEME_CLASSES,
     ...ACCESSIBILITY_CLASSES
@@ -156,6 +170,10 @@
   let settings = { ...DEFAULT_SETTINGS };
   let observer = null;
   let scanQueued = false;
+  let prereqData = null;
+  let postreqData = null;
+  let prereqLoadPromise = null;
+  let prereqListenerInstalled = false;
   let lastDebugAt = 0;
   const originalTextNodes = new WeakMap();
   const originalAttributes = new WeakMap();
@@ -594,6 +612,11 @@
       readabilityWordSpacing: DEFAULT_SETTINGS.readabilityWordSpacing,
       readabilityLineHeight: DEFAULT_SETTINGS.readabilityLineHeight,
       distractionFreeMode: DEFAULT_SETTINGS.distractionFreeMode,
+      prereqHighlight: DEFAULT_SETTINGS.prereqHighlight,
+      creditLoadIndicator: DEFAULT_SETTINGS.creditLoadIndicator,
+      creditLoadLightBelow: DEFAULT_SETTINGS.creditLoadLightBelow,
+      creditLoadHeavyFrom: DEFAULT_SETTINGS.creditLoadHeavyFrom,
+      creditLoadOverloadedFrom: DEFAULT_SETTINGS.creditLoadOverloadedFrom,
       customThemeColors: DEFAULT_SETTINGS.customThemeColors,
       [LEGACY_SETTINGS_KEY]: null
     });
@@ -650,6 +673,13 @@
       ...readability,
       distractionFreeMode:
         typeof stored.distractionFreeMode === "boolean" ? stored.distractionFreeMode : DEFAULT_SETTINGS.distractionFreeMode,
+      prereqHighlight:
+        typeof stored.prereqHighlight === "boolean" ? stored.prereqHighlight : DEFAULT_SETTINGS.prereqHighlight,
+      creditLoadIndicator:
+        typeof stored.creditLoadIndicator === "boolean" ? stored.creditLoadIndicator : DEFAULT_SETTINGS.creditLoadIndicator,
+      creditLoadLightBelow: clampInteger(stored.creditLoadLightBelow, DEFAULT_SETTINGS.creditLoadLightBelow, 1, 99),
+      creditLoadHeavyFrom: clampInteger(stored.creditLoadHeavyFrom, DEFAULT_SETTINGS.creditLoadHeavyFrom, 1, 99),
+      creditLoadOverloadedFrom: clampInteger(stored.creditLoadOverloadedFrom, DEFAULT_SETTINGS.creditLoadOverloadedFrom, 1, 99),
       customThemeColors: normalizeCustomColors(stored.customThemeColors)
     };
   }
@@ -718,11 +748,14 @@
       element.classList.toggle(BODY_CLASSES.hideCourseCredits, !settings.showCourseCredits);
       element.classList.toggle(BODY_CLASSES.hideCourseGpa, !settings.showCourseGpa);
       element.classList.toggle(BODY_CLASSES.distractionFree, Boolean(settings.distractionFreeMode));
+      element.classList.toggle(BODY_CLASSES.creditLoadEnabled, Boolean(settings.creditLoadIndicator));
 
       if (accessibilityEnabled) {
         element.classList.add(`gt-accessibility-${accessibilityMode}`);
       }
     });
+
+    if (!settings.prereqHighlight) clearPrereqHighlight();
 
     annotateStableTargets();
     cleanupYearCollapseFeature();
@@ -1042,12 +1075,65 @@
     annotateDebugConflictSurface();
     annotateCurrentSemester();
     annotateCourseCards();
+    annotateSemesterCredits();
 
     annotateAll(
       '[data-semester] .scrollbar-themed, [data-tour="semester-columns"] .scrollbar-themed',
       "data-gt-roadmap-scroll-surface"
     );
 
+  }
+
+  function parseCreditValue(text) {
+    const m = /^(\d+(?:\.\d+)?)\s+credits?$/i.exec((text || "").trim());
+    return m ? parseFloat(m[1]) : null;
+  }
+
+  function getCreditLoadLabel(total) {
+    if (total <= 0) return null;
+    if (total >= settings.creditLoadOverloadedFrom) return "overloaded";
+    if (total >= settings.creditLoadHeavyFrom) return "heavy";
+    if (total < settings.creditLoadLightBelow) return "light";
+    return "normal";
+  }
+
+  function annotateSemesterCredits() {
+    document.querySelectorAll("[data-semester]").forEach((semEl) => {
+      semEl.removeAttribute("data-gt-credit-load");
+      semEl.querySelectorAll("[data-gt-roadmap-semester-credits]").forEach((el) => {
+        el.removeAttribute("data-gt-roadmap-semester-credits");
+      });
+
+      if (!settings.creditLoadIndicator) return;
+
+      // Sum credits from annotated course cards (most reliable)
+      let total = 0;
+      semEl.querySelectorAll("[data-gt-roadmap-course-credits]").forEach((el) => {
+        const val = parseCreditValue(el.textContent);
+        if (val !== null) total += val;
+      });
+
+      // Find the semester header's credit total display element
+      const header = semEl.children[0];
+      let creditDisplay = null;
+      if (header) {
+        creditDisplay = Array.from(header.querySelectorAll("span, p, div")).find((el) => {
+          return el.children.length === 0 && parseCreditValue(el.textContent) !== null;
+        });
+        // If course card sum is 0 (cards not yet annotated), fall back to header value
+        if (total === 0 && creditDisplay) {
+          const headerVal = parseCreditValue(creditDisplay.textContent);
+          if (headerVal !== null) total = headerVal;
+        }
+      }
+
+      if (creditDisplay) {
+        creditDisplay.setAttribute("data-gt-roadmap-semester-credits", "true");
+      }
+
+      const label = getCreditLoadLabel(total);
+      if (label) semEl.setAttribute("data-gt-credit-load", label);
+    });
   }
 
   function annotateCourseTreeSurface() {
@@ -1272,6 +1358,11 @@
         "readabilityWordSpacing",
         "readabilityLineHeight",
         "distractionFreeMode",
+        "prereqHighlight",
+        "creditLoadIndicator",
+        "creditLoadLightBelow",
+        "creditLoadHeavyFrom",
+        "creditLoadOverloadedFrom",
         "customThemeColors",
         LEGACY_SETTINGS_KEY
       ];
@@ -1282,12 +1373,143 @@
     });
   }
 
+  async function loadPrereqData() {
+    if (prereqData && postreqData) return;
+    if (prereqLoadPromise) return prereqLoadPromise;
+    prereqLoadPromise = Promise.all([
+      fetch(getExtensionUrl("assets/data/prereqs.json")).then((r) => r.json()),
+      fetch(getExtensionUrl("assets/data/postreqs.json")).then((r) => r.json())
+    ]).then(([pre, post]) => {
+      prereqData = pre;
+      postreqData = post;
+    }).catch(() => {});
+    return prereqLoadPromise;
+  }
+
+  function normalizeCourseCode(raw) {
+    if (!raw) return null;
+    const cleaned = raw.trim().toUpperCase().replace(/[-_]/g, " ");
+    const m = cleaned.match(/^([A-Z]{2,5})\s*(\d{3,4}[A-Z0-9X]*)$/);
+    return m ? `${m[1]} ${m[2]}` : null;
+  }
+
+  function getCourseCode(card) {
+    const rawId = card.getAttribute("data-course-id");
+    if (rawId) {
+      const normalized = normalizeCourseCode(rawId);
+      if (normalized) return normalized;
+    }
+    const codeRow = card.querySelector("[data-gt-roadmap-course-code-row='true']");
+    if (!codeRow) return null;
+    const walker = document.createTreeWalker(codeRow, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      const normalized = normalizeCourseCode(node.textContent);
+      if (normalized) return normalized;
+    }
+    return null;
+  }
+
+  function collectIds(node, out) {
+    if (!node || typeof node === "string") return;
+    if (Array.isArray(node)) { node.forEach((child) => collectIds(child, out)); }
+    else if (node.id) { out.add(node.id); }
+  }
+
+  function getAllPrereqIds(courseId, visited = new Set(), depth = 0) {
+    if (depth > 7 || visited.has(courseId) || !prereqData) return visited;
+    const entry = prereqData[courseId];
+    if (!entry || entry.length === 0) return visited;
+    const direct = new Set();
+    collectIds(entry, direct);
+    direct.forEach((id) => {
+      if (!visited.has(id)) {
+        visited.add(id);
+        getAllPrereqIds(id, visited, depth + 1);
+      }
+    });
+    return visited;
+  }
+
+  function getPostreqIds(courseId) {
+    if (!postreqData) return new Set();
+    const entries = postreqData[courseId];
+    return Array.isArray(entries) ? new Set(entries) : new Set();
+  }
+
+  function codeMatchesId(cardCode, id) {
+    if (cardCode === id) return true;
+    if (!id.includes("X")) return false;
+    return new RegExp("^" + id.replace(/X/g, "\\d") + "$").test(cardCode);
+  }
+
+  function idSetContains(idSet, cardCode) {
+    for (const id of idSet) {
+      if (codeMatchesId(cardCode, id)) return true;
+    }
+    return false;
+  }
+
+  function clearPrereqHighlight() {
+    document.body.removeAttribute("data-gt-prereq-active");
+    document.querySelectorAll("[data-gt-prereq-relation]").forEach((el) => {
+      el.removeAttribute("data-gt-prereq-relation");
+    });
+  }
+
+  async function applyPrereqHighlight(card) {
+    await loadPrereqData();
+    if (!prereqData) return;
+    const code = getCourseCode(card);
+    if (!code) return;
+    const prereqIds = getAllPrereqIds(code);
+    const postreqIds = getPostreqIds(code);
+    document.body.setAttribute("data-gt-prereq-active", "true");
+    document.querySelectorAll("[data-gt-roadmap-course-card-customizable='true']").forEach((c) => {
+      if (c === card) {
+        c.setAttribute("data-gt-prereq-relation", "hovered");
+        return;
+      }
+      const cardCode = getCourseCode(c);
+      if (cardCode && idSetContains(prereqIds, cardCode)) {
+        c.setAttribute("data-gt-prereq-relation", "prereq");
+      } else if (cardCode && idSetContains(postreqIds, cardCode)) {
+        c.setAttribute("data-gt-prereq-relation", "postreq");
+      } else {
+        c.setAttribute("data-gt-prereq-relation", "dimmed");
+      }
+    });
+  }
+
+  function installPrereqListeners() {
+    if (prereqListenerInstalled) return;
+    prereqListenerInstalled = true;
+    loadPrereqData();
+    let hoverTimeout = null;
+    document.addEventListener("mouseover", (e) => {
+      if (!settings.prereqHighlight) return;
+      const card = closestCourseCard(e.target);
+      if (!card || !card.hasAttribute("data-gt-roadmap-course-card-customizable")) return;
+      if (card.contains(e.relatedTarget)) return;
+      clearTimeout(hoverTimeout);
+      hoverTimeout = setTimeout(() => applyPrereqHighlight(card), 100);
+    }, { passive: true });
+    document.addEventListener("mouseout", (e) => {
+      const card = closestCourseCard(e.target);
+      if (!card) return;
+      if (card.contains(e.relatedTarget)) return;
+      clearTimeout(hoverTimeout);
+      clearPrereqHighlight();
+    }, { passive: true });
+  }
+
   async function init() {
     await refreshSettings();
     ensureToolbar();
     startObserver();
     installMessageListener();
     installStorageListener();
+    installPrereqListeners();
   }
 
   if (document.readyState === "loading") {

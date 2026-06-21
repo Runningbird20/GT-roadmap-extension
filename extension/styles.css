@@ -147,8 +147,6 @@ body :is(
   [data-tour="search-bar"],
   [data-gt-roadmap-search="true"],
   [data-tour="toolbar"],
-  [data-tour="course-panel"],
-  [data-tour="control-panel"],
   [data-slot="input-wrapper"],
   [data-slot="trigger"],
   [role="dialog"],
@@ -165,6 +163,13 @@ body :is(
 }
 
 body :is(
+  [data-tour="course-panel"],
+  [data-tour="control-panel"]
+) {
+  border-radius: 0 !important;
+}
+
+body :is(
   button:not(.theme-card-button):not(.back-button):not(.reset-button),
   [role="button"],
   [data-gt-roadmap-zoom-control="true"],
@@ -176,14 +181,17 @@ body :is(
   border-radius: var(--gtc-radius-sm) !important;
 }
 
+body #gt-roadmap-customizer-toolbar {
+  border-radius: var(--gtc-radius-lg) !important;
+}
+
 body :is(
   [data-testid="semester-column"],
   [data-semester],
   [data-gt-roadmap-scroll-surface="true"],
-  [data-tour="semester-columns"] .scrollbar-themed,
-  #gt-roadmap-customizer-toolbar
+  [data-tour="semester-columns"] .scrollbar-themed
 ) {
-  border-radius: var(--gtc-radius-lg) !important;
+  border-radius: 0 !important;
 }
 
 body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
@@ -237,9 +245,9 @@ body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
   --gtc-focus-ring: rgba(167, 121, 255, 0.3);
   --gtc-hover-bg: #2b1d49;
   --gtc-selected-bg: #a779ff;
-  --gtc-selected-text: #ffffff;
+  --gtc-selected-text: #000000;
   --gtc-current-bg: #a779ff;
-  --gtc-current-text: #ffffff;
+  --gtc-current-text: #000000;
   --gtc-current-border: rgba(220, 205, 255, 0.86);
   --gtc-current-ring: rgba(167, 121, 255, 0.32);
   --gtc-current-shadow: 0 0 0 1px rgba(167, 121, 255, 0.3);
@@ -405,7 +413,7 @@ body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
   --gtc-selected-bg: #00e5ff;
   --gtc-selected-text: #12071f;
   --gtc-current-bg: #ff2bd6;
-  --gtc-current-text: #ffffff;
+  --gtc-current-text: #000000;
   --gtc-current-border: rgba(0, 229, 255, 0.76);
   --gtc-current-ring: rgba(0, 229, 255, 0.28);
   --gtc-current-shadow: 0 0 0 1px rgba(255, 43, 214, 0.36);
@@ -629,6 +637,207 @@ body.gt-theme-enabled .z-\[200\] div[style*="max-width: 520px"] {
   --gtc-current-shadow: 0 0 0 1px rgba(250, 189, 47, 0.32);
   --gtc-warning: #fb4934;
   --gtc-warning-bg: rgba(251, 73, 52, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-dracula {
+  --gtc-page-bg: #282a36;
+  --gtc-header-bg: #21222c;
+  --gtc-sidebar-bg: #242636;
+  --gtc-main-bg: #282a36;
+  --gtc-panel-bg: #21222c;
+  --gtc-panel-bg-elevated: #2d2f3e;
+  --gtc-card-bg: #353746;
+  --gtc-card-hover-bg: #3e4052;
+  --gtc-input-bg: #292b3a;
+  --gtc-menu-bg: #21222c;
+  --gtc-border: rgba(189, 147, 249, 0.22);
+  --gtc-border-strong: rgba(189, 147, 249, 0.42);
+  --gtc-text: #f8f8f2;
+  --gtc-text-muted: #c0c2d0;
+  --gtc-text-soft: #9294aa;
+  --gtc-focus-ring: rgba(189, 147, 249, 0.28);
+  --gtc-hover-bg: #30324a;
+  --gtc-selected-bg: #bd93f9;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #ff79c6;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(255, 121, 198, 0.72);
+  --gtc-current-ring: rgba(189, 147, 249, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(255, 121, 198, 0.3);
+  --gtc-warning: #f1fa8c;
+  --gtc-warning-bg: rgba(241, 250, 140, 0.12);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-solarized-dark {
+  --gtc-page-bg: #002b36;
+  --gtc-header-bg: #063542;
+  --gtc-sidebar-bg: #05323f;
+  --gtc-main-bg: #002b36;
+  --gtc-panel-bg: #073642;
+  --gtc-panel-bg-elevated: #0d3e4e;
+  --gtc-card-bg: #0d4552;
+  --gtc-card-hover-bg: #164e5c;
+  --gtc-input-bg: #0a3d4a;
+  --gtc-menu-bg: #073642;
+  --gtc-border: rgba(42, 161, 152, 0.26);
+  --gtc-border-strong: rgba(42, 161, 152, 0.46);
+  --gtc-text: #93a1a1;
+  --gtc-text-muted: #788a8a;
+  --gtc-text-soft: #586e75;
+  --gtc-focus-ring: rgba(38, 139, 210, 0.28);
+  --gtc-hover-bg: #0c3e4c;
+  --gtc-selected-bg: #268bd2;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #2aa198;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(42, 161, 152, 0.72);
+  --gtc-current-ring: rgba(38, 139, 210, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(42, 161, 152, 0.3);
+  --gtc-warning: #b58900;
+  --gtc-warning-bg: rgba(181, 137, 0, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-rose-gold {
+  --gtc-page-bg: #fdf0ed;
+  --gtc-header-bg: #fdf5f3;
+  --gtc-sidebar-bg: #fae8e4;
+  --gtc-main-bg: #fdf0ed;
+  --gtc-panel-bg: #fff8f6;
+  --gtc-panel-bg-elevated: #ffffff;
+  --gtc-card-bg: #ffffff;
+  --gtc-card-hover-bg: #fdf0ed;
+  --gtc-input-bg: #fff5f2;
+  --gtc-menu-bg: #fff8f6;
+  --gtc-border: rgba(185, 88, 90, 0.2);
+  --gtc-border-strong: rgba(185, 88, 90, 0.38);
+  --gtc-text: #3d1e1a;
+  --gtc-text-muted: #8a5a56;
+  --gtc-text-soft: #aa7b78;
+  --gtc-focus-ring: rgba(196, 117, 108, 0.24);
+  --gtc-hover-bg: #fae8e4;
+  --gtc-selected-bg: #c97b87;
+  --gtc-selected-text: #3d1e1a;
+  --gtc-current-bg: #c97b87;
+  --gtc-current-text: #3d1e1a;
+  --gtc-current-border: rgba(220, 160, 165, 0.82);
+  --gtc-current-ring: rgba(196, 117, 108, 0.24);
+  --gtc-current-shadow: 0 0 0 1px rgba(196, 117, 108, 0.28);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-midnight {
+  --gtc-page-bg: #1a1b2e;
+  --gtc-header-bg: #1f2038;
+  --gtc-sidebar-bg: #1d1e34;
+  --gtc-main-bg: #1a1b2e;
+  --gtc-panel-bg: #222338;
+  --gtc-panel-bg-elevated: #282944;
+  --gtc-card-bg: #2d2e48;
+  --gtc-card-hover-bg: #36385a;
+  --gtc-input-bg: #252640;
+  --gtc-menu-bg: #1f2038;
+  --gtc-border: rgba(121, 134, 203, 0.22);
+  --gtc-border-strong: rgba(121, 134, 203, 0.42);
+  --gtc-text: #e8eaf6;
+  --gtc-text-muted: #bfc3e0;
+  --gtc-text-soft: #9b9eb9;
+  --gtc-focus-ring: rgba(121, 134, 203, 0.28);
+  --gtc-hover-bg: #272848;
+  --gtc-selected-bg: #7986cb;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #7986cb;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(161, 175, 231, 0.82);
+  --gtc-current-ring: rgba(121, 134, 203, 0.3);
+  --gtc-current-shadow: 0 0 0 1px rgba(121, 134, 203, 0.28);
+  --gtc-warning: #ffd54f;
+  --gtc-warning-bg: rgba(255, 213, 79, 0.12);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-crimson {
+  --gtc-page-bg: #130808;
+  --gtc-header-bg: #1d0c0c;
+  --gtc-sidebar-bg: #190a0a;
+  --gtc-main-bg: #130808;
+  --gtc-panel-bg: #1e0e0e;
+  --gtc-panel-bg-elevated: #281515;
+  --gtc-card-bg: #2d1818;
+  --gtc-card-hover-bg: #3a2020;
+  --gtc-input-bg: #240f0f;
+  --gtc-menu-bg: #1e0e0e;
+  --gtc-border: rgba(220, 80, 80, 0.22);
+  --gtc-border-strong: rgba(220, 80, 80, 0.44);
+  --gtc-text: #f9e4e4;
+  --gtc-text-muted: #d4a8a8;
+  --gtc-text-soft: #a87878;
+  --gtc-focus-ring: rgba(229, 53, 53, 0.28);
+  --gtc-hover-bg: #2d1616;
+  --gtc-selected-bg: #c62828;
+  --gtc-selected-text: #ffffff;
+  --gtc-current-bg: #e53535;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(255, 140, 140, 0.72);
+  --gtc-current-ring: rgba(229, 53, 53, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(229, 53, 53, 0.3);
+  --gtc-warning: #ff9800;
+  --gtc-warning-bg: rgba(255, 152, 0, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-emerald {
+  --gtc-page-bg: #051710;
+  --gtc-header-bg: #0a2419;
+  --gtc-sidebar-bg: #071e14;
+  --gtc-main-bg: #051710;
+  --gtc-panel-bg: #0c2a1c;
+  --gtc-panel-bg-elevated: #133324;
+  --gtc-card-bg: #18402c;
+  --gtc-card-hover-bg: #20523a;
+  --gtc-input-bg: #0f3020;
+  --gtc-menu-bg: #0a2419;
+  --gtc-border: rgba(0, 200, 83, 0.22);
+  --gtc-border-strong: rgba(0, 200, 83, 0.44);
+  --gtc-text: #d4f5e4;
+  --gtc-text-muted: #9dd8b8;
+  --gtc-text-soft: #6eb892;
+  --gtc-focus-ring: rgba(0, 200, 83, 0.28);
+  --gtc-hover-bg: #163828;
+  --gtc-selected-bg: #00c853;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #00c853;
+  --gtc-current-text: #000000;
+  --gtc-current-border: rgba(105, 240, 174, 0.72);
+  --gtc-current-ring: rgba(0, 200, 83, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(0, 200, 83, 0.3);
+  --gtc-warning: #f9a825;
+  --gtc-warning-bg: rgba(249, 168, 37, 0.14);
+}
+
+:is(html, body).gt-theme-enabled.gt-theme-superman {
+  --gtc-page-bg: #060e24;
+  --gtc-header-bg: #0c1a3e;
+  --gtc-sidebar-bg: #091636;
+  --gtc-main-bg: #060e24;
+  --gtc-panel-bg: #0d1c40;
+  --gtc-panel-bg-elevated: #122252;
+  --gtc-card-bg: #172a60;
+  --gtc-card-hover-bg: #1e3474;
+  --gtc-input-bg: #10204c;
+  --gtc-menu-bg: #0c1a3e;
+  --gtc-border: rgba(211, 47, 47, 0.28);
+  --gtc-border-strong: rgba(249, 168, 37, 0.42);
+  --gtc-text: #e8f0ff;
+  --gtc-text-muted: #b0c4f0;
+  --gtc-text-soft: #7a96d4;
+  --gtc-focus-ring: rgba(211, 47, 47, 0.28);
+  --gtc-hover-bg: #152858;
+  --gtc-selected-bg: #f9a825;
+  --gtc-selected-text: #000000;
+  --gtc-current-bg: #d32f2f;
+  --gtc-current-text: #ffffff;
+  --gtc-current-border: rgba(249, 168, 37, 0.72);
+  --gtc-current-ring: rgba(211, 47, 47, 0.28);
+  --gtc-current-shadow: 0 0 0 1px rgba(211, 47, 47, 0.3);
+  --gtc-warning: #f9a825;
+  --gtc-warning-bg: rgba(249, 168, 37, 0.14);
 }
 
 /* Source selector map -----------------------------------------------------
@@ -1230,6 +1439,23 @@ body.gt-theme-enabled :is([data-gt-roadmap-notes="true"], textarea[placeholder*=
   border-color: var(--gtc-border) !important;
   background: var(--gtc-input-bg) !important;
   color: var(--gtc-text) !important;
+}
+
+body.gt-theme-enabled :is(
+  .gt-roadmap-current-semester-indicator,
+  [data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-semester][data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-tour="semester-columns"] p.bg-accent-primary,
+  [data-tour="semester-columns"] .bg-accent-primary.text-white
+),
+body.gt-theme-enabled :is(
+  .gt-roadmap-current-semester-indicator,
+  [data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-semester][data-gt-roadmap-current-semester="true"] > div:first-child p,
+  [data-tour="semester-columns"] p.bg-accent-primary,
+  [data-tour="semester-columns"] .bg-accent-primary.text-white
+) * {
+  color: var(--gtc-current-text) !important;
 }
 
 body.gt-theme-enabled.gt-theme-true-black :is(
@@ -2251,6 +2477,56 @@ body:is(
 ) :is(a, button, [role="button"], input, select, textarea) {
   outline-offset: 2px;
 }
+
+/* ── Prerequisite chain highlight ─────────────────────────────────────────── */
+
+[data-gt-roadmap-course-card-customizable] {
+  transition: opacity 140ms ease, box-shadow 140ms ease;
+}
+
+body[data-gt-prereq-active] [data-gt-roadmap-course-card-customizable] {
+  opacity: 0.18;
+}
+
+body[data-gt-prereq-active] [data-gt-prereq-relation="hovered"] {
+  opacity: 1 !important;
+  box-shadow: 0 0 0 2px var(--gtc-accent, #b3a369), 0 4px 20px rgba(179, 163, 105, 0.35) !important;
+}
+
+body[data-gt-prereq-active] [data-gt-prereq-relation="prereq"] {
+  opacity: 1 !important;
+  box-shadow: 0 0 0 2px #e07b3a, 0 4px 16px rgba(224, 123, 58, 0.32) !important;
+}
+
+body[data-gt-prereq-active] [data-gt-prereq-relation="postreq"] {
+  opacity: 1 !important;
+  box-shadow: 0 0 0 2px #3aad78, 0 4px 16px rgba(58, 173, 120, 0.32) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Credit load indicator ────────────────────────────────────────────────── */
+
+[data-gt-roadmap-semester-credits] {
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+body.gt-credit-load-enabled [data-semester][data-gt-credit-load="light"] [data-gt-roadmap-semester-credits] {
+  background-color: #3a8fd4 !important;
+  color: #ffffff !important;
+}
+
+body.gt-credit-load-enabled [data-semester][data-gt-credit-load="heavy"] [data-gt-roadmap-semester-credits] {
+  background-color: #c87010 !important;
+  color: #ffffff !important;
+}
+
+body.gt-credit-load-enabled [data-semester][data-gt-credit-load="overloaded"] [data-gt-roadmap-semester-credits] {
+  background-color: #cc2020 !important;
+  color: #ffffff !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
   body.gt-theme-enabled :is([data-testid="semester-column"], [aria-label*="semester" i], section:has([data-testid="course-card"])) {

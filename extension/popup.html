@@ -7,106 +7,244 @@
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <main class="popup-shell" aria-labelledby="popup-title">
-      <header class="popup-header">
-        <div class="brand-mark" aria-hidden="true">GT</div>
-        <div>
-          <h1 id="popup-title">Roadmap Customizer</h1>
-          <p>Personalize your Degree Roadmap</p>
-        </div>
+    <div class="app">
+
+      <header class="app-header">
+        <span class="brand-mark" aria-hidden="true">GT</span>
+        <span class="brand-name">Roadmap Customizer</span>
+        <span class="app-status" id="status" role="status" aria-live="polite"></span>
       </header>
 
-      <form class="settings-panel" id="settings-form">
-        <section class="settings-section" aria-labelledby="appearance-heading">
-          <h2 id="appearance-heading">Appearance</h2>
+      <div class="app-body">
 
-          <button class="theme-card-button" id="choose-theme-button" type="button">
-            <span class="theme-card-copy">
-              <span class="toggle-title">Choose Theme</span>
-              <span class="toggle-helper">Pick a color palette and enable or disable site theming.</span>
-            </span>
-            <span class="theme-card-swatches" aria-hidden="true">
-              <span class="swatch navy"></span>
-              <span class="swatch gold"></span>
-              <span class="swatch rose"></span>
-            </span>
-          </button>
+        <nav class="sidebar" aria-label="Settings navigation">
 
-          <button class="theme-card-button course-card-button" id="choose-course-card-button" type="button">
-            <span class="theme-card-copy">
-              <span class="toggle-title">Course Card</span>
-              <span class="toggle-helper">Choose which details appear on course cards.</span>
-            </span>
-            <span class="course-card-preview" aria-hidden="true">
-              <span></span>
-              <span></span>
-            </span>
-          </button>
+          <div class="nav-section">
+            <span class="nav-section-label">Home</span>
+            <button type="button" class="nav-item active" data-panel="overview">Overview</button>
+          </div>
 
-          <label class="slider-row" for="corner-radius-slider">
-            <span class="slider-copy">
-              <span class="toggle-title">Rounded corners</span>
-              <span class="toggle-helper">Set the roundness level across the roadmap.</span>
-            </span>
-            <span class="slider-value" id="corner-radius-value">8px</span>
-            <input id="corner-radius-slider" type="range" name="cornerRadius" min="0" max="24" step="1">
-          </label>
+          <div class="nav-section">
+            <span class="nav-section-label">Appearance</span>
+            <button type="button" class="nav-item" data-panel="themes">Themes</button>
+            <button type="button" class="nav-item" data-panel="course-cards">Course Cards</button>
+            <button type="button" class="nav-item" data-panel="fonts">Fonts</button>
+            <button type="button" class="nav-item" data-panel="style">Style</button>
+          </div>
 
-        </section>
+          <div class="nav-section">
+            <span class="nav-section-label">Features</span>
+            <button type="button" class="nav-item" data-panel="features">Features</button>
+          </div>
 
-        <section class="settings-section" aria-labelledby="typography-heading">
-          <h2 id="typography-heading">Typography</h2>
+          <div class="nav-section">
+            <span class="nav-section-label">Language</span>
+            <button type="button" class="nav-item" data-panel="language">Language</button>
+          </div>
 
-          <button class="theme-card-button font-card-button" id="choose-font-button" type="button">
-            <span class="theme-card-copy">
-              <span class="toggle-title">Choose Font</span>
-              <span class="toggle-helper">Use a bundled Nerd Font for roadmap text.</span>
-            </span>
-            <span class="font-card-sample" aria-hidden="true">󰛨 Aa</span>
-          </button>
-        </section>
+          <div class="nav-section">
+            <span class="nav-section-label">Setup</span>
+            <button type="button" class="nav-item" data-panel="utilities">Utilities</button>
+          </div>
 
-        <section class="settings-section" aria-labelledby="language-heading">
-          <h2 id="language-heading">Language</h2>
+        </nav>
 
-          <label class="select-row" for="language-select">
-            <span class="select-copy">
-              <span class="toggle-title">Page language</span>
-              <span class="toggle-helper">Translate roadmap interface text. Non-English languages use the default font.</span>
-            </span>
-            <select id="language-select" name="selectedLanguage"></select>
-          </label>
+        <form class="content" id="settings-form">
 
-          <label class="select-row" id="fun-language-row" for="fun-language-select" hidden>
-            <span class="select-copy">
-              <span class="toggle-title">Fun stuff</span>
-              <span class="toggle-helper">Keep English, but change the roadmap wording.</span>
-            </span>
-            <select id="fun-language-select" name="selectedFunLanguage"></select>
-          </label>
-        </section>
+          <!-- ── Overview ───────────────────────────────────────── -->
+          <div class="panel" id="panel-overview">
+            <h2 class="panel-heading">Overview</h2>
+            <div class="quick-grid">
+              <button type="button" class="quick-card" data-panel="themes">
+                <span class="quick-icon" aria-hidden="true">🎨</span>
+                <span class="quick-label">Themes</span>
+              </button>
+              <button type="button" class="quick-card" data-panel="course-cards">
+                <span class="quick-icon" aria-hidden="true">📋</span>
+                <span class="quick-label">Course Cards</span>
+              </button>
+              <button type="button" class="quick-card" data-panel="fonts">
+                <span class="quick-icon" aria-hidden="true">✏️</span>
+                <span class="quick-label">Fonts</span>
+              </button>
+              <button type="button" class="quick-card" data-panel="features">
+                <span class="quick-icon" aria-hidden="true">⚡</span>
+                <span class="quick-label">Features</span>
+              </button>
+            </div>
+          </div>
 
-        <section class="settings-section" aria-labelledby="accessibility-heading">
-          <h2 id="accessibility-heading">Accessibility</h2>
+          <!-- ── Themes ─────────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-themes">
+            <h2 class="panel-heading">Themes</h2>
 
-          <label class="toggle-row" for="distraction-free-toggle">
-            <span class="toggle-copy">
-              <span class="toggle-title">Distraction-free mode</span>
-              <span class="toggle-helper">Hide backgrounds, decorations, and extra visual noise.</span>
-            </span>
-            <input id="distraction-free-toggle" type="checkbox" name="distractionFreeMode" role="switch">
-            <span class="switch" aria-hidden="true"></span>
-          </label>
-        </section>
+            <label class="toggle-card" for="theme-enabled-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Enable themes</span>
+                <span class="toggle-card-helper">Apply a color theme to the roadmap.</span>
+              </div>
+              <input id="theme-enabled-toggle" type="checkbox" name="themeEnabled" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
 
-        <section class="settings-section utilities-section" aria-labelledby="utilities-heading">
-          <h2 id="utilities-heading">Utilities</h2>
-          <button type="button" class="reset-button" id="reset-button">Reset defaults</button>
-          <div class="status" id="status" role="status" aria-live="polite"></div>
-        </section>
-      </form>
-    </main>
+            <button type="button" id="choose-accessibility-colors-button" class="panel-nav-button">
+              <span class="panel-nav-copy">
+                <span class="panel-nav-title">Accessibility Colors</span>
+                <span class="panel-nav-helper">Override colors for visual accessibility.</span>
+              </span>
+              <span class="panel-nav-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div id="theme-grid" class="theme-grid"></div>
+
+            <div id="custom-theme-card" class="custom-theme-card">
+              <div class="custom-theme-header">
+                <h3 class="custom-theme-title">Custom Theme</h3>
+                <button type="button" id="use-custom-button" class="use-custom-button">Use Custom</button>
+              </div>
+              <div id="custom-color-grid" class="custom-color-grid"></div>
+            </div>
+          </div>
+
+          <!-- ── Course Cards ──────────────────────────────────── -->
+          <div class="panel hidden" id="panel-course-cards">
+            <h2 class="panel-heading">Course Cards</h2>
+
+            <label class="toggle-card" for="show-course-name-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Show course name</span>
+                <span class="toggle-card-helper">Display the full course name on each card.</span>
+              </div>
+              <input id="show-course-name-toggle" type="checkbox" name="showCourseName" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+
+            <label class="toggle-card" for="show-course-credits-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Show credit hours</span>
+                <span class="toggle-card-helper">Display credit count on each course card.</span>
+              </div>
+              <input id="show-course-credits-toggle" type="checkbox" name="showCourseCredits" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+
+            <label class="toggle-card" for="show-course-gpa-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Show GPA</span>
+                <span class="toggle-card-helper">Show average GPA earned on each card.</span>
+              </div>
+              <input id="show-course-gpa-toggle" type="checkbox" name="showCourseGpa" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+          </div>
+
+          <!-- ── Fonts ─────────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-fonts">
+            <h2 class="panel-heading">Fonts</h2>
+            <div id="font-grid" class="font-grid"></div>
+          </div>
+
+          <!-- ── Style ─────────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-style">
+            <h2 class="panel-heading">Style</h2>
+
+            <div class="control-card">
+              <div class="control-card-top">
+                <span class="control-title">Rounded corners</span>
+                <span class="control-value" id="corner-radius-value">8px</span>
+              </div>
+              <p class="control-helper">Roundness of course cards across the roadmap.</p>
+              <input id="corner-radius-slider" type="range" name="cornerRadius" min="0" max="24" step="1" aria-label="Corner radius">
+            </div>
+          </div>
+
+          <!-- ── Features ──────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-features">
+            <h2 class="panel-heading">Features</h2>
+
+            <label class="toggle-card" for="distraction-free-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Distraction-free</span>
+                <span class="toggle-card-helper">Hide backgrounds and extra visual noise.</span>
+              </div>
+              <input id="distraction-free-toggle" type="checkbox" name="distractionFreeMode" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+
+            <label class="toggle-card" for="prereq-highlight-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Prereq highlight</span>
+                <span class="toggle-card-helper">Hover a course to dim unrelated cards.</span>
+              </div>
+              <input id="prereq-highlight-toggle" type="checkbox" name="prereqHighlight" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+
+            <label class="toggle-card" for="credit-load-toggle">
+              <div class="toggle-card-copy">
+                <span class="toggle-card-title">Credit load indicator</span>
+                <span class="toggle-card-helper">Colors semester credit counts by load.</span>
+              </div>
+              <input id="credit-load-toggle" type="checkbox" name="creditLoadIndicator" role="switch">
+              <span class="switch" aria-hidden="true"></span>
+            </label>
+
+            <div class="threshold-row">
+              <span class="threshold-label">Load thresholds (credits)</span>
+              <div class="threshold-inputs">
+                <label class="threshold-item">
+                  <span class="threshold-item-label">
+                    <span class="threshold-dot threshold-dot--light" aria-hidden="true"></span>
+                    Light below
+                  </span>
+                  <input type="number" name="creditLoadLightBelow" min="1" max="99" step="1">
+                </label>
+                <label class="threshold-item">
+                  <span class="threshold-item-label">
+                    <span class="threshold-dot threshold-dot--heavy" aria-hidden="true"></span>
+                    Heavy from
+                  </span>
+                  <input type="number" name="creditLoadHeavyFrom" min="1" max="99" step="1">
+                </label>
+                <label class="threshold-item">
+                  <span class="threshold-item-label">
+                    <span class="threshold-dot threshold-dot--overloaded" aria-hidden="true"></span>
+                    Overloaded
+                  </span>
+                  <input type="number" name="creditLoadOverloadedFrom" min="1" max="99" step="1">
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Language ──────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-language">
+            <h2 class="panel-heading">Language</h2>
+
+            <div class="control-card select-card">
+              <label class="control-title" for="language-select">Page language</label>
+              <p class="control-helper">Translate roadmap interface text.</p>
+              <select id="language-select" name="selectedLanguage"></select>
+            </div>
+
+            <div class="control-card select-card" id="fun-language-row" hidden>
+              <label class="control-title" for="fun-language-select">Fun stuff</label>
+              <p class="control-helper">Keep English but change the wording.</p>
+              <select id="fun-language-select" name="selectedFunLanguage"></select>
+            </div>
+          </div>
+
+          <!-- ── Utilities ─────────────────────────────────────── -->
+          <div class="panel hidden" id="panel-utilities">
+            <h2 class="panel-heading">Utilities</h2>
+            <button type="button" class="reset-button" id="reset-button">Reset all settings</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
     <script src="language-options.js"></script>
+    <script src="font-options.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>
